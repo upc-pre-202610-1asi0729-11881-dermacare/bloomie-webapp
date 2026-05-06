@@ -1,12 +1,18 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { Layout } from './shared/presentation/components/layout/layout';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
+  imports: [Layout],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css',
 })
 export class App {
-  protected readonly title = signal('bloomie-frontend-web-applications');
+  constructor() {
+    const translate = inject(TranslateService);
+    translate.setDefaultLang('en');
+    translate.use('en');
+  }
 }

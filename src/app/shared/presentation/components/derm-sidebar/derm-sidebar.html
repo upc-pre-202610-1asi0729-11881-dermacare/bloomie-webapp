@@ -1,0 +1,34 @@
+<div class="sidebar">
+  <!-- Brand -->
+  <div class="sidebar__brand">
+    <div class="sidebar__logo">
+      <mat-icon class="sidebar__logo-icon">spa</mat-icon>
+    </div>
+    <div class="sidebar__brand-text">
+      <h1 class="sidebar__title">Bloomie</h1>
+      <div class="sidebar__subtitle-row">
+        <mat-icon class="sidebar__subtitle-icon">stethoscope</mat-icon>
+        <p class="sidebar__subtitle">Specialist portal</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebar__divider"></div>
+
+  <div class="sidebar__section-label">Main Menu</div>
+
+  <!-- Nav -->
+  <nav class="sidebar__nav">
+    @for (item of navItems; track item.path) {
+      <a
+        class="sidebar__item"
+        [routerLink]="item.path"
+        routerLinkActive="sidebar__item--active"
+      >
+        <mat-icon class="sidebar__icon">{{ item.icon }}</mat-icon>
+        <span class="sidebar__label">{{ item.labelKey | translate }}</span>
+        <span class="sidebar__dot"></span>
+      </a>
+    }
+  </nav>
+</div>

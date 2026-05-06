@@ -1,0 +1,28 @@
+.shell {
+  display: flex;
+  height: 100vh;
+  background: #fffdf8;
+}
+
+.shell__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.shell__topbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 16px;
+  height: 56px;
+  background: #fffdf8;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.shell__content {
+  flex: 1;
+  overflow-y: auto;
+  background: #fffdf8;
+}
