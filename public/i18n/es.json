@@ -1,0 +1,18 @@
+{
+  "nav": {
+    "dashboard": "Inicio",
+    "aiAssistant": "Asistente IA",
+    "appointments": "Citas",
+    "myRoutine": "Mi Rutina",
+    "skinScan": "Análisis de Piel",
+    "trending": "Tendencias",
+    "profile": "Perfil"
+  },
+  "derm": {
+    "nav": {
+      "agenda": "Agenda",
+      "pastConsultations": "Consultas Pasadas",
+      "profile": "Perfil"
+    }
+  }
+}

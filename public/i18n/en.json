@@ -1,0 +1,18 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "aiAssistant": "AI Assistant",
+    "appointments": "Appointments",
+    "myRoutine": "My Routine",
+    "skinScan": "Skin Scan",
+    "trending": "Trending",
+    "profile": "Profile"
+  },
+  "derm": {
+    "nav": {
+      "agenda": "Agenda",
+      "pastConsultations": "Past Consultations",
+      "profile": "Profile"
+    }
+  }
+}
