@@ -1,0 +1,70 @@
+<div class="derm-agenda">
+
+  <h1 class="derm-agenda__title">{{ 'dermatology.dermAgenda.title' | translate }}</h1>
+
+  <!-- Day strip -->
+  <div class="derm-agenda__day-strip">
+    @for (agendaDay of agendaDays(); track agendaDay.day; let i = $index) {
+      <button
+        class="derm-agenda__day-btn"
+        [class.derm-agenda__day-btn--today]="agendaDay.isToday"
+        [class.derm-agenda__day-btn--selected]="selectedDayIndex() === i"
+        (click)="selectDay(i)"
+      >
+        <span class="derm-agenda__day-number">{{ agendaDay.day }}</span>
+        <span class="derm-agenda__day-name">{{ agendaDay.name }}</span>
+      </button>
+    }
+  </div>
+
+  <!-- Summary label -->
+  <div class="derm-agenda__summary">
+    <p class="derm-agenda__summary-title">{{ 'dermatology.dermAgenda.dayLabel' | translate }}</p>
+    <p class="derm-agenda__summary-count">
+      {{ store.appointments().length }} {{ 'dermatology.dermAgenda.consultations' | translate }}
+      · {{ completedCount() }} {{ 'dermatology.dermAgenda.completed' | translate }}
+    </p>
+  </div>
+
+  <!-- Appointments list -->
+  <div class="derm-agenda__list">
+    @if (store.appointments().length === 0) {
+      <div class="derm-agenda__empty">
+        <mat-icon>event_available</mat-icon>
+        <p>{{ 'dermatology.dermAgenda.noAppointments' | translate }}</p>
+      </div>
+    } @else {
+      @for (appointment of store.appointments(); track appointment.id) {
+        <div
+          class="derm-agenda__item"
+          [class.derm-agenda__item--done]="appointment.isConfirmed"
+        >
+          <!-- Avatar -->
+          <div
+            class="derm-agenda__avatar"
+            [class.derm-agenda__avatar--done]="appointment.isConfirmed"
+          >
+            <mat-icon>person</mat-icon>
+          </div>
+
+          <!-- Info -->
+          <div class="derm-agenda__item-info">
+            <p class="derm-agenda__item-time">{{ appointment.formattedScheduledAt }}</p>
+            <p class="derm-agenda__item-status">{{ appointment.status }}</p>
+          </div>
+
+          <!-- Action -->
+          @if (appointment.isConfirmed) {
+            <button class="derm-agenda__start-btn" (click)="startCall(appointment)">
+              <mat-icon>video_call</mat-icon>
+              {{ 'dermatology.dermAgenda.startCall' | translate }}
+            </button>
+          } @else {
+            <mat-icon class="derm-agenda__done-icon">check_circle</mat-icon>
+          }
+        </div>
+      }
+    }
+  </div>
+
+</div>

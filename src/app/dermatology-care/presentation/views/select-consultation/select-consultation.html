@@ -1,0 +1,56 @@
+<div class="select-consultation">
+  <div class="select-consultation__header">
+    <button class="select-consultation__back-btn" (click)="navigateBack()" aria-label="Go back">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div>
+      <h1 class="select-consultation__title">{{ 'dermatology.selectConsultation.title' | translate }}</h1>
+      <p class="select-consultation__count">{{ store.consultations().length }} {{ 'dermatology.selectConsultation.found' | translate }}</p>
+    </div>
+  </div>
+  <div class="select-consultation__divider"></div>
+
+  <div class="select-consultation__grid">
+    @if (store.consultations().length === 0) {
+      <div class="select-consultation__empty">
+        <mat-icon>history</mat-icon>
+        <p>{{ 'dermatology.selectConsultation.noConsultations' | translate }}</p>
+      </div>
+    } @else {
+      @for (consultation of store.consultations(); track consultation.id) {
+        <div class="select-consultation__card">
+
+          <!-- Date row -->
+          <div class="select-consultation__row">
+            <mat-icon class="select-consultation__row-icon">calendar_today</mat-icon>
+            <span class="select-consultation__row-label">{{ 'dermatology.selectConsultation.date' | translate }}</span>
+            <div class="select-consultation__chips">
+              <span class="select-consultation__chip">{{ consultation.startedAt }}</span>
+            </div>
+          </div>
+
+          <!-- Status row -->
+          <div class="select-consultation__row">
+            <div
+              class="select-consultation__status-dot"
+              [style.background]="
+                consultation.status === ConsultationStatus.Completed ? '#0fe517' :
+                consultation.status === ConsultationStatus.Cancelled  ? '#f50d0d' : '#f5f50d'
+              "
+            ></div>
+            <span class="select-consultation__row-label">{{ 'dermatology.selectConsultation.status' | translate }}</span>
+            <span class="select-consultation__status-text">{{ consultation.status }}</span>
+          </div>
+
+          <!-- Action -->
+          <div class="select-consultation__card-footer">
+            <button class="select-consultation__action-btn" (click)="selectConsultation(consultation)">
+              {{ getActionKey(consultation) | translate }}
+            </button>
+          </div>
+
+        </div>
+      }
+    }
+  </div>
+</div>

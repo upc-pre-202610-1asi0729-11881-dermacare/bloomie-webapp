@@ -1,0 +1,73 @@
+<div class="cancel-appointment">
+
+  @if (step() === 'reason') {
+    <div class="cancel-appointment__header">
+      <button class="cancel-appointment__back-btn" (click)="navigateBack()" aria-label="Go back">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h1 class="cancel-appointment__title">{{ 'dermatology.cancelAppointment.title' | translate }}</h1>
+    </div>
+    <div class="cancel-appointment__divider"></div>
+
+    <div class="cancel-appointment__container">
+      <div class="cancel-appointment__card">
+
+        <!-- Appointment info card -->
+        <div class="cancel-appointment__info-box">
+          <p class="cancel-appointment__info-date">{{ store.selectedAppointment()?.formattedScheduledAt }}</p>
+        </div>
+
+        <p class="cancel-appointment__policy-text">{{ 'dermatology.cancelAppointment.policyText' | translate }}</p>
+
+        <p class="cancel-appointment__prompt">{{ 'dermatology.cancelAppointment.prompt' | translate }}</p>
+
+        <!-- Reasons -->
+        <div class="cancel-appointment__reasons">
+          @for (reason of reasons; track reason) {
+            <label class="cancel-appointment__reason" (click)="selectReason(reason)">
+              <div class="cancel-appointment__radio" [class.cancel-appointment__radio--selected]="selectedReason() === reason">
+                @if (selectedReason() === reason) {
+                  <div class="cancel-appointment__radio-dot"></div>
+                }
+              </div>
+              <span class="cancel-appointment__reason-text">{{ reason | translate }}</span>
+            </label>
+          }
+        </div>
+
+        <div class="cancel-appointment__actions">
+          <button
+            class="cancel-appointment__confirm-btn"
+            [class.cancel-appointment__confirm-btn--disabled]="!selectedReason()"
+            [disabled]="!selectedReason()"
+            (click)="confirmCancellation()"
+          >
+            {{ 'dermatology.cancelAppointment.confirmBtn' | translate }}
+          </button>
+          <button class="cancel-appointment__keep-btn" (click)="navigateBack()">
+            {{ 'dermatology.cancelAppointment.keepBtn' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (step() === 'confirmed') {
+    <div class="cancel-appointment__success">
+      <div class="cancel-appointment__success-circle">
+        <mat-icon class="cancel-appointment__success-icon">check_circle</mat-icon>
+      </div>
+      <h2 class="cancel-appointment__success-title">{{ 'dermatology.cancelAppointment.successTitle' | translate }}</h2>
+      <p class="cancel-appointment__success-desc">{{ 'dermatology.cancelAppointment.successDesc' | translate }}</p>
+      <div class="cancel-appointment__success-actions">
+        <button class="cancel-appointment__rebook-btn" (click)="bookNewAppointment()">
+          {{ 'dermatology.cancelAppointment.rebookBtn' | translate }}
+        </button>
+        <button class="cancel-appointment__home-btn" (click)="navigateBack()">
+          {{ 'dermatology.cancelAppointment.homeBtn' | translate }}
+        </button>
+      </div>
+    </div>
+  }
+
+</div>

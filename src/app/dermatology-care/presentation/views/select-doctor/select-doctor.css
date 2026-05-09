@@ -1,0 +1,305 @@
+.select-doctor {
+  padding: 32px 40px;
+  background: #fffdf8;
+  min-height: 100%;
+}
+
+.select-doctor__header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.select-doctor__back-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid #e0d6d6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+
+.select-doctor__back-btn:hover { background: #f5f0f0; }
+
+.select-doctor__title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  font-size: 32px;
+  color: #333;
+  margin: 0;
+}
+
+.select-doctor__count {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  color: #999;
+  margin: 4px 0 0;
+}
+
+.select-doctor__divider {
+  height: 1px;
+  background: #e8dede;
+  margin-bottom: 24px;
+}
+
+.select-doctor__content {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.select-doctor__list-section {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Search bar */
+.select-doctor__search-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #e4e3e3;
+  border-radius: 28px;
+  padding: 12px 20px;
+  margin-bottom: 12px;
+}
+
+.select-doctor__search-icon {
+  color: rgba(0, 0, 0, 0.7);
+  flex-shrink: 0;
+}
+
+.select-doctor__search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  color: #000;
+}
+
+.select-doctor__search-input::placeholder { color: #999; }
+
+.select-doctor__filter-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.select-doctor__filter-icon--active { color: #a26769; }
+
+/* Filter chip */
+.select-doctor__filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(162, 103, 105, 0.1);
+  color: #a26769;
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  margin-bottom: 12px;
+}
+
+.select-doctor__chip-clear {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: #a26769;
+  padding: 0;
+}
+
+.select-doctor__chip-clear mat-icon { font-size: 14px; }
+
+/* Cards */
+.select-doctor__cards { display: flex; flex-direction: column; gap: 16px; }
+
+.select-doctor__card {
+  background: #b3cee3;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+  padding: 16px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  transition: box-shadow 0.15s;
+}
+
+.select-doctor__card:hover { box-shadow: 0 4px 14px rgba(0, 0, 0, 0.14); }
+
+.select-doctor__card-avatar {
+  width: 64px;
+  height: 64px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.select-doctor__card-avatar mat-icon {
+  font-size: 32px;
+  color: #a26769;
+}
+
+.select-doctor__card-info { flex: 1; min-width: 0; }
+
+.select-doctor__card-specialty {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  color: #000;
+  margin: 0 0 4px;
+}
+
+.select-doctor__card-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.select-doctor__card-fee {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: #a26769;
+}
+
+.select-doctor__card-rating {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  color: #555;
+}
+
+.select-doctor__card-experience {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  color: #555;
+  margin: 0 0 12px;
+}
+
+.select-doctor__book-btn {
+  background: #7baab3;
+  color: #ffffff;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 20px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.select-doctor__book-btn:hover { background: #6697a0; }
+
+/* Empty state */
+.select-doctor__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 64px 32px;
+}
+
+.select-doctor__empty-icon {
+  width: 80px;
+  height: 80px;
+  background: #f0e8e8;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.select-doctor__empty-icon mat-icon {
+  font-size: 40px;
+  color: #a26769;
+}
+
+.select-doctor__empty-title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  color: #333;
+  margin: 0 0 8px;
+}
+
+.select-doctor__empty-desc {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* Filter panel */
+.select-doctor__filter-panel {
+  width: 288px;
+  flex-shrink: 0;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.select-doctor__filter-title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  color: #333;
+  margin: 0 0 16px;
+}
+
+.select-doctor__filter-options { display: flex; flex-direction: column; gap: 12px; }
+
+.select-doctor__filter-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.select-doctor__radio {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.select-doctor__radio--selected {
+  border-color: #a26769;
+  background: #a26769;
+}
+
+.select-doctor__radio-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+.select-doctor__filter-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  color: #000;
+}

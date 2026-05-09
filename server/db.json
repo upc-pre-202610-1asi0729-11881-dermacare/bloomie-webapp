@@ -1,437 +1,112 @@
 {
   "users": [
-    {
-      "id": 1,
-      "email": "sofia@gmail.com",
-      "password_hash": "hashed_password_1",
-      "name": "Sofía",
-      "last_name": "Mendoza",
-      "role": "YOUNG_ADULT",
-      "status": "ACTIVE"
-    },
-    {
-      "id": 2,
-      "email": "derm@bloomie.com",
-      "password_hash": "hashed_password_2",
-      "name": "Carlos",
-      "last_name": "Rivera",
-      "role": "DERMATOLOGIST",
-      "status": "ACTIVE"
-    }
+    { "id": 1, "email": "sofia@gmail.com", "password_hash": "hashed_password_1", "name": "Sofía", "last_name": "Mendoza", "role": "YOUNG_ADULT", "status": "ACTIVE" },
+    { "id": 2, "email": "laura.morales@bloomie.com", "password_hash": "hashed_password_2", "name": "Laura", "last_name": "Morales", "role": "DERMATOLOGIST", "status": "ACTIVE" },
+    { "id": 3, "email": "carlos.vega@bloomie.com", "password_hash": "hashed_password_3", "name": "Carlos", "last_name": "Vega", "role": "DERMATOLOGIST", "status": "ACTIVE" },
+    { "id": 4, "email": "rosa.diaz@bloomie.com", "password_hash": "hashed_password_4", "name": "Rosa", "last_name": "Díaz", "role": "DERMATOLOGIST", "status": "ACTIVE" },
+    { "id": 5, "email": "camila.hernandez@bloomie.com", "password_hash": "hashed_password_5", "name": "Camila", "last_name": "Hernandez", "role": "DERMATOLOGIST", "status": "ACTIVE" },
+    { "id": 6, "email": "ana.garcia@bloomie.com", "password_hash": "hashed_password_6", "name": "Ana", "last_name": "García", "role": "DERMATOLOGIST", "status": "ACTIVE" }
   ],
   "sessions": [
-    {
-      "id": 1,
-      "user_id": 1,
-      "token": "mock-token-abc123",
-      "expires_at": "2026-12-31T23:59:59Z",
-      "active": true
-    }
+    { "id": 1, "user_id": 1, "token": "mock-token-abc123", "expires_at": "2026-12-31T23:59:59Z", "active": true }
   ],
   "skin_profiles": [
-    {
-      "id": 1,
-      "user_id": 1,
-      "skin_type": "OILY",
-      "sensitivity": "MEDIUM",
-      "status": "COMPLETED"
-    }
+    { "id": 1, "user_id": 1, "skin_type": "OILY", "sensitivity": "MEDIUM", "status": "COMPLETED" }
   ],
   "facial_scans": [
-    {
-      "id": 1,
-      "user_id": 1,
-      "skin_profile_id": 1,
-      "image_url": "https://placehold.co/400x400",
-      "diagnosis": "Skin shows mild oiliness and some uneven texture.",
-      "overall_score": 72,
-      "hydration_score": 65,
-      "texture_score": 70,
-      "sensitivity_score": 60,
-      "brightness_score": 80,
-      "scanned_at": "2026-05-01T10:00:00Z",
-      "status": "COMPLETED"
-    },
-    {
-      "id": 2,
-      "user_id": 1,
-      "skin_profile_id": 1,
-      "image_url": "https://placehold.co/400x400",
-      "diagnosis": "Noticeable improvement in hydration levels.",
-      "overall_score": 78,
-      "hydration_score": 75,
-      "texture_score": 74,
-      "sensitivity_score": 65,
-      "brightness_score": 82,
-      "scanned_at": "2026-05-10T10:00:00Z",
-      "status": "COMPLETED"
-    }
+    { "id": 1, "user_id": 1, "skin_profile_id": 1, "image_url": "https://placehold.co/400x400", "diagnosis": "Skin shows mild oiliness and some uneven texture.", "overall_score": 72, "hydration_score": 65, "texture_score": 70, "sensitivity_score": 60, "brightness_score": 80, "scanned_at": "2026-05-01T10:00:00Z", "status": "COMPLETED" },
+    { "id": 2, "user_id": 1, "skin_profile_id": 1, "image_url": "https://placehold.co/400x400", "diagnosis": "Noticeable improvement in hydration levels.", "overall_score": 78, "hydration_score": 75, "texture_score": 74, "sensitivity_score": 65, "brightness_score": 82, "scanned_at": "2026-05-10T10:00:00Z", "status": "COMPLETED" }
   ],
   "routines": [
-    {
-      "id": 1,
-      "user_id": 1,
-      "skin_profile_id": 1,
-      "facial_scan_id": 1,
-      "status": "ACTIVE",
-      "created_at": "2026-05-01T11:00:00Z"
-    }
+    { "id": 1, "user_id": 1, "skin_profile_id": 1, "facial_scan_id": 1, "status": "ACTIVE", "created_at": "2026-05-01T11:00:00Z" }
   ],
   "routine_items": [
-    {
-      "id": 1,
-      "routine_id": 1,
-      "product_id": 1,
-      "step": "CLEANSE",
-      "scheduled_time": "07:00",
-      "order": 1
-    },
-    {
-      "id": 2,
-      "routine_id": 1,
-      "product_id": 3,
-      "step": "SERUM",
-      "scheduled_time": "07:15",
-      "order": 2
-    },
-    {
-      "id": 3,
-      "routine_id": 1,
-      "product_id": 5,
-      "step": "MOISTURIZER",
-      "scheduled_time": "07:20",
-      "order": 3
-    },
-    {
-      "id": 4,
-      "routine_id": 1,
-      "product_id": 6,
-      "step": "SUNSCREEN",
-      "scheduled_time": "07:30",
-      "order": 4
-    }
+    { "id": 1, "routine_id": 1, "product_id": 1, "step": "CLEANSE", "scheduled_time": "07:00", "order": 1 },
+    { "id": 2, "routine_id": 1, "product_id": 3, "step": "SERUM", "scheduled_time": "07:15", "order": 2 },
+    { "id": 3, "routine_id": 1, "product_id": 5, "step": "MOISTURIZER", "scheduled_time": "07:20", "order": 3 },
+    { "id": 4, "routine_id": 1, "product_id": 6, "step": "SUNSCREEN", "scheduled_time": "07:30", "order": 4 }
   ],
   "daily_trackings": [
-    {
-      "id": 1,
-      "routine_id": 1,
-      "user_id": 1,
-      "date": "2026-05-01T00:00:00Z",
-      "status": "COMPLETED"
-    },
-    {
-      "id": 2,
-      "routine_id": 1,
-      "user_id": 1,
-      "date": "2026-05-02T00:00:00Z",
-      "status": "COMPLETED"
-    },
-    {
-      "id": 3,
-      "routine_id": 1,
-      "user_id": 1,
-      "date": "2026-05-03T00:00:00Z",
-      "status": "NOT_COMPLETED"
-    },
-    {
-      "id": 4,
-      "routine_id": 1,
-      "user_id": 1,
-      "date": "2026-05-04T00:00:00Z",
-      "status": "COMPLETED"
-    },
-    {
-      "id": 5,
-      "routine_id": 1,
-      "user_id": 1,
-      "date": "2026-05-05T00:00:00Z",
-      "status": "COMPLETED"
-    }
+    { "id": 1, "routine_id": 1, "user_id": 1, "date": "2026-05-01T00:00:00Z", "status": "COMPLETED" },
+    { "id": 2, "routine_id": 1, "user_id": 1, "date": "2026-05-02T00:00:00Z", "status": "COMPLETED" },
+    { "id": 3, "routine_id": 1, "user_id": 1, "date": "2026-05-03T00:00:00Z", "status": "NOT_COMPLETED" },
+    { "id": 4, "routine_id": 1, "user_id": 1, "date": "2026-05-04T00:00:00Z", "status": "COMPLETED" },
+    { "id": 5, "routine_id": 1, "user_id": 1, "date": "2026-05-05T00:00:00Z", "status": "COMPLETED" }
   ],
   "products": [
-    {
-      "id": 1,
-      "name": "Gentle Foaming Cleanser",
-      "brand": "CeraVe",
-      "category": "CLEANSER",
-      "description": "A gentle, hydrating cleanser that removes dirt and excess oil without disrupting the skin barrier.",
-      "benefits": ["Removes excess oil", "Preserves skin barrier", "Non-comedogenic"],
-      "is_ai_recommended": true
-    },
-    {
-      "id": 2,
-      "name": "Purifying Gel Cleanser",
-      "brand": "La Roche-Posay",
-      "category": "CLEANSER",
-      "description": "Purifying gel cleanser for oily and acne-prone skin.",
-      "benefits": ["Controls oiliness", "Unclogs pores", "Mattifying effect"],
-      "is_ai_recommended": false
-    },
-    {
-      "id": 3,
-      "name": "Niacinamide 10% + Zinc 1%",
-      "brand": "The Ordinary",
-      "category": "SERUM",
-      "description": "High-strength vitamin and mineral formula to reduce blemishes and congestion.",
-      "benefits": ["Reduces blemishes", "Controls sebum", "Minimizes pores"],
-      "is_ai_recommended": true
-    },
-    {
-      "id": 4,
-      "name": "Hyaluronic Acid 2% + B5",
-      "brand": "The Ordinary",
-      "category": "SERUM",
-      "description": "Multi-depth hyaluronic acid serum for plumped, hydrated skin.",
-      "benefits": ["Deep hydration", "Plumps skin", "Smooths texture"],
-      "is_ai_recommended": false
-    },
-    {
-      "id": 5,
-      "name": "Oil-Free Moisturizer",
-      "brand": "Neutrogena",
-      "category": "MOISTURIZER",
-      "description": "Lightweight, oil-free moisturizer that hydrates without clogging pores.",
-      "benefits": ["Oil-free hydration", "Non-comedogenic", "Fast absorption"],
-      "is_ai_recommended": true
-    },
-    {
-      "id": 6,
-      "name": "Ultra-Light Daily UV Defense SPF 50",
-      "brand": "SkinCeuticals",
-      "category": "SUNSCREEN",
-      "description": "Featherweight, water-light fluid sun protection.",
-      "benefits": ["SPF 50 protection", "Weightless feel", "Antioxidant protection"],
-      "is_ai_recommended": true
-    },
-    {
-      "id": 7,
-      "name": "Toning Lotion",
-      "brand": "Klairs",
-      "category": "TONER",
-      "description": "Hydrating toner that preps skin for the rest of your routine.",
-      "benefits": ["Balances pH", "Preps for serum", "Soothes skin"],
-      "is_ai_recommended": false
-    }
+    { "id": 1, "name": "Gentle Foaming Cleanser", "brand": "CeraVe", "category": "CLEANSER", "description": "A gentle, hydrating cleanser that removes dirt and excess oil without disrupting the skin barrier.", "benefits": ["Removes excess oil", "Preserves skin barrier", "Non-comedogenic"], "is_ai_recommended": true },
+    { "id": 2, "name": "Purifying Gel Cleanser", "brand": "La Roche-Posay", "category": "CLEANSER", "description": "Purifying gel cleanser for oily and acne-prone skin.", "benefits": ["Controls oiliness", "Unclogs pores", "Mattifying effect"], "is_ai_recommended": false },
+    { "id": 3, "name": "Niacinamide 10% + Zinc 1%", "brand": "The Ordinary", "category": "SERUM", "description": "High-strength vitamin and mineral formula to reduce blemishes and congestion.", "benefits": ["Reduces blemishes", "Controls sebum", "Minimizes pores"], "is_ai_recommended": true },
+    { "id": 4, "name": "Hyaluronic Acid 2% + B5", "brand": "The Ordinary", "category": "SERUM", "description": "Multi-depth hyaluronic acid serum for plumped, hydrated skin.", "benefits": ["Deep hydration", "Plumps skin", "Smooths texture"], "is_ai_recommended": false },
+    { "id": 5, "name": "Oil-Free Moisturizer", "brand": "Neutrogena", "category": "MOISTURIZER", "description": "Lightweight, oil-free moisturizer that hydrates without clogging pores.", "benefits": ["Oil-free hydration", "Non-comedogenic", "Fast absorption"], "is_ai_recommended": true },
+    { "id": 6, "name": "Ultra-Light Daily UV Defense SPF 50", "brand": "SkinCeuticals", "category": "SUNSCREEN", "description": "Featherweight, water-light fluid sun protection.", "benefits": ["SPF 50 protection", "Weightless feel", "Antioxidant protection"], "is_ai_recommended": true },
+    { "id": 7, "name": "Toning Lotion", "brand": "Klairs", "category": "TONER", "description": "Hydrating toner that preps skin for the rest of your routine.", "benefits": ["Balances pH", "Preps for serum", "Soothes skin"], "is_ai_recommended": false }
   ],
   "product_compatibilities": [
-    {
-      "id": 1,
-      "product_id": 1,
-      "facial_scan_id": 1,
-      "skin_profile_id": 1,
-      "compatibility_score": 92,
-      "explanation": "This cleanser is ideal for your oily skin type and medium sensitivity.",
-      "evaluated_at": "2026-05-01T11:00:00Z"
-    },
-    {
-      "id": 2,
-      "product_id": 2,
-      "facial_scan_id": 1,
-      "skin_profile_id": 1,
-      "compatibility_score": 78,
-      "explanation": "Good option but slightly more aggressive for medium sensitivity.",
-      "evaluated_at": "2026-05-01T11:00:00Z"
-    },
-    {
-      "id": 3,
-      "product_id": 3,
-      "facial_scan_id": 1,
-      "skin_profile_id": 1,
-      "compatibility_score": 95,
-      "explanation": "Excellent match for controlling oiliness and minimizing pores.",
-      "evaluated_at": "2026-05-01T11:00:00Z"
-    },
-    {
-      "id": 4,
-      "product_id": 5,
-      "facial_scan_id": 1,
-      "skin_profile_id": 1,
-      "compatibility_score": 89,
-      "explanation": "Oil-free formula works great for your oily skin profile.",
-      "evaluated_at": "2026-05-01T11:00:00Z"
-    },
-    {
-      "id": 5,
-      "product_id": 6,
-      "facial_scan_id": 1,
-      "skin_profile_id": 1,
-      "compatibility_score": 97,
-      "explanation": "Essential for your routine. Lightweight and non-comedogenic.",
-      "evaluated_at": "2026-05-01T11:00:00Z"
-    }
+    { "id": 1, "product_id": 1, "facial_scan_id": 1, "skin_profile_id": 1, "compatibility_score": 92, "explanation": "This cleanser is ideal for your oily skin type and medium sensitivity.", "evaluated_at": "2026-05-01T11:00:00Z" },
+    { "id": 2, "product_id": 2, "facial_scan_id": 1, "skin_profile_id": 1, "compatibility_score": 78, "explanation": "Good option but slightly more aggressive for medium sensitivity.", "evaluated_at": "2026-05-01T11:00:00Z" },
+    { "id": 3, "product_id": 3, "facial_scan_id": 1, "skin_profile_id": 1, "compatibility_score": 95, "explanation": "Excellent match for controlling oiliness and minimizing pores.", "evaluated_at": "2026-05-01T11:00:00Z" },
+    { "id": 4, "product_id": 5, "facial_scan_id": 1, "skin_profile_id": 1, "compatibility_score": 89, "explanation": "Oil-free formula works great for your oily skin profile.", "evaluated_at": "2026-05-01T11:00:00Z" },
+    { "id": 5, "product_id": 6, "facial_scan_id": 1, "skin_profile_id": 1, "compatibility_score": 97, "explanation": "Essential for your routine. Lightweight and non-comedogenic.", "evaluated_at": "2026-05-01T11:00:00Z" }
   ],
   "favorite_products": [
-    {
-      "id": 1,
-      "user_id": 1,
-      "product_id": 3,
-      "saved_at": "2026-05-02T09:00:00Z"
-    },
-    {
-      "id": 2,
-      "user_id": 1,
-      "product_id": 6,
-      "saved_at": "2026-05-03T14:00:00Z"
-    }
+    { "id": 1, "user_id": 1, "product_id": 3, "saved_at": "2026-05-02T09:00:00Z" },
+    { "id": 2, "user_id": 1, "product_id": 6, "saved_at": "2026-05-03T14:00:00Z" }
   ],
   "dermatologist_profiles": [
-    {
-      "id": 1,
-      "user_id": 2,
-      "specialty": "Dermatology & Cosmetology",
-      "consultation_fee": 80.00,
-      "currency": "USD",
-      "rating": 4.8,
-      "years_experience": 10,
-      "patient_count": 320,
-      "available": true
-    }
+    { "id": 1, "user_id": 2, "specialty": "Specialist in acne-prone skin", "consultation_fee": 25, "currency": "USD", "rating": 4.9, "years_experience": 8, "patient_count": 1200, "available": true },
+    { "id": 2, "user_id": 3, "specialty": "Sensitive skin & rosacea", "consultation_fee": 30, "currency": "USD", "rating": 4.7, "years_experience": 6, "patient_count": 850, "available": true },
+    { "id": 3, "user_id": 4, "specialty": "Anti-aging & pigmentation", "consultation_fee": 35, "currency": "USD", "rating": 4.8, "years_experience": 12, "patient_count": 1500, "available": true },
+    { "id": 4, "user_id": 5, "specialty": "Pediatric dermatology", "consultation_fee": 40, "currency": "USD", "rating": 4.6, "years_experience": 9, "patient_count": 980, "available": true },
+    { "id": 5, "user_id": 6, "specialty": "General dermatology & skin cancer", "consultation_fee": 45, "currency": "USD", "rating": 4.5, "years_experience": 15, "patient_count": 2100, "available": false }
   ],
   "dermatologist_availabilities": [
-    {
-      "id": 1,
-      "dermatologist_id": 1,
-      "day_of_week": "MONDAY",
-      "start_time": "09:00",
-      "end_time": "13:00"
-    },
-    {
-      "id": 2,
-      "dermatologist_id": 1,
-      "day_of_week": "WEDNESDAY",
-      "start_time": "14:00",
-      "end_time": "18:00"
-    },
-    {
-      "id": 3,
-      "dermatologist_id": 1,
-      "day_of_week": "FRIDAY",
-      "start_time": "09:00",
-      "end_time": "12:00"
-    }
+    { "id": 1, "dermatologist_id": 1, "day_of_week": "MONDAY", "start_time": "09:00", "end_time": "13:00", "slot_duration": 30 },
+    { "id": 2, "dermatologist_id": 1, "day_of_week": "WEDNESDAY", "start_time": "14:00", "end_time": "18:00", "slot_duration": 30 },
+    { "id": 3, "dermatologist_id": 1, "day_of_week": "FRIDAY", "start_time": "09:00", "end_time": "12:00", "slot_duration": 30 },
+    { "id": 4, "dermatologist_id": 2, "day_of_week": "TUESDAY", "start_time": "08:00", "end_time": "12:00", "slot_duration": 45 },
+    { "id": 5, "dermatologist_id": 2, "day_of_week": "THURSDAY", "start_time": "14:00", "end_time": "17:00", "slot_duration": 45 },
+    { "id": 6, "dermatologist_id": 3, "day_of_week": "MONDAY", "start_time": "10:00", "end_time": "14:00", "slot_duration": 30 },
+    { "id": 7, "dermatologist_id": 3, "day_of_week": "FRIDAY", "start_time": "15:00", "end_time": "18:00", "slot_duration": 30 },
+    { "id": 8, "dermatologist_id": 4, "day_of_week": "MONDAY", "start_time": "09:00", "end_time": "11:00", "slot_duration": 60 },
+    { "id": 9, "dermatologist_id": 4, "day_of_week": "WEDNESDAY", "start_time": "13:00", "end_time": "16:00", "slot_duration": 60 },
+    { "id": 10, "dermatologist_id": 5, "day_of_week": "TUESDAY", "start_time": "09:00", "end_time": "13:00", "slot_duration": 30 }
   ],
   "appointments": [
-    {
-      "id": 1,
-      "patient_id": 1,
-      "dermatologist_id": 2,
-      "payment_id": 1,
-      "scheduled_at": "2026-05-12T10:00:00Z",
-      "status": "CONFIRMED",
-      "cancellation_reason": null
-    }
+    { "id": 1, "patient_id": 1, "dermatologist_id": 2, "payment_id": 1, "scheduled_at": "2026-05-12T10:00:00Z", "status": "CANCELLED", "cancellation_reason": "I found another dermatologist available sooner" },
+    { "id": 2, "patient_id": 1, "dermatologist_id": 3, "payment_id": 2, "scheduled_at": "2026-06-05T14:00:00Z", "status": "CONFIRMED", "cancellation_reason": "" },
+    { "id": 3, "patient_id": 1, "dermatologist_id": 1, "payment_id": 3, "scheduled_at": "2026-06-15T09:00:00Z", "status": "SCHEDULED", "cancellation_reason": "" },
+    { "id": 4, "patient_id": 1, "dermatologist_id": 2, "payment_id": 4, "scheduled_at": "2026-04-10T10:30:00Z", "status": "COMPLETED", "cancellation_reason": "" },
+    { "id": 5, "patient_id": 1, "dermatologist_id": 4, "payment_id": 5, "scheduled_at": "2026-07-01T11:00:00Z", "status": "SCHEDULED", "cancellation_reason": "" }
   ],
   "consultations": [
-    {
-      "id": 1,
-      "appointment_id": 1,
-      "patient_id": 1,
-      "dermatologist_id": 2,
-      "clinical_photo_urls": [],
-      "notes": "Patient shows mild acne on T-zone. Skin is oily.",
-      "recommendations": "Continue with current cleanser. Add niacinamide serum twice daily.",
-      "status": "COMPLETED",
-      "started_at": "2026-05-12T10:00:00Z",
-      "finished_at": "2026-05-12T10:30:00Z"
-    }
+    { "id": 1, "appointment_id": 4, "patient_id": 1, "dermatologist_id": 2, "clinical_photo_urls": [], "notes": "Patient shows mild acne on T-zone. Skin is oily.", "recommendations": "Continue with current cleanser. Add niacinamide serum twice daily.", "status": "COMPLETED", "started_at": "2026-04-10T10:00:00Z", "finished_at": "2026-04-10T10:30:00Z" },
+    { "id": 2, "appointment_id": 1, "patient_id": 1, "dermatologist_id": 2, "clinical_photo_urls": [], "notes": "Mild rosacea on cheeks with slight redness. Condition improving.", "recommendations": "Continue current regimen and monitor UV exposure.", "status": "CANCELLED", "started_at": "2026-05-12T10:00:00Z", "finished_at": "" },
+    { "id": 3, "appointment_id": 4, "patient_id": 1, "dermatologist_id": 3, "clinical_photo_urls": [], "notes": "Normal-to-dry skin with mild sensitivity. No active conditions.", "recommendations": "Start basic skincare plan. Toleriane Hydrating Cleanser twice daily.", "status": "COMPLETED", "started_at": "2026-03-10T15:00:00Z", "finished_at": "2026-03-10T15:30:00Z" },
+    { "id": 4, "appointment_id": 4, "patient_id": 1, "dermatologist_id": 1, "clinical_photo_urls": [], "notes": "Moderate acne on forehead and jaw. Overall stable.", "recommendations": "Reducing dose of adapalene to prevent dryness. Continue benzoyl peroxide wash.", "status": "COMPLETED", "started_at": "2026-02-28T14:00:00Z", "finished_at": "2026-02-28T14:45:00Z" },
+    { "id": 5, "appointment_id": 2, "patient_id": 1, "dermatologist_id": 3, "clinical_photo_urls": [], "notes": "Eczema on forearms – well controlled with current regimen.", "recommendations": "Continue current treatment. Apply moisturizer after bathing.", "status": "PENDING", "started_at": "2026-06-05T14:00:00Z", "finished_at": "" }
   ],
   "payments": [
-    {
-      "id": 1,
-      "user_id": 1,
-      "reference_id": 1,
-      "reference_type": "APPOINTMENT",
-      "amount": 80.00,
-      "currency": "USD",
-      "method": "CREDIT_CARD",
-      "status": "COMPLETED",
-      "created_at": "2026-05-11T15:00:00Z"
-    },
-    {
-      "id": 2,
-      "user_id": 1,
-      "reference_id": 1,
-      "reference_type": "SUBSCRIPTION_PLAN",
-      "amount": 9.99,
-      "currency": "USD",
-      "method": "YAPE",
-      "status": "COMPLETED",
-      "created_at": "2026-05-01T08:00:00Z"
-    }
+    { "id": 1, "user_id": 1, "reference_id": 1, "reference_type": "APPOINTMENT", "amount": 25, "currency": "USD", "method": "CREDIT_CARD", "status": "REFUNDED", "created_at": "2026-05-11T15:00:00Z" },
+    { "id": 2, "user_id": 1, "reference_id": 2, "reference_type": "APPOINTMENT", "amount": 35, "currency": "USD", "method": "YAPE", "status": "COMPLETED", "created_at": "2026-06-04T09:00:00Z" },
+    { "id": 3, "user_id": 1, "reference_id": 3, "reference_type": "APPOINTMENT", "amount": 25, "currency": "USD", "method": "CREDIT_CARD", "status": "COMPLETED", "created_at": "2026-06-14T08:00:00Z" },
+    { "id": 4, "user_id": 1, "reference_id": 4, "reference_type": "APPOINTMENT", "amount": 30, "currency": "USD", "method": "GOOGLE_PAY", "status": "COMPLETED", "created_at": "2026-04-09T10:00:00Z" },
+    { "id": 5, "user_id": 1, "reference_id": 5, "reference_type": "APPOINTMENT", "amount": 40, "currency": "USD", "method": "CREDIT_CARD", "status": "COMPLETED", "created_at": "2026-06-30T07:00:00Z" },
+    { "id": 6, "user_id": 1, "reference_id": 1, "reference_type": "SUBSCRIPTION_PLAN", "amount": 9.99, "currency": "USD", "method": "YAPE", "status": "COMPLETED", "created_at": "2026-05-01T08:00:00Z" }
   ],
   "plans": [
-    {
-      "id": 1,
-      "name": "Starter",
-      "plan_type": "STARTER",
-      "tagline": "Perfect to start your skincare journey",
-      "price": 0.00,
-      "currency": "USD",
-      "features": ["1 facial scan/month", "Basic routine", "Product catalog access"],
-      "monthly_analysis_limit": 1,
-      "active": true
-    },
-    {
-      "id": 2,
-      "name": "Advanced",
-      "plan_type": "ADVANCED",
-      "tagline": "For consistent skincare routines",
-      "price": 9.99,
-      "currency": "USD",
-      "features": ["3 facial scans/month", "Personalized routine", "AI assistant", "Product compatibility scores"],
-      "monthly_analysis_limit": 3,
-      "active": true
-    },
-    {
-      "id": 3,
-      "name": "Elite",
-      "plan_type": "ELITE",
-      "tagline": "Full access including dermatologist consultations",
-      "price": 24.99,
-      "currency": "USD",
-      "features": ["Unlimited facial scans", "Advanced AI routine", "AI assistant", "Dermatologist consultations", "Priority support"],
-      "monthly_analysis_limit": -1,
-      "active": true
-    }
+    { "id": 1, "name": "Starter", "plan_type": "STARTER", "tagline": "Perfect to start your skincare journey", "price": 0, "currency": "USD", "features": ["1 facial scan/month", "Basic routine", "Product catalog access"], "monthly_analysis_limit": 1, "active": true },
+    { "id": 2, "name": "Advanced", "plan_type": "ADVANCED", "tagline": "For consistent skincare routines", "price": 9.99, "currency": "USD", "features": ["3 facial scans/month", "Personalized routine", "AI assistant", "Product compatibility scores"], "monthly_analysis_limit": 3, "active": true },
+    { "id": 3, "name": "Elite", "plan_type": "ELITE", "tagline": "Full access including dermatologist consultations", "price": 24.99, "currency": "USD", "features": ["Unlimited facial scans", "Advanced AI routine", "AI assistant", "Dermatologist consultations", "Priority support"], "monthly_analysis_limit": -1, "active": true }
   ],
   "subscriptions": [
-    {
-      "id": 1,
-      "user_id": 1,
-      "plan_id": 2,
-      "payment_id": 2,
-      "status": "ACTIVE",
-      "start_date": "2026-05-01T00:00:00Z",
-      "end_date": "2026-06-01T00:00:00Z",
-      "next_billing_date": "2026-06-01T00:00:00Z",
-      "auto_renew": true
-    }
+    { "id": 1, "user_id": 1, "plan_id": 2, "payment_id": 6, "status": "ACTIVE", "start_date": "2026-05-01T00:00:00Z", "end_date": "2026-06-01T00:00:00Z", "next_billing_date": "2026-06-01T00:00:00Z", "auto_renew": true }
   ],
   "support_queries": [
-    {
-      "id": 1,
-      "user_id": 1,
-      "skin_profile_id": 1,
-      "last_facial_scan_id": 1,
-      "suggested_action": "CHANGE_PRODUCT",
-      "status": "RESOLVED",
-      "created_at": "2026-05-03T12:00:00Z"
-    }
+    { "id": 1, "user_id": 1, "skin_profile_id": 1, "last_facial_scan_id": 1, "suggested_action": "CHANGE_PRODUCT", "status": "RESOLVED", "created_at": "2026-05-03T12:00:00Z" }
   ],
   "chat_messages": [
-    {
-      "id": 1,
-      "support_query_id": 1,
-      "text": "My skin feels very oily even after cleansing, what should I do?",
-      "type": "USER",
-      "sent_at": "2026-05-03T12:00:00Z"
-    },
-    {
-      "id": 2,
-      "support_query_id": 1,
-      "text": "Based on your oily skin profile and latest scan, I recommend switching to the Niacinamide 10% + Zinc serum to better control sebum production. Would you like me to update your routine?",
-      "type": "AI",
-      "sent_at": "2026-05-03T12:00:05Z"
-    }
+    { "id": 1, "support_query_id": 1, "text": "My skin feels very oily even after cleansing, what should I do?", "type": "USER", "sent_at": "2026-05-03T12:00:00Z" },
+    { "id": 2, "support_query_id": 1, "text": "Based on your oily skin profile and latest scan, I recommend switching to the Niacinamide 10% + Zinc serum to better control sebum production. Would you like me to update your routine?", "type": "AI", "sent_at": "2026-05-03T12:00:05Z" }
   ]
 }

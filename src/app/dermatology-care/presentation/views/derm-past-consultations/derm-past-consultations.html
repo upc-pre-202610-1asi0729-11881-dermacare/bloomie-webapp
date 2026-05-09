@@ -1,0 +1,72 @@
+<div class="derm-past">
+
+  <div class="derm-past__header">
+    <button class="derm-past__back-btn" (click)="navigateBack()" aria-label="Go back">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1 class="derm-past__title">{{ 'dermatology.dermPastConsultations.title' | translate }}</h1>
+  </div>
+  <div class="derm-past__divider"></div>
+
+  <!-- Search bar -->
+  <div class="derm-past__search">
+    <mat-icon>search</mat-icon>
+    <input
+      class="derm-past__search-input"
+      type="text"
+      [placeholder]="'dermatology.dermPastConsultations.searchPlaceholder' | translate"
+      [(ngModel)]="searchQuery"
+    />
+  </div>
+
+  <!-- Cards -->
+  <div class="derm-past__cards">
+    @if (filteredConsultations().length === 0) {
+      <div class="derm-past__empty">
+        <mat-icon>history</mat-icon>
+        <p>{{ 'dermatology.dermPastConsultations.noResults' | translate }}</p>
+      </div>
+    } @else {
+      @for (consultation of filteredConsultations(); track consultation.id) {
+        <div class="derm-past__card">
+
+          <!-- Date row -->
+          <div class="derm-past__row">
+            <mat-icon class="derm-past__row-icon">calendar_today</mat-icon>
+            <span class="derm-past__row-label">{{ 'dermatology.dermPastConsultations.date' | translate }}</span>
+            <span class="derm-past__chip">{{ consultation.startedAt }}</span>
+          </div>
+
+          <!-- Patient row -->
+          <div class="derm-past__row">
+            <mat-icon class="derm-past__row-icon">person</mat-icon>
+            <p class="derm-past__row-text">
+              <span class="derm-past__row-label">{{ 'dermatology.dermPastConsultations.diagnosis' | translate }}:</span>
+              {{ consultation.notes | slice:0:60 }}...
+            </p>
+          </div>
+
+          <!-- Photos badge -->
+          @if (consultation.hasClinicalPhotos) {
+            <div class="derm-past__photos-badge">
+              <mat-icon>photo_camera</mat-icon>
+              <span>{{ consultation.clinicalPhotoUrls.length }} {{ 'dermatology.dermPastConsultations.photos' | translate }}</span>
+            </div>
+          } @else {
+            <div class="derm-past__no-photos">
+              <mat-icon>hide_image</mat-icon>
+              <span>{{ 'dermatology.dermPastConsultations.noPhotos' | translate }}</span>
+            </div>
+          }
+
+          <div class="derm-past__card-footer">
+            <button class="derm-past__view-btn" (click)="selectConsultation(consultation)">
+              {{ 'dermatology.dermPastConsultations.viewBtn' | translate }}
+            </button>
+          </div>
+        </div>
+      }
+    }
+  </div>
+
+</div>

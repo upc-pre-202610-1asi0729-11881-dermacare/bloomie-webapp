@@ -14,5 +14,209 @@
       "pastConsultations": "Past Consultations",
       "profile": "Profile"
     }
+  },
+  "dermatology": {
+    "consultHome": {
+      "title": "Consult a dermatologist",
+      "subtitle": "Manage your appointments and recommendations easily.",
+      "bookTitle": "Book a new appointment",
+      "bookDesc": "Schedule an online consultation with one of our specialists.",
+      "bookBtn": "Book now",
+      "pastTitle": "View past consultations",
+      "pastDesc": "Check your previous sessions and recommendations.",
+      "pastBtn": "View consultation",
+      "scheduledTitle": "Your scheduled appointments",
+      "scheduledDesc": "See, manage and cancel your upcoming appointments.",
+      "scheduledBtn": "View appointments"
+    },
+    "selectDoctor": {
+      "title": "Select a dermatologist",
+      "searchPlaceholder": "Search by specialty...",
+      "perSession": "per session",
+      "yearsExp": "years exp.",
+      "bookBtn": "Book appointment",
+      "filterByPrice": "Filter by price",
+      "allPrices": "All prices",
+      "under30": "Under $30",
+      "range3035": "$30 – $35",
+      "over35": "Over $35",
+      "noSpecialists": "No specialists available",
+      "noSpecialistsDesc": "There are no dermatologists matching your criteria at this time. Please try adjusting your filters or come back later."
+    },
+    "bookAppointment": {
+      "title": "Book appointment",
+      "perSession": "per session",
+      "patients": "Patients",
+      "yearsExp": "Years Exp",
+      "rating": "Rating",
+      "aboutDoctor": "About Doctor",
+      "aboutText": "A board-certified dermatologist specialized in personalized skin care treatments.",
+      "workingTime": "Working Time",
+      "workingTimeValue": "Monday – Friday, 9:00 – 18:00",
+      "schedule": "Schedule",
+      "month": "October 2026",
+      "availableTimes": "Available Times",
+      "noSlots": "No slots available for this day.",
+      "continue": "Continue"
+    },
+    "payment": {
+      "title": "Payment method",
+      "chooseMethod": "Choose how you'd like to pay",
+      "enterDetails": "Enter your card details",
+      "selectMethod": "Select your payment method",
+      "creditDebit": "Credit / Debit card",
+      "digitalWallets": "Digital Wallets",
+      "creditCard": "Credit Card",
+      "debitCard": "Debit Card",
+      "googlePay": "Google Pay",
+      "yape": "Yape",
+      "add": "Add",
+      "cardholderName": "Cardholder Name",
+      "cardholderPlaceholder": "Sofia Mendez",
+      "cardNumber": "Card Number",
+      "expirationDate": "Expiration Date",
+      "cvv": "CVV",
+      "securityNote": "Your payment info is encrypted and secure",
+      "payNow": "Pay now",
+      "errorMessage": "Payment failed. Please verify your card details and try again.",
+      "confirmationTitle": "Payment Confirmed!",
+      "confirmationDesc": "Your appointment has been successfully booked. You'll receive a confirmation shortly.",
+      "confirmationSpecialist": "Specialist",
+      "confirmationFee": "Amount paid",
+      "goToAppointments": "View my appointments"
+    },
+    "virtualCall": {
+      "doctorLabel": "Doctor",
+      "youLabel": "You",
+      "chatTitle": "Chat",
+      "inputPlaceholder": "Type a message...",
+      "endCallTitle": "End consultation?",
+      "endCallDesc": "Are you sure you want to end this consultation?",
+      "stayBtn": "Stay",
+      "endBtn": "End call"
+    },
+    "dermCall": {
+      "patientLabel": "Patient",
+      "youLabel": "You (Dr.)",
+      "chatTab": "Chat",
+      "notesTab": "Notes",
+      "clinicalNotes": "Clinical Notes",
+      "inputPlaceholder": "Type a message...",
+      "endCallTitle": "End consultation?",
+      "endCallDesc": "The consultation will be marked as completed.",
+      "stayBtn": "Stay",
+      "endBtn": "End consultation"
+    },
+    "scheduledAppointments": {
+      "title": "Your Scheduled Appointments",
+      "activeLabel": "active appointments",
+      "noAppointments": "No appointments scheduled yet.",
+      "cancelBtn": "Cancel appointment",
+      "joinNow": "Join now",
+      "startCall": "Start call",
+      "cancelledNotice": "This appointment has been canceled",
+      "status": {
+        "SCHEDULED": "Scheduled",
+        "CONFIRMED": "Confirmed",
+        "IN_PROGRESS": "In progress",
+        "COMPLETED": "Completed",
+        "CANCELLED": "Cancelled"
+      }
+    },
+    "cancelAppointment": {
+      "title": "Cancel this appointment",
+      "policyText": "We understand that plans can change. Canceling or missing too many appointments may temporarily restrict your account.",
+      "prompt": "What's the reason for your cancellation?",
+      "confirmBtn": "Continue cancellation",
+      "keepBtn": "Keep appointment",
+      "rebookBtn": "Book a new appointment",
+      "homeBtn": "Go home",
+      "successTitle": "Appointment canceled",
+      "successDesc": "Your appointment has been canceled successfully.",
+      "reason": {
+        "scheduleConflict": "I have a schedule conflict",
+        "foundOther": "I found another dermatologist available sooner",
+        "platformIssue": "I had an issue with the platform or connection",
+        "mistakenBooking": "The consultation was mistakenly booked",
+        "noLongerNeeded": "I no longer need this appointment",
+        "other": "Other"
+      }
+    },
+    "selectConsultation": {
+      "title": "Past Consultations",
+      "found": "consultations found",
+      "date": "Date:",
+      "status": "Status:",
+      "noConsultations": "No consultations found.",
+      "viewDetails": "View details",
+      "rebook": "Rebook",
+      "statusValue": {
+        "COMPLETED": "Completed",
+        "CANCELLED": "Cancelled",
+        "PENDING": "Pending",
+        "IN_PROGRESS": "In progress"
+      }
+    },
+    "consultationSummary": {
+      "title": "Consultation Summary",
+      "date": "Date:",
+      "doctor": "Doctor's name:",
+      "uploadedImages": "Upload consultation's images:",
+      "diagnosis": "Diagnosis",
+      "recommendations": "Doctor's recommendations",
+      "duration": "Duration",
+      "returnBtn": "Return to Consultations",
+      "noData": "No consultation selected."
+    },
+    "dermAgenda": {
+      "title": "My Agenda",
+      "dayLabel": "Friday, April 24",
+      "consultations": "consultations",
+      "completed": "completed",
+      "noAppointments": "No appointments for today.",
+      "startCall": "Start call"
+    },
+    "dermPastConsultations": {
+      "title": "Past Consultations",
+      "searchPlaceholder": "Search by patient, type or date...",
+      "date": "Date:",
+      "diagnosis": "Diagnosis",
+      "photos": "photos",
+      "noPhotos": "No photos",
+      "noResults": "No consultations found.",
+      "viewBtn": "View details"
+    },
+    "dermSummary": {
+      "title": "Consultation Summary",
+      "date": "Date:",
+      "duration": "Duration",
+      "clinicalPhotos": "Clinical photos:",
+      "noPhotos": "No photos uploaded",
+      "diagnosis": "Diagnosis",
+      "recommendations": "Recommendations",
+      "returnBtn": "Return",
+      "noData": "No consultation selected."
+    },
+    "dermAvailability": {
+      "title": "My Availability",
+      "workingDays": "Working Days",
+      "workingHours": "Working Hours",
+      "startTime": "Start Time",
+      "endTime": "End Time",
+      "slotDuration": "Slot Duration",
+      "min": "min",
+      "active": "Active",
+      "saveBtn": "Save availability",
+      "savedSuccess": "Availability saved successfully.",
+      "days": {
+        "monday": "Monday",
+        "tuesday": "Tuesday",
+        "wednesday": "Wednesday",
+        "thursday": "Thursday",
+        "friday": "Friday",
+        "saturday": "Saturday",
+        "sunday": "Sunday"
+      }
+    }
   }
 }

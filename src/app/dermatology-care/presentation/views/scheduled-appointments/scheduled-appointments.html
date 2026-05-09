@@ -1,0 +1,74 @@
+<div class="scheduled-appointments">
+
+  <!-- Header -->
+  <div class="scheduled-appointments__header">
+    <button class="scheduled-appointments__back-btn" (click)="navigateBack()" aria-label="Go back">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div>
+      <h1 class="scheduled-appointments__title">{{ 'dermatology.scheduledAppointments.title' | translate }}</h1>
+      <p class="scheduled-appointments__subtitle">
+        {{ activeAppointmentCount() }} {{ 'dermatology.scheduledAppointments.activeLabel' | translate }}
+      </p>
+    </div>
+  </div>
+
+  <div class="scheduled-appointments__divider"></div>
+
+  <!-- Appointment cards -->
+  <div class="scheduled-appointments__cards">
+    @if (store.appointments().length === 0) {
+      <div class="scheduled-appointments__empty">
+        <mat-icon class="scheduled-appointments__empty-icon">event_busy</mat-icon>
+        <p class="scheduled-appointments__empty-text">{{ 'dermatology.scheduledAppointments.noAppointments' | translate }}</p>
+      </div>
+    } @else {
+      @for (appointment of store.appointments(); track appointment.id) {
+        <div
+          class="scheduled-appointments__card"
+          [class.scheduled-appointments__card--cancelled]="appointment.isCancelled"
+        >
+          <p class="scheduled-appointments__card-date">{{ appointment.formattedScheduledAt }}</p>
+          <div class="scheduled-appointments__card-status">
+            <div
+              class="scheduled-appointments__status-dot"
+              [class.scheduled-appointments__status-dot--active]="!appointment.isCancelled"
+              [class.scheduled-appointments__status-dot--cancelled]="appointment.isCancelled"
+            ></div>
+            <span class="scheduled-appointments__status-label">
+              {{ 'dermatology.scheduledAppointments.status.' + appointment.status | translate }}
+            </span>
+          </div>
+
+          @if (!appointment.isCancelled) {
+            <div class="scheduled-appointments__card-actions">
+              <button
+                class="scheduled-appointments__cancel-btn"
+                (click)="cancelAppointment(appointment)"
+              >
+                {{ 'dermatology.scheduledAppointments.cancelBtn' | translate }}
+              </button>
+              <button
+                class="scheduled-appointments__join-btn"
+                [class.scheduled-appointments__join-btn--live]="appointment.status === AppointmentStatus.InProgress"
+                (click)="joinCall()"
+              >
+                <mat-icon>video_call</mat-icon>
+                @if (appointment.status === AppointmentStatus.InProgress) {
+                  {{ 'dermatology.scheduledAppointments.joinNow' | translate }}
+                } @else {
+                  {{ 'dermatology.scheduledAppointments.startCall' | translate }}
+                }
+              </button>
+            </div>
+          } @else {
+            <div class="scheduled-appointments__cancelled-notice">
+              <p>{{ 'dermatology.scheduledAppointments.cancelledNotice' | translate }}</p>
+            </div>
+          }
+        </div>
+      }
+    }
+  </div>
+
+</div>

@@ -1,0 +1,76 @@
+<div class="consultation-summary">
+
+  <div class="consultation-summary__header">
+    <button class="consultation-summary__back-btn" (click)="navigateBack()" aria-label="Go back">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1 class="consultation-summary__title">{{ 'dermatology.consultationSummary.title' | translate }}</h1>
+  </div>
+  <div class="consultation-summary__divider"></div>
+
+  @if (store.selectedConsultation(); as consultation) {
+    <div class="consultation-summary__layout">
+
+      <!-- Left column -->
+      <div class="consultation-summary__left">
+
+        <!-- Green header info card -->
+        <div class="consultation-summary__info-card">
+          <div class="consultation-summary__row">
+            <mat-icon class="consultation-summary__row-icon">calendar_today</mat-icon>
+            <span class="consultation-summary__row-label">{{ 'dermatology.consultationSummary.date' | translate }}</span>
+            <span class="consultation-summary__chip">{{ consultation.startedAt }}</span>
+            <span class="consultation-summary__chip">{{ consultation.finishedAt }}</span>
+          </div>
+          <div class="consultation-summary__row">
+            <mat-icon class="consultation-summary__row-icon">person</mat-icon>
+            <p class="consultation-summary__row-text">
+              <span class="consultation-summary__row-label">{{ 'dermatology.consultationSummary.doctor' | translate }}</span>
+              Laura Morales
+            </p>
+          </div>
+          <div class="consultation-summary__row">
+            <mat-icon class="consultation-summary__row-icon">upload</mat-icon>
+            <span class="consultation-summary__row-label">{{ 'dermatology.consultationSummary.uploadedImages' | translate }}</span>
+          </div>
+          @if (consultation.hasClinicalPhotos) {
+            <div class="consultation-summary__photos">
+              @for (url of consultation.clinicalPhotoUrls; track url) {
+                <img class="consultation-summary__photo" [src]="url" alt="Clinical photo" />
+              }
+            </div>
+          }
+        </div>
+
+        <!-- Diagnosis card -->
+        <div class="consultation-summary__body-card">
+          <p class="consultation-summary__section-label">{{ 'dermatology.consultationSummary.diagnosis' | translate }}</p>
+          <p class="consultation-summary__body-text">{{ consultation.notes }}</p>
+
+          <p class="consultation-summary__section-label">{{ 'dermatology.consultationSummary.recommendations' | translate }}</p>
+          <p class="consultation-summary__body-text">{{ consultation.recommendations }}</p>
+        </div>
+
+      </div>
+
+      <!-- Right column -->
+      <div class="consultation-summary__right">
+        <div class="consultation-summary__right-card">
+          <p class="consultation-summary__section-label">{{ 'dermatology.consultationSummary.duration' | translate }}</p>
+          <p class="consultation-summary__duration-value">{{ consultation.durationInMinutes }} min</p>
+
+          <button class="consultation-summary__return-btn" (click)="navigateBack()">
+            {{ 'dermatology.consultationSummary.returnBtn' | translate }}
+          </button>
+        </div>
+      </div>
+
+    </div>
+  } @else {
+    <div class="consultation-summary__empty">
+      <mat-icon>info</mat-icon>
+      <p>{{ 'dermatology.consultationSummary.noData' | translate }}</p>
+    </div>
+  }
+
+</div>

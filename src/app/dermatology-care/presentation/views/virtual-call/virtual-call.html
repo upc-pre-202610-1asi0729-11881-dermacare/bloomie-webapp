@@ -1,0 +1,110 @@
+<div class="virtual-call">
+
+  <!-- End call modal -->
+  @if (showEndModal()) {
+    <div class="virtual-call__modal-overlay">
+      <div class="virtual-call__modal">
+        <mat-icon class="virtual-call__modal-icon">call_end</mat-icon>
+        <h3 class="virtual-call__modal-title">{{ 'dermatology.virtualCall.endCallTitle' | translate }}</h3>
+        <p class="virtual-call__modal-desc">{{ 'dermatology.virtualCall.endCallDesc' | translate }}</p>
+        <div class="virtual-call__modal-actions">
+          <button class="virtual-call__modal-cancel" (click)="cancelEndCall()">{{ 'dermatology.virtualCall.stayBtn' | translate }}</button>
+          <button class="virtual-call__modal-confirm" (click)="confirmEndCall()">{{ 'dermatology.virtualCall.endBtn' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Main layout -->
+  <div class="virtual-call__layout">
+
+    <!-- Left: Video area -->
+    <div class="virtual-call__video-section">
+
+      <!-- Doctor video placeholder -->
+      <div class="virtual-call__doctor-video">
+        <div class="virtual-call__video-avatar">
+          <mat-icon>person</mat-icon>
+        </div>
+        <span class="virtual-call__doctor-label">{{ 'dermatology.virtualCall.doctorLabel' | translate }}</span>
+        @if (!camOn()) {
+          <div class="virtual-call__cam-off-overlay">
+            <mat-icon>videocam_off</mat-icon>
+          </div>
+        }
+      </div>
+
+      <!-- Patient mini video -->
+      <div class="virtual-call__patient-mini">
+        <mat-icon>person</mat-icon>
+        <span class="virtual-call__you-label">{{ 'dermatology.virtualCall.youLabel' | translate }}</span>
+      </div>
+
+      <!-- Controls -->
+      <div class="virtual-call__controls">
+        <button
+          class="virtual-call__ctrl-btn"
+          [class.virtual-call__ctrl-btn--off]="!micOn()"
+          (click)="toggleMic()"
+          [attr.aria-label]="micOn() ? 'Mute' : 'Unmute'"
+        >
+          <mat-icon>{{ micOn() ? 'mic' : 'mic_off' }}</mat-icon>
+        </button>
+        <button
+          class="virtual-call__ctrl-btn virtual-call__ctrl-btn--end"
+          (click)="requestEndCall()"
+          aria-label="End call"
+        >
+          <mat-icon>call_end</mat-icon>
+        </button>
+        <button
+          class="virtual-call__ctrl-btn"
+          [class.virtual-call__ctrl-btn--off]="!camOn()"
+          (click)="toggleCam()"
+          [attr.aria-label]="camOn() ? 'Turn off camera' : 'Turn on camera'"
+        >
+          <mat-icon>{{ camOn() ? 'videocam' : 'videocam_off' }}</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Right: Chat panel -->
+    <div class="virtual-call__chat-panel">
+      <div class="virtual-call__chat-header">
+        <mat-icon>chat_bubble</mat-icon>
+        <span>{{ 'dermatology.virtualCall.chatTitle' | translate }}</span>
+      </div>
+
+      <div class="virtual-call__messages">
+        @for (message of messages(); track message.id) {
+          <div class="virtual-call__message" [class.virtual-call__message--patient]="message.from === 'patient'">
+            @if (message.from === 'doctor') {
+              <div class="virtual-call__msg-avatar">
+                <mat-icon>person</mat-icon>
+              </div>
+            }
+            <div class="virtual-call__bubble" [class.virtual-call__bubble--patient]="message.from === 'patient'">
+              <p class="virtual-call__bubble-text">{{ message.text }}</p>
+              <span class="virtual-call__bubble-time">{{ message.time }}</span>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Input -->
+      <div class="virtual-call__chat-input">
+        <input
+          class="virtual-call__input"
+          type="text"
+          [placeholder]="'dermatology.virtualCall.inputPlaceholder' | translate"
+          [(ngModel)]="inputText"
+          (keyup.enter)="sendMessage()"
+        />
+        <button class="virtual-call__send-btn" (click)="sendMessage()" aria-label="Send">
+          <mat-icon>send</mat-icon>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,25 @@
+.consultation-summary { padding: 32px 40px; background: #fffdf8; min-height: 100%; }
+.consultation-summary__header { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+.consultation-summary__back-btn { width: 40px; height: 40px; border-radius: 50%; background: #fff; border: 1px solid #e0d6d6; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; transition: background 0.15s; }
+.consultation-summary__back-btn:hover { background: #f5f0f0; }
+.consultation-summary__title { font-family: 'Montserrat', sans-serif; font-weight: 300; font-size: 32px; color: #333; margin: 0; }
+.consultation-summary__divider { height: 1px; background: #e8dede; margin-bottom: 24px; }
+.consultation-summary__layout { display: flex; gap: 32px; align-items: flex-start; }
+.consultation-summary__left { flex: 1; display: flex; flex-direction: column; gap: 20px; }
+.consultation-summary__right { width: 320px; flex-shrink: 0; }
+.consultation-summary__info-card { background: #b9e3b3; border-radius: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); padding: 24px; }
+.consultation-summary__row { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-family: 'Montserrat', sans-serif; font-size: 14px; color: #000; flex-wrap: wrap; }
+.consultation-summary__row-icon { font-size: 18px; color: #303030; flex-shrink: 0; }
+.consultation-summary__row-label { font-weight: 600; }
+.consultation-summary__row-text { margin: 0; font-family: 'Montserrat', sans-serif; font-size: 14px; }
+.consultation-summary__chip { background: rgba(118,118,128,0.12); border-radius: 20px; padding: 4px 12px; font-family: 'Montserrat', sans-serif; font-size: 14px; }
+.consultation-summary__photos { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+.consultation-summary__photo { width: 130px; height: 130px; border-radius: 14px; object-fit: cover; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+.consultation-summary__body-card { background: #ffffff; border-radius: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); padding: 24px; }
+.consultation-summary__section-label { font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 16px; color: #49454f; margin: 0 0 8px; }
+.consultation-summary__body-text { font-family: 'Montserrat', sans-serif; font-size: 14px; color: #000; line-height: 1.6; margin: 0 0 20px; }
+.consultation-summary__right-card { background: #ffffff; border-radius: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); padding: 24px; }
+.consultation-summary__duration-value { font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 32px; color: #49454f; margin: 0 0 24px; }
+.consultation-summary__return-btn { width: 100%; background: #7aaf7a; color: #fff; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 14px; border: none; border-radius: 20px; padding: 12px; cursor: pointer; transition: background 0.15s; }
+.consultation-summary__return-btn:hover { background: #68a068; }
+.consultation-summary__empty { display: flex; flex-direction: column; align-items: center; padding: 64px; gap: 16px; color: #999; }
