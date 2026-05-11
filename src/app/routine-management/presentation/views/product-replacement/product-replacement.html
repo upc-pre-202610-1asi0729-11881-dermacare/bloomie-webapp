@@ -1,0 +1,130 @@
+<div class="product-replacement">
+
+  <!-- Header -->
+  <div class="product-replacement__header">
+    <button class="product-replacement__back-btn" (click)="navigateBack()" [attr.aria-label]="'routine.productReplacement.back' | translate">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div>
+      <h1 class="product-replacement__title">{{ 'routine.productReplacement.title' | translate }}</h1>
+      <p class="product-replacement__subtitle">{{ 'routine.productReplacement.subtitle' | translate }}</p>
+    </div>
+  </div>
+
+  <div class="product-replacement__divider"></div>
+
+  <div class="product-replacement__content">
+
+    <!-- Left -->
+    <div class="product-replacement__main">
+
+      <!-- Current Item -->
+      @if (routineItem()) {
+        <div class="product-replacement__current-card">
+          <p class="product-replacement__current-label">{{ 'routine.productReplacement.currentLabel' | translate }}</p>
+          <div class="product-replacement__current-info">
+            <div class="product-replacement__current-icon">
+              <mat-icon>inventory_2</mat-icon>
+            </div>
+            <div>
+              <p class="product-replacement__current-step">{{ routineItem()!.stepLabel }}</p>
+              <p class="product-replacement__current-product">{{ 'routine.productReplacement.productLabel' | translate }} #{{ routineItem()!.productId }}</p>
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- Alternatives header -->
+      <div class="product-replacement__alternatives-header">
+        <p class="product-replacement__alternatives-title">{{ 'routine.productReplacement.alternativesTitle' | translate }}</p>
+        <p class="product-replacement__alternatives-subtitle">{{ 'routine.productReplacement.alternativesSubtitle' | translate }}</p>
+      </div>
+
+      <!-- Placeholder alternatives (in production these come from product-discovery) -->
+      <div class="product-replacement__alternatives-grid">
+        @for (compatibilityScore of [95, 92, 88, 85]; track compatibilityScore; let productIndex = $index) {
+          <button
+            class="product-replacement__alternative-card"
+            [class.product-replacement__alternative-card--selected]="selectedProductId() === productIndex + 1"
+            (click)="selectProduct(productIndex + 1)"
+          >
+            @if (productIndex === 0) {
+              <span class="product-replacement__best-match-tag">{{ 'routine.productReplacement.bestMatch' | translate }}</span>
+            }
+            @if (selectedProductId() === productIndex + 1) {
+              <div class="product-replacement__selected-check">
+                <mat-icon>check</mat-icon>
+              </div>
+            }
+            <div class="product-replacement__alternative-image-placeholder">
+              <mat-icon>inventory_2</mat-icon>
+            </div>
+            <p class="product-replacement__alternative-name">{{ 'routine.productReplacement.alternativeProduct' | translate }} {{ productIndex + 1 }}</p>
+            <div class="product-replacement__compatibility-bar-row">
+              <div class="product-replacement__compatibility-bar">
+                <div
+                  class="product-replacement__compatibility-fill"
+                  [style.width.%]="compatibilityScore"
+                  [style.backgroundColor]="getCompatibilityColor(compatibilityScore)"
+                ></div>
+              </div>
+              <span
+                class="product-replacement__compatibility-score"
+                [style.color]="getCompatibilityColor(compatibilityScore)"
+              >
+                {{ compatibilityScore }}% · {{ 'routine.productReplacement.compatibility.' + getCompatibilityLabel(compatibilityScore) | translate }}
+              </span>
+            </div>
+          </button>
+        }
+      </div>
+
+      <button
+        class="product-replacement__continue-btn"
+        [disabled]="!selectedProductId()"
+        [class.product-replacement__continue-btn--disabled]="!selectedProductId()"
+        (click)="continueWithSelection()"
+      >
+        {{ 'routine.productReplacement.continueBtn' | translate }}
+      </button>
+
+    </div>
+
+    <!-- Right: Info Panel -->
+    <div class="product-replacement__panel">
+
+      <div class="product-replacement__how-we-rank">
+        <p class="product-replacement__panel-title">{{ 'routine.productReplacement.howWeRankTitle' | translate }}</p>
+        <p class="product-replacement__panel-text">{{ 'routine.productReplacement.howWeRankText' | translate }}</p>
+      </div>
+
+      <div class="product-replacement__compatibility-legend">
+        <p class="product-replacement__panel-title">{{ 'routine.productReplacement.compatibilityGuide' | translate }}</p>
+        <div class="product-replacement__legend-items">
+          <div class="product-replacement__legend-item">
+            <span class="product-replacement__legend-dot" style="background-color: #4caf50"></span>
+            <div>
+              <p class="product-replacement__legend-range">90–100%</p>
+              <p class="product-replacement__legend-label">{{ 'routine.productReplacement.compatibility.excellent' | translate }}</p>
+            </div>
+          </div>
+          <div class="product-replacement__legend-item">
+            <span class="product-replacement__legend-dot" style="background-color: #e8a43a"></span>
+            <div>
+              <p class="product-replacement__legend-range">80–89%</p>
+              <p class="product-replacement__legend-label">{{ 'routine.productReplacement.compatibility.good' | translate }}</p>
+            </div>
+          </div>
+          <div class="product-replacement__legend-item">
+            <span class="product-replacement__legend-dot" style="background-color: #ef5350"></span>
+            <div>
+              <p class="product-replacement__legend-range">&lt;80%</p>
+              <p class="product-replacement__legend-label">{{ 'routine.productReplacement.compatibility.fair' | translate }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

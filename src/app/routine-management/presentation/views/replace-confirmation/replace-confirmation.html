@@ -1,0 +1,120 @@
+<div class="replace-confirmation">
+
+  <!-- Header -->
+  <div class="replace-confirmation__header">
+    <button class="replace-confirmation__back-btn" (click)="navigateBack()" [attr.aria-label]="'routine.replaceConfirmation.back' | translate">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div>
+      <h1 class="replace-confirmation__title">{{ 'routine.replaceConfirmation.title' | translate }}</h1>
+      <p class="replace-confirmation__subtitle">{{ 'routine.replaceConfirmation.subtitle' | translate }}</p>
+    </div>
+  </div>
+
+  <div class="replace-confirmation__divider"></div>
+
+  <div class="replace-confirmation__content">
+
+    <!-- Left: Main -->
+    <div class="replace-confirmation__main">
+
+      <!-- Compatibility Banner -->
+      <div class="replace-confirmation__compat-banner">
+        <div class="replace-confirmation__compat-icon" [style.backgroundColor]="compatibilityColor()">
+          <mat-icon>check</mat-icon>
+        </div>
+        <div>
+          <p class="replace-confirmation__compat-title" [style.color]="compatibilityColor()">
+            {{ 'routine.replaceConfirmation.compatibility.' + compatibilityLevelKey() | translate }}
+          </p>
+          <p class="replace-confirmation__compat-desc" [style.color]="compatibilityColor()">
+            {{ compatibilityScore() }}% {{ 'routine.replaceConfirmation.compatibleWith' | translate }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Product Swap Card -->
+      <div class="replace-confirmation__swap-card">
+        <p class="replace-confirmation__swap-title">{{ 'routine.replaceConfirmation.swapTitle' | translate }}</p>
+
+        <!-- Removing -->
+        <div class="replace-confirmation__removing-row">
+          <div class="replace-confirmation__product-icon replace-confirmation__product-icon--faded">
+            <mat-icon>inventory_2</mat-icon>
+          </div>
+          <div class="replace-confirmation__product-details">
+            <p class="replace-confirmation__removing-label">{{ 'routine.replaceConfirmation.removing' | translate }}</p>
+            @if (routineItem()) {
+              <p class="replace-confirmation__removing-name">
+                {{ routineItem()!.stepLabel }} · {{ 'routine.replaceConfirmation.product' | translate }} #{{ routineItem()!.productId }}
+              </p>
+            }
+          </div>
+        </div>
+
+        <!-- Arrow -->
+        <div class="replace-confirmation__arrow-row">
+          <div class="replace-confirmation__arrow-line"></div>
+          <div class="replace-confirmation__arrow-circle">
+            <mat-icon>arrow_downward</mat-icon>
+          </div>
+          <div class="replace-confirmation__arrow-line"></div>
+        </div>
+
+        <!-- Adding -->
+        <div class="replace-confirmation__adding-row">
+          <div class="replace-confirmation__product-icon">
+            <mat-icon>inventory_2</mat-icon>
+          </div>
+          <div class="replace-confirmation__product-details">
+            <p class="replace-confirmation__adding-label">{{ 'routine.replaceConfirmation.adding' | translate }}</p>
+            <p class="replace-confirmation__adding-name">
+              {{ 'routine.replaceConfirmation.product' | translate }} #{{ newProductId() }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notice -->
+      <div class="replace-confirmation__notice">
+        <mat-icon class="replace-confirmation__notice-icon">info</mat-icon>
+        <p class="replace-confirmation__notice-text">{{ 'routine.replaceConfirmation.notice' | translate }}</p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="replace-confirmation__actions">
+        <button class="replace-confirmation__confirm-btn" (click)="confirmReplacement()">
+          {{ 'routine.replaceConfirmation.confirmBtn' | translate }}
+        </button>
+        <button class="replace-confirmation__cancel-btn" (click)="navigateBack()">
+          {{ 'routine.replaceConfirmation.cancelBtn' | translate }}
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Right: Summary Panel -->
+    <div class="replace-confirmation__panel">
+
+      <div class="replace-confirmation__score-card">
+        <p class="replace-confirmation__score-label">{{ 'routine.replaceConfirmation.scoreLabel' | translate }}</p>
+        <p class="replace-confirmation__score-value">{{ compatibilityScore() }}%</p>
+        <p class="replace-confirmation__score-sublabel">
+          {{ 'routine.replaceConfirmation.compatibility.' + compatibilityLevelKey() | translate }}
+        </p>
+        <div class="replace-confirmation__score-bar">
+          <div
+            class="replace-confirmation__score-fill"
+            [style.width.%]="compatibilityScore()"
+          ></div>
+        </div>
+      </div>
+
+      <div class="replace-confirmation__tip-card">
+        <p class="replace-confirmation__tip-title">{{ 'routine.replaceConfirmation.tipTitle' | translate }}</p>
+        <p class="replace-confirmation__tip-text">{{ 'routine.replaceConfirmation.tipText' | translate }}</p>
+      </div>
+
+    </div>
+  </div>
+</div>

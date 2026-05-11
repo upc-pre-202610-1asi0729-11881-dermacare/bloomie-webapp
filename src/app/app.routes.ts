@@ -14,6 +14,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'routine',
+    loadChildren: () =>
+      import('./routine-management/presentation/routine-management.routes').then(
+        (m) => m.routineManagementRoutes,
+      ),
+  },
+  {
     path: 'derm',
     loadChildren: () =>
       import('./dermatology-care/presentation/dermatology-care.routes').then((m) => m.dermRoutes),
