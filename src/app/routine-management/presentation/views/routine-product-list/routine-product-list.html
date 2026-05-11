@@ -1,0 +1,173 @@
+<div class="routine-product-list">
+
+  <!-- Header -->
+  <div class="routine-product-list__header">
+    <h1 class="routine-product-list__title">{{ 'routine.productList.title' | translate }}</h1>
+  </div>
+
+  <div class="routine-product-list__divider"></div>
+
+  <div class="routine-product-list__content">
+
+    <!-- Left: Calendar + Products -->
+    <div class="routine-product-list__main">
+
+      <!-- Weekly Day Strip -->
+      <div class="routine-product-list__day-strip">
+        @for (weekDay of weekDays(); track weekDay.dayNumber) {
+          <button
+            class="routine-product-list__day-btn"
+            [class.routine-product-list__day-btn--selected]="weekDay.date.toDateString() === selectedDate().toDateString()"
+            [class.routine-product-list__day-btn--today]="weekDay.isToday"
+            (click)="selectWeekDay(weekDay)"
+          >
+            <span class="routine-product-list__day-number">{{ weekDay.dayNumber }}</span>
+            <span class="routine-product-list__day-name">{{ weekDay.dayName }}</span>
+            @if (weekDay.isCompleted) {
+              <mat-icon class="routine-product-list__day-check">check_circle</mat-icon>
+            }
+          </button>
+        }
+      </div>
+
+      <!-- Month Calendar -->
+      <div class="routine-product-list__calendar-card">
+        <div class="routine-product-list__calendar-header">
+          <button class="routine-product-list__calendar-nav-btn" (click)="previousMonth()" [attr.aria-label]="'routine.productList.previousMonth' | translate">
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+          <p class="routine-product-list__calendar-month-label">{{ calendarMonthLabel() }}</p>
+          <button class="routine-product-list__calendar-nav-btn" (click)="nextMonth()" [attr.aria-label]="'routine.productList.nextMonth' | translate">
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+        </div>
+
+        <div class="routine-product-list__calendar-day-names">
+          @for (name of ['Su','Mo','Tu','We','Th','Fr','Sa']; track name) {
+            <span class="routine-product-list__calendar-day-name-label">{{ name }}</span>
+          }
+        </div>
+
+        @for (week of calendarWeeks(); track $index) {
+          <div class="routine-product-list__calendar-week">
+            @for (day of week; track $index) {
+              <button
+                class="routine-product-list__calendar-day"
+                [class.routine-product-list__calendar-day--selected]="day === selectedDate().getDate()"
+                [class.routine-product-list__calendar-day--completed]="isDayCompletedInCalendar(day)"
+                [disabled]="!day"
+                (click)="selectCalendarDay(day)"
+              >
+                @if (day) {
+                  <span>{{ day }}</span>
+                  @if (isDayCompletedInCalendar(day)) {
+                    <span class="routine-product-list__calendar-dot"></span>
+                  }
+                }
+              </button>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Selected Day Header + Mark Complete -->
+      <div class="routine-product-list__day-actions">
+        <div>
+          <p class="routine-product-list__day-label">{{ selectedDayLabel() }}</p>
+          <p class="routine-product-list__steps-count">
+            {{ activeRoutineItems().length }} {{ 'routine.productList.stepsLabel' | translate }}
+          </p>
+        </div>
+        <button
+          class="routine-product-list__mark-btn"
+          [class.routine-product-list__mark-btn--completed]="isSelectedDayCompleted()"
+          (click)="toggleDayCompletion()"
+        >
+          <mat-icon>{{ isSelectedDayCompleted() ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+          {{ (isSelectedDayCompleted() ? 'routine.productList.completed' : 'routine.productList.markDone') | translate }}
+        </button>
+      </div>
+
+      <!-- Routine Items -->
+      <div class="routine-product-list__items">
+        @if (store.loading()) {
+          <p class="routine-product-list__loading">{{ 'routine.productList.loading' | translate }}</p>
+        }
+        @if (!store.loading() && activeRoutineItems().length === 0) {
+          <p class="routine-product-list__empty">{{ 'routine.productList.empty' | translate }}</p>
+        }
+        @for (item of activeRoutineItems(); track item.id) {
+          <div class="routine-product-list__item-card">
+            <div class="routine-product-list__item-row" (click)="toggleProductExpand(item.id)">
+              <div class="routine-product-list__item-time">
+                <span>{{ item.scheduledTime }}</span>
+              </div>
+              <div class="routine-product-list__item-info">
+                <p class="routine-product-list__item-step">{{ item.stepLabel }}</p>
+                <p class="routine-product-list__item-product-id">{{ 'routine.productList.productLabel' | translate }} #{{ item.productId }}</p>
+              </div>
+              <mat-icon class="routine-product-list__item-chevron">
+                {{ expandedProductId() === item.id ? 'expand_less' : 'expand_more' }}
+              </mat-icon>
+            </div>
+
+            @if (expandedProductId() === item.id) {
+              <div class="routine-product-list__item-expanded">
+                <p class="routine-product-list__item-order">{{ 'routine.productList.orderLabel' | translate }}: {{ item.order }}</p>
+                <div class="routine-product-list__item-actions">
+                  <button
+                    class="routine-product-list__replace-btn"
+                    (click)="navigateToReplaceProduct(item)"
+                  >
+                    {{ 'routine.productList.replaceBtn' | translate }}
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+    </div>
+
+    <!-- Right: Stats Panel -->
+    <div class="routine-product-list__panel">
+
+      <!-- Streak -->
+      <div class="routine-product-list__streak-card">
+        <p class="routine-product-list__streak-label">{{ 'routine.productList.streakLabel' | translate }}</p>
+        <p class="routine-product-list__streak-count">{{ store.completedDaysThisWeek() }}</p>
+        <p class="routine-product-list__streak-subtitle">{{ 'routine.productList.streakSubtitle' | translate }}</p>
+        <div class="routine-product-list__streak-bar">
+          @for (day of [1,2,3,4,5,6,7]; track day) {
+            <div class="routine-product-list__streak-segment"
+                 [class.routine-product-list__streak-segment--filled]="day <= store.completedDaysThisWeek()">
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Completion -->
+      <div class="routine-product-list__completion-card">
+        <p class="routine-product-list__completion-label">{{ 'routine.productList.completionLabel' | translate }}</p>
+        <p class="routine-product-list__completion-value">{{ store.completionPercentage() }}%</p>
+        <div class="routine-product-list__completion-bar">
+          <div
+            class="routine-product-list__completion-fill"
+            [style.width.%]="store.completionPercentage()"
+          ></div>
+        </div>
+        <p class="routine-product-list__completion-subtitle">{{ 'routine.productList.completionSubtitle' | translate }}</p>
+      </div>
+
+      <!-- Error -->
+      @if (store.error()) {
+        <div class="routine-product-list__error">
+          <mat-icon>error_outline</mat-icon>
+          <p>{{ store.error() }}</p>
+        </div>
+      }
+
+    </div>
+  </div>
+</div>

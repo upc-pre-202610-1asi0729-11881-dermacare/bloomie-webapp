@@ -218,5 +218,65 @@
         "sunday": "Domingo"
       }
     }
+  },
+  "routine": {
+    "productList": {
+      "title": "Mi Rutina de Cuidado",
+      "previousMonth": "Mes anterior",
+      "nextMonth": "Mes siguiente",
+      "stepsLabel": "pasos en tu rutina",
+      "completed": "Rutina completada",
+      "markDone": "Marcar como hecha",
+      "loading": "Cargando rutina...",
+      "empty": "No hay productos en la rutina.",
+      "productLabel": "Producto",
+      "orderLabel": "Orden del paso",
+      "replaceBtn": "Reemplazar Producto",
+      "streakLabel": "Racha de Rutina",
+      "streakSubtitle": "días esta semana",
+      "completionLabel": "Cumplimiento (30 días)",
+      "completionSubtitle": "Basado en los últimos 30 días"
+    },
+    "productReplacement": {
+      "title": "Reemplazar Producto",
+      "subtitle": "Selecciona una alternativa compatible para tu rutina",
+      "back": "Volver",
+      "currentLabel": "Actualmente en tu rutina",
+      "productLabel": "Producto",
+      "alternativesTitle": "Alternativas Compatibles",
+      "alternativesSubtitle": "Ordenadas por compatibilidad con tu perfil de piel",
+      "bestMatch": "Mejor Opción",
+      "alternativeProduct": "Alternativa",
+      "continueBtn": "Continuar con la Selección",
+      "howWeRankTitle": "Cómo clasificamos",
+      "howWeRankText": "Los productos se clasifican por compatibilidad con tu tipo de piel, rutina actual y preocupaciones identificadas.",
+      "compatibilityGuide": "Guía de Compatibilidad",
+      "compatibility": {
+        "excellent": "Excelente Compatibilidad",
+        "good": "Buena Compatibilidad",
+        "fair": "Compatibilidad Regular"
+      }
+    },
+    "replaceConfirmation": {
+      "title": "Confirmar Reemplazo",
+      "subtitle": "Revisa el cambio de producto antes de confirmar",
+      "back": "Volver",
+      "swapTitle": "Cambio de Producto",
+      "removing": "Eliminando",
+      "adding": "Agregando",
+      "product": "Producto",
+      "compatibleWith": "compatible con tu rutina",
+      "notice": "Este cambio actualizará tu rutina de inmediato. Siempre puedes revertirlo seleccionando el producto original nuevamente.",
+      "confirmBtn": "Confirmar Reemplazo",
+      "cancelBtn": "Volver",
+      "scoreLabel": "Puntuación de Compatibilidad",
+      "compatibility": {
+        "excellent": "¡Excelente Compatibilidad!",
+        "good": "Buena Compatibilidad",
+        "fair": "Compatibilidad Regular"
+      },
+      "tipTitle": "Consejo Rápido",
+      "tipText": "Introduce el nuevo producto gradualmente — pruébalo cada dos días la primera semana para verificar la reacción de tu piel."
+    }
   }
 }

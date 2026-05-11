@@ -218,5 +218,65 @@
         "sunday": "Sunday"
       }
     }
+  },
+  "routine": {
+    "productList": {
+      "title": "My Skincare Routine",
+      "previousMonth": "Previous month",
+      "nextMonth": "Next month",
+      "stepsLabel": "steps in your routine",
+      "completed": "Routine completed",
+      "markDone": "Mark as done",
+      "loading": "Loading routine...",
+      "empty": "No routine items found.",
+      "productLabel": "Product",
+      "orderLabel": "Step order",
+      "replaceBtn": "Replace Product",
+      "streakLabel": "Routine Streak",
+      "streakSubtitle": "days this week",
+      "completionLabel": "30-day Completion",
+      "completionSubtitle": "Based on last 30 days"
+    },
+    "productReplacement": {
+      "title": "Replace Product",
+      "subtitle": "Select a compatible alternative for your routine",
+      "back": "Go back",
+      "currentLabel": "Currently in your routine",
+      "productLabel": "Product",
+      "alternativesTitle": "Compatible Alternatives",
+      "alternativesSubtitle": "Sorted by compatibility with your skin profile",
+      "bestMatch": "Best Match",
+      "alternativeProduct": "Alternative",
+      "continueBtn": "Continue with Selection",
+      "howWeRankTitle": "How we rank",
+      "howWeRankText": "Products are ranked by compatibility with your skin type, current routine, and identified concerns.",
+      "compatibilityGuide": "Compatibility Guide",
+      "compatibility": {
+        "excellent": "Excellent Match",
+        "good": "Good Match",
+        "fair": "Fair Match"
+      }
+    },
+    "replaceConfirmation": {
+      "title": "Confirm Replacement",
+      "subtitle": "Review your product swap before confirming",
+      "back": "Go back",
+      "swapTitle": "Product Swap",
+      "removing": "Removing",
+      "adding": "Adding",
+      "product": "Product",
+      "compatibleWith": "compatible with your routine",
+      "notice": "This change will update your skincare routine immediately. You can always revert by selecting the original product again.",
+      "confirmBtn": "Confirm Replacement",
+      "cancelBtn": "Go Back",
+      "scoreLabel": "Compatibility Score",
+      "compatibility": {
+        "excellent": "Excellent Match!",
+        "good": "Good Match",
+        "fair": "Fair Match"
+      },
+      "tipTitle": "Quick Tip",
+      "tipText": "Introduce the new product gradually — try it every other day for the first week to check your skin's reaction."
+    }
   }
 }
