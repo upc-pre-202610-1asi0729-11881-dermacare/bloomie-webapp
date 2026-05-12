@@ -219,6 +219,28 @@
       }
     }
   },
+  "intelligentSupport": {
+    "chat": {
+      "title": "¡Pregúntame lo que quieras!",
+      "subtitle": "Asistente de cuidado de piel Bloomie IA",
+      "inputPlaceholder": "Escribe tu pregunta aquí...",
+      "faqTitle": "Preguntas frecuentes",
+      "faq": {
+        "preventInjury": "¿Qué puedo hacer para proteger mi piel de lesiones?",
+        "faceMask": "¿Con qué frecuencia debo usar una mascarilla facial?",
+        "oilySkin": "¿Cuál es la mejor rutina para la piel grasa?"
+      },
+      "limitation": {
+        "title": "Limitación de la IA",
+        "description": "Esta pregunta requiere evaluación profesional. Reserva una consulta con un dermatólogo.",
+        "bookBtn": "Reservar con especialista"
+      },
+      "reminder": {
+        "title": "Recordatorio",
+        "description": "Este asistente de IA ofrece información general sobre el cuidado de la piel. Para consejo médico, consulta a un dermatólogo."
+      }
+    }
+  },
   "routine": {
     "productList": {
       "title": "Mi Rutina de Cuidado",

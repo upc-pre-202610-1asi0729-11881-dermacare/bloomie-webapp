@@ -1,4 +1,4 @@
-import {Routes} from '@angular/router';
+import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
@@ -25,5 +25,13 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./dermatology-care/presentation/dermatology-care.routes').then((m) => m.dermRoutes),
   },
+  {
+    path: 'consult',
+    loadChildren: () =>
+      import('./intelligent-support/presentation/intelligent-support.routes').then(
+        (m) => m.intelligentSupportRoutes,
+      ),
+  },
+
   { path: '**', redirectTo: 'dermatology' },
 ];

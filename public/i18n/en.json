@@ -219,6 +219,28 @@
       }
     }
   },
+  "intelligentSupport": {
+    "chat": {
+      "title": "Ask me anything!",
+      "subtitle": "Bloomie AI Skincare Assistant",
+      "inputPlaceholder": "Type your question here...",
+      "faqTitle": "Frequently Asked",
+      "faq": {
+        "preventInjury": "What could I do to prevent injury in my skin?",
+        "faceMask": "How often should I use a face mask?",
+        "oilySkin": "What's the best routine for oily skin?"
+      },
+      "limitation": {
+        "title": "AI Limitation",
+        "description": "This question requires professional evaluation. Book a consultation with a dermatologist.",
+        "bookBtn": "Book a specialist"
+      },
+      "reminder": {
+        "title": "Reminder",
+        "description": "This AI assistant provides general skincare information. For medical advice, consult a dermatologist."
+      }
+    }
+  },
   "routine": {
     "productList": {
       "title": "My Skincare Routine",
@@ -280,3 +302,8 @@
     }
   }
 }
+
+
+
+
+
