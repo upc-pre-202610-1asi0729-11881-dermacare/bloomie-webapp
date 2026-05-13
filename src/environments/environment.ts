@@ -20,4 +20,8 @@ export const environment = {
   subscriptionsEndpointPath: '/subscriptions',
   supportQueriesEndpointPath: '/support_queries',
   chatMessagesEndpointPath: '/chat_messages',
+  authenticationLoginEndpointPath: '/authentication/sign-in',
+  authenticationRegisterYoungAdultEndpointPath: '/authentication/sign-up/young-adult',
+  authenticationRegisterDermatologistEndpointPath: '/authentication/sign-up/dermatologist',
+  useMockAuthentication: true,
 };

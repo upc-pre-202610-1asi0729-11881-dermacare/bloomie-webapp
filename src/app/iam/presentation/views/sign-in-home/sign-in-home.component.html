@@ -1,0 +1,34 @@
+<div class="sign-in-home">
+  <div class="sign-in-home__header">
+    <h1 class="sign-in-home__title">{{ 'iam.signInHome.title' | translate }}</h1>
+    <p class="sign-in-home__tagline">{{ 'iam.signInHome.tagline' | translate }}</p>
+  </div>
+
+  <div class="sign-in-home__actions">
+    <button type="button" class="sign-in-home__primary-button" (click)="onLogin()">
+      {{ 'iam.signInHome.loginButton' | translate }}
+    </button>
+
+    <div class="sign-in-home__specialist-link">
+      <p class="sign-in-home__specialist-question">
+        {{ 'iam.signInHome.dermatologistQuestion' | translate }}
+      </p>
+      <button type="button" class="sign-in-home__link-button" (click)="onDermatologistRegister()">
+        {{ 'iam.signInHome.dermatologistRegisterLink' | translate }}
+      </button>
+    </div>
+
+    <button type="button" class="sign-in-home__primary-button" (click)="onSignUp()">
+      {{ 'iam.signInHome.signUpButton' | translate }}
+    </button>
+
+    <div class="sign-in-home__specialist-link">
+      <p class="sign-in-home__specialist-question">
+        {{ 'iam.signInHome.dermatologistQuestion' | translate }}
+      </p>
+      <button type="button" class="sign-in-home__link-button" (click)="onDermatologistLogin()">
+        {{ 'iam.signInHome.dermatologistLoginLink' | translate }}
+      </button>
+    </div>
+  </div>
+</div>

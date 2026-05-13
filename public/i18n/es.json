@@ -526,5 +526,37 @@
       "routineBtn": "Ir a mi rutina",
       "backBtn": "Volver"
     }
+  },
+  "iam": {
+    "signInHome": {
+      "title": "Bloomie",
+      "tagline": "Tu viaje de cuidado de la piel comienza aquí",
+      "loginButton": "Iniciar sesión",
+      "signUpButton": "Registrarse",
+      "dermatologistQuestion": "¿Eres dermatólogo?",
+      "dermatologistRegisterLink": "Regístrate aquí como especialista.",
+      "dermatologistLoginLink": "Inicia sesión como especialista."
+    },
+    "signIn": {
+      "title": "Bloomie",
+      "tagline": "Bienvenida de vuelta a tu viaje de cuidado de la piel",
+      "formTitle": "Iniciar sesión",
+      "emailLabel": "Correo electrónico",
+      "emailPlaceholder": "ejemplo@correo.com",
+      "passwordLabel": "Contraseña",
+      "togglePassword": "Mostrar u ocultar contraseña",
+      "submitButton": "Iniciar sesión",
+      "loadingButton": "Iniciando sesión...",
+      "noAccountQuestion": "¿No tienes cuenta?",
+      "createAccountLink": "Crea una aquí",
+      "errors": {
+        "emailRequired": "El correo es obligatorio.",
+        "emailInvalid": "Ingresa un correo válido.",
+        "passwordRequired": "La contraseña es obligatoria.",
+        "passwordTooShort": "La contraseña debe tener al menos 8 caracteres."
+      }
+    }
   }
 }
+
+

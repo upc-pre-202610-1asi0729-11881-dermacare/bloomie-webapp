@@ -524,5 +524,35 @@
       "routineBtn": "Go to my routine",
       "backBtn": "Go back"
     }
+  },
+  "iam": {
+    "signInHome": {
+      "title": "Bloomie",
+      "tagline": "Your skincare journey starts here",
+      "loginButton": "Login",
+      "signUpButton": "Sign up",
+      "dermatologistQuestion": "Are you a dermatologist?",
+      "dermatologistRegisterLink": "Register here as a specialist.",
+      "dermatologistLoginLink": "Log in as a specialist."
+    },
+    "signIn": {
+      "title": "Bloomie",
+      "tagline": "Welcome back to your skincare journey",
+      "formTitle": "Log In",
+      "emailLabel": "Email",
+      "emailPlaceholder": "example@email.com",
+      "passwordLabel": "Password",
+      "togglePassword": "Toggle password visibility",
+      "submitButton": "Log in",
+      "loadingButton": "Logging in...",
+      "noAccountQuestion": "Don't have an account?",
+      "createAccountLink": "Create one here",
+      "errors": {
+        "emailRequired": "Email is required.",
+        "emailInvalid": "Enter a valid email address.",
+        "passwordRequired": "Password is required.",
+        "passwordTooShort": "Password must be at least 8 characters."
+      }
+    }
   }
 }

@@ -10,6 +10,13 @@ export const routes: Routes = [
     path: 'dashboard',
     loadChildren: () =>
       import('./dashboard/presentation/dashboard.routes').then((module) => module.dashboardRoutes),
+    redirectTo: 'iam',
+    pathMatch: 'full',
+  },
+  {
+    path: 'iam',
+    loadChildren: () =>
+      import('./iam/presentation/iam.routes').then((m) => m.iamRoutes),
   },
   {
     path: 'dermatology',
@@ -55,4 +62,5 @@ export const routes: Routes = [
   },
 
   { path: '**', redirectTo: 'dashboard' },
+  { path: '**', redirectTo: 'iam' },
 ];

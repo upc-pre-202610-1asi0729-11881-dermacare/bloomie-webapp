@@ -1,0 +1,86 @@
+<div class="sign-in">
+  <div class="sign-in__panel">
+    <button type="button" class="sign-in__back" (click)="onBack()" aria-label="Back">
+      ←
+    </button>
+    <h1 class="sign-in__title">{{ 'iam.signIn.title' | translate }}</h1>
+    <p class="sign-in__tagline">{{ 'iam.signIn.tagline' | translate }}</p>
+  </div>
+
+  <div class="sign-in__form-wrapper">
+    <form class="sign-in__form" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <h2 class="sign-in__form-title">{{ 'iam.signIn.formTitle' | translate }}</h2>
+
+      <div class="sign-in__field">
+        <label class="sign-in__label" for="sign-in-email">
+          {{ 'iam.signIn.emailLabel' | translate }}
+        </label>
+        <input
+          id="sign-in-email"
+          type="email"
+          class="sign-in__input"
+          formControlName="email"
+          [placeholder]="'iam.signIn.emailPlaceholder' | translate"
+          autocomplete="email"
+        />
+        @if (submitted() && form.get('email')?.hasError('required')) {
+          <p class="sign-in__error">{{ 'iam.signIn.errors.emailRequired' | translate }}</p>
+        }
+        @if (submitted() && form.get('email')?.hasError('email')) {
+          <p class="sign-in__error">{{ 'iam.signIn.errors.emailInvalid' | translate }}</p>
+        }
+      </div>
+
+      <div class="sign-in__field">
+        <label class="sign-in__label" for="sign-in-password">
+          {{ 'iam.signIn.passwordLabel' | translate }}
+        </label>
+        <div class="sign-in__password-wrapper">
+          <input
+            id="sign-in-password"
+            [type]="showPassword() ? 'text' : 'password'"
+            class="sign-in__input"
+            formControlName="password"
+            placeholder="••••••••"
+            autocomplete="current-password"
+          />
+          <button
+            type="button"
+            class="sign-in__password-toggle"
+            (click)="togglePasswordVisibility()"
+            [attr.aria-label]="'iam.signIn.togglePassword' | translate"
+          >
+            {{ showPassword() ? '🙈' : '👁️' }}
+          </button>
+        </div>
+        @if (submitted() && form.get('password')?.hasError('required')) {
+          <p class="sign-in__error">{{ 'iam.signIn.errors.passwordRequired' | translate }}</p>
+        }
+        @if (submitted() && form.get('password')?.hasError('minlength')) {
+          <p class="sign-in__error">{{ 'iam.signIn.errors.passwordTooShort' | translate }}</p>
+        }
+      </div>
+
+      @if (iamStore.error()) {
+        <div class="sign-in__banner" role="alert">
+          {{ iamStore.error() }}
+        </div>
+      }
+
+      <button type="submit" class="sign-in__submit" [disabled]="iamStore.loading()">
+        @if (iamStore.loading()) {
+          {{ 'iam.signIn.loadingButton' | translate }}
+        } @else {
+          {{ 'iam.signIn.submitButton' | translate }}
+        }
+      </button>
+
+      <p class="sign-in__footer">
+        {{ 'iam.signIn.noAccountQuestion' | translate }}
+        <button type="button" class="sign-in__link" (click)="onCreateAccount()">
+          {{ 'iam.signIn.createAccountLink' | translate }}
+        </button>
+      </p>
+    </form>
+  </div>
+</div>

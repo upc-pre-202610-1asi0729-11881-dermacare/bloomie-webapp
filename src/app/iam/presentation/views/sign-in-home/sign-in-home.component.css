@@ -1,0 +1,133 @@
+.sign-in-home {
+  background-color: #fffdf8;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 4rem 2.5rem;
+  box-sizing: border-box;
+}
+
+.sign-in-home__header {
+  margin-top: 2rem;
+}
+
+.sign-in-home__title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 48px;
+  color: #a26769;
+  line-height: 1.1;
+  margin: 0 0 1rem 0;
+}
+
+.sign-in-home__tagline {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+  color: #a26769;
+  margin: 0;
+}
+
+.sign-in-home__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.sign-in-home__primary-button {
+  width: 100%;
+  background-color: #a26769;
+  color: #ffffff;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  padding: 0.875rem 1rem;
+  border: none;
+  border-radius: 26.5px;
+  cursor: pointer;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  transition: background-color 0.2s ease;
+}
+
+.sign-in-home__primary-button:hover {
+  background-color: #8e5759;
+}
+
+.sign-in-home__specialist-link {
+  text-align: center;
+}
+
+.sign-in-home__specialist-question {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  color: #000000;
+  margin: 0 0 0.25rem 0;
+}
+
+.sign-in-home__link-button {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  color: #a26769;
+  background: none;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+
+.sign-in-home__link-button:hover {
+  color: #8e5759;
+}
+
+@media (min-width: 1024px) {
+  .sign-in-home {
+    flex-direction: row;
+    align-items: stretch;
+    padding: 0;
+  }
+
+  .sign-in-home__header {
+    flex: 1;
+    background-color: #a26769;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem;
+    margin: 0;
+  }
+
+  .sign-in-home__title {
+    font-size: 72px;
+    color: #ffffff;
+    text-align: center;
+  }
+
+  .sign-in-home__tagline {
+    font-size: 28px;
+    color: rgba(255, 255, 255, 0.9);
+    text-align: center;
+  }
+
+  .sign-in-home__actions {
+    flex: 1;
+    max-width: 28rem;
+    margin: auto;
+    padding: 4rem;
+  }
+
+  .sign-in-home__primary-button {
+    font-size: 18px;
+    padding: 1rem 1.5rem;
+  }
+
+  .sign-in-home__specialist-question,
+  .sign-in-home__link-button {
+    font-size: 14px;
+  }
+}
