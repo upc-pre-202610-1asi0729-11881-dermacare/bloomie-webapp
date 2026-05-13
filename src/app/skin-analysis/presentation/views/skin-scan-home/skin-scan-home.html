@@ -1,0 +1,34 @@
+<div class="skin-scan-home">
+
+  <!-- Header -->
+  <div class="skin-scan-home__header">
+    <button class="skin-scan-home__back-btn" (click)="navigateBack()" aria-label="Go back">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div class="skin-scan-home__header-text">
+      <h1 class="skin-scan-home__title">{{ 'skinAnalysis.scanHome.title' | translate }}</h1>
+      <p class="skin-scan-home__subtitle">{{ 'skinAnalysis.scanHome.subtitle' | translate }}</p>
+    </div>
+  </div>
+
+  <div class="skin-scan-home__divider"></div>
+
+  <!-- Cards -->
+  <div class="skin-scan-home__cards">
+    @for (card of cards; track card.titleKey) {
+      <div class="skin-scan-home__card">
+        <div class="skin-scan-home__card-icon">
+          <mat-icon>{{ card.icon }}</mat-icon>
+        </div>
+        <div class="skin-scan-home__card-body">
+          <p class="skin-scan-home__card-title">{{ card.titleKey | translate }}</p>
+          <p class="skin-scan-home__card-desc">{{ card.descKey | translate }}</p>
+          <button class="skin-scan-home__card-btn" (click)="card.action()">
+            {{ card.btnKey | translate }}
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+
+</div>

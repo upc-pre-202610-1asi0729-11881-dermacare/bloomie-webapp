@@ -38,7 +38,12 @@ export const routes: Routes = [
       import('./product-discovery/presentation/product-discovery.routes').then(
         (m) => m.productDiscoveryRoutes,
       ),
-    },
+  },
+  {
+    path: 'skin-analysis',
+    loadChildren: () =>
+      import('./skin-analysis/presentation/skin-analysis.routes').then((m) => m.skinAnalysisRoutes),
+  },
 
   { path: '**', redirectTo: 'dermatology' },
 ];

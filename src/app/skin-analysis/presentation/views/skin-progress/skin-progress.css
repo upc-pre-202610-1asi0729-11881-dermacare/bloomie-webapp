@@ -1,0 +1,158 @@
+.skin-progress {
+  padding: 32px 40px;
+  background: #fffdf8;
+  min-height: 100%;
+}
+
+.skin-progress__header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.skin-progress__back-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid #e0d6d6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+
+.skin-progress__back-btn:hover { background: #f5f0f0; }
+
+.skin-progress__title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  font-size: 32px;
+  color: #333;
+  margin: 0;
+}
+
+.skin-progress__subtitle {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  color: #999;
+  margin: 4px 0 0;
+}
+
+.skin-progress__divider {
+  height: 1px;
+  background: #e8dede;
+  margin-bottom: 24px;
+}
+
+.skin-progress__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 64px 32px;
+  text-align: center;
+}
+
+.skin-progress__empty-icon {
+  font-size: 48px;
+  color: #cebebe;
+  margin-bottom: 16px;
+}
+
+.skin-progress__empty-text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  color: #888;
+  margin: 0 0 8px;
+}
+
+.skin-progress__empty-desc {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  color: #bbb;
+  margin: 0;
+  max-width: 360px;
+}
+
+.skin-progress__metrics {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  max-width: 680px;
+  margin-bottom: 32px;
+}
+
+.skin-progress__metric-card {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #ede8e8;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.skin-progress__metric-card--positive { border-left: 4px solid #7fa059; }
+.skin-progress__metric-card--negative { border-left: 4px solid #d97070; }
+
+.skin-progress__metric-icon {
+  font-size: 32px;
+  color: #d4a99a;
+  flex-shrink: 0;
+}
+
+.skin-progress__metric-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.skin-progress__metric-value {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  color: #333;
+  margin: 0;
+  line-height: 1;
+}
+
+.skin-progress__metric-label {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  color: #555;
+  margin: 4px 0 0;
+}
+
+.skin-progress__metric-sublabel {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  color: #aaa;
+  margin: 0;
+}
+
+.skin-progress__cta {
+  max-width: 680px;
+}
+
+.skin-progress__routine-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #d4a99a;
+  color: #ffffff;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  border: none;
+  border-radius: 20px;
+  padding: 12px 28px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.skin-progress__routine-btn:hover { background: #c09080; }

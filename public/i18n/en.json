@@ -329,6 +329,94 @@
       "savedBtn": "Saved ♡",
       "noProduct": "No product selected."
     }
+  },
+  "skinAnalysis": {
+    "scanHome": {
+      "title": "Skin Analysis",
+      "subtitle": "Analyze your skin and track your progress over time.",
+      "startTitle": "Start a new scan",
+      "startDesc": "Take a facial photo to analyze your skin condition.",
+      "startBtn": "Start scan",
+      "historyTitle": "Past analyses",
+      "historyDesc": "Review your previous scan results and track changes.",
+      "historyBtn": "View history",
+      "progressTitle": "Skin progress",
+      "progressDesc": "See how your skin has improved over time.",
+      "progressBtn": "View progress"
+    },
+    "scanPrepare": {
+      "title": "Prepare your scan",
+      "subtitle": "Follow these tips for an accurate analysis.",
+      "tipsTitle": "Tips for a good scan",
+      "tip1": "Make sure your face is clean and free of makeup.",
+      "tip2": "Use natural or bright frontal lighting.",
+      "tip3": "Keep your face centered in the frame.",
+      "tip4": "Hold the camera at eye level.",
+      "uploadBtn": "Upload photo",
+      "startBtn": "Start scan",
+      "backBtn": "Go back"
+    },
+    "scanProgress": {
+      "title": "Processing your scan",
+      "subtitle": "Please wait while we analyze your skin.",
+      "failedTitle": "Scan failed",
+      "failedSubtitle": "We could not process your scan. Please try again.",
+      "continueBtn": "Continue",
+      "retryBtn": "Try again",
+      "backBtn": "Go back"
+    },
+    "scanAnalyzing": {
+      "title": "Analyzing your skin...",
+      "subtitle": "Our AI is reviewing your facial scan results.",
+      "backBtn": "Cancel"
+    },
+    "scanResult": {
+      "title": "Your Skin Analysis",
+      "overallScore": "Overall Score",
+      "hydration": "Hydration",
+      "texture": "Texture",
+      "sensitivity": "Sensitivity",
+      "brightness": "Brightness",
+      "diagnosis": "Diagnosis",
+      "saveAndDoneBtn": "Save & Done"
+    },
+    "scanError": {
+      "title": "Something went wrong",
+      "subtitle": "We were unable to complete your skin analysis.",
+      "retryBtn": "Try again",
+      "supportBtn": "Contact support",
+      "backBtn": "Go back"
+    },
+    "pastAnalyses": {
+      "title": "Past Analyses",
+      "scansFound": "scans found",
+      "date": "Date:",
+      "overallScore": "Overall Score:",
+      "noScans": "No analyses found.",
+      "noScansDesc": "You have not completed any skin scans yet. Start your first scan to see results here.",
+      "viewBtn": "View details",
+      "status": {
+        "IN_PROGRESS": "In progress",
+        "COMPLETED": "Completed",
+        "FAILED": "Failed"
+      }
+    },
+    "skinProgress": {
+      "title": "Skin Progress",
+      "subtitle": "Track how your skin has changed over time.",
+      "noData": "No scan data available yet.",
+      "noDataDesc": "Complete at least one skin scan to see your progress.",
+      "streakLabel": "Current Streak",
+      "streakSubtitle": "consecutive days",
+      "adherenceLabel": "Scan Adherence",
+      "adherenceSubtitle": "Last 30 days",
+      "scoreLabel": "Current Score",
+      "scoreSubtitle": "Overall skin health",
+      "improvementLabel": "Score Improvement",
+      "improvementSubtitle": "Since first scan",
+      "routineBtn": "Go to my routine",
+      "backBtn": "Go back"
+    }
   }
 }
 

@@ -329,5 +329,95 @@
       "savedBtn": "Guardado ♡",
       "noProduct": "Ningún producto seleccionado."
     }
+  },
+  "skinAnalysis": {
+    "scanHome": {
+      "title": "Análisis de Piel",
+      "subtitle": "Analiza tu piel y sigue tu progreso a lo largo del tiempo.",
+      "startTitle": "Iniciar nuevo escaneo",
+      "startDesc": "Toma una foto facial para analizar el estado de tu piel.",
+      "startBtn": "Iniciar escaneo",
+      "historyTitle": "Análisis anteriores",
+      "historyDesc": "Revisa tus resultados previos y sigue los cambios.",
+      "historyBtn": "Ver historial",
+      "progressTitle": "Progreso de piel",
+      "progressDesc": "Ve cómo ha mejorado tu piel con el tiempo.",
+      "progressBtn": "Ver progreso"
+    },
+    "scanPrepare": {
+      "title": "Prepara tu escaneo",
+      "subtitle": "Sigue estos consejos para un análisis preciso.",
+      "tipsTitle": "Consejos para un buen escaneo",
+      "tip1": "Asegúrate de que tu cara esté limpia y sin maquillaje.",
+      "tip2": "Usa iluminación natural o frontal brillante.",
+      "tip3": "Mantén tu cara centrada en el encuadre.",
+      "tip4": "Sostén la cámara a la altura de los ojos.",
+      "uploadBtn": "Subir foto",
+      "startBtn": "Iniciar escaneo",
+      "backBtn": "Volver"
+    },
+    "scanProgress": {
+      "title": "Procesando tu escaneo",
+      "subtitle": "Por favor espera mientras analizamos tu piel.",
+      "failedTitle": "Escaneo fallido",
+      "failedSubtitle": "No pudimos procesar tu escaneo. Por favor intenta de nuevo.",
+      "continueBtn": "Continuar",
+      "retryBtn": "Intentar de nuevo",
+      "backBtn": "Volver"
+    },
+    "scanAnalyzing": {
+      "title": "Analizando tu piel...",
+      "subtitle": "Nuestra IA está revisando los resultados de tu escaneo facial.",
+      "backBtn": "Cancelar"
+    },
+    "scanResult": {
+      "title": "Tu Análisis de Piel",
+      "overallScore": "Puntaje General",
+      "hydration": "Hidratación",
+      "texture": "Textura",
+      "sensitivity": "Sensibilidad",
+      "brightness": "Luminosidad",
+      "diagnosis": "Diagnóstico",
+      "viewReport": "Ver reporte completo",
+      "saveReport": "Guardar reporte",
+      "backBtn": "Volver"
+    },
+    "scanError": {
+      "title": "Algo salió mal",
+      "subtitle": "No pudimos completar tu análisis de piel.",
+      "retryBtn": "Intentar de nuevo",
+      "supportBtn": "Contactar soporte",
+      "backBtn": "Volver"
+    },
+    "pastAnalyses": {
+      "title": "Análisis Anteriores",
+      "scansFound": "escaneos encontrados",
+      "date": "Fecha:",
+      "overallScore": "Puntaje General:",
+      "noScans": "No se encontraron análisis.",
+      "noScansDesc": "Aún no has completado ningún escaneo. Inicia tu primer escaneo para ver resultados aquí.",
+      "viewBtn": "Ver detalles",
+      "status": {
+        "IN_PROGRESS": "En progreso",
+        "COMPLETED": "Completado",
+        "FAILED": "Fallido"
+      }
+    },
+    "skinProgress": {
+      "title": "Progreso de Piel",
+      "subtitle": "Sigue cómo ha cambiado tu piel con el tiempo.",
+      "noData": "Aún no hay datos de escaneo.",
+      "noDataDesc": "Completa al menos un escaneo para ver tu progreso.",
+      "streakLabel": "Racha Actual",
+      "streakSubtitle": "días consecutivos",
+      "adherenceLabel": "Adherencia de Escaneo",
+      "adherenceSubtitle": "Últimos 30 días",
+      "scoreLabel": "Puntaje Actual",
+      "scoreSubtitle": "Salud general de la piel",
+      "improvementLabel": "Mejora de Puntaje",
+      "improvementSubtitle": "Desde el primer escaneo",
+      "routineBtn": "Ir a mi rutina",
+      "backBtn": "Volver"
+    }
   }
 }

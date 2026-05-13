@@ -1,0 +1,49 @@
+<div class="scan-prepare">
+
+  <!-- Header -->
+  <div class="scan-prepare__header">
+    <button class="scan-prepare__back-btn" (click)="navigateBack()" aria-label="Go back">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div>
+      <h1 class="scan-prepare__title">{{ 'skinAnalysis.scanPrepare.title' | translate }}</h1>
+      <p class="scan-prepare__subtitle">{{ 'skinAnalysis.scanPrepare.subtitle' | translate }}</p>
+    </div>
+  </div>
+
+  <div class="scan-prepare__divider"></div>
+
+  <!-- Photo preview -->
+  @if (uploadedPhotoUrl()) {
+    <div class="scan-prepare__preview">
+      <img class="scan-prepare__preview-img" [src]="uploadedPhotoUrl()" alt="Uploaded face photo" />
+    </div>
+  }
+
+  <!-- Tips -->
+  <div class="scan-prepare__tips">
+    <p class="scan-prepare__tips-title">{{ 'skinAnalysis.scanPrepare.tipsTitle' | translate }}</p>
+    <ul class="scan-prepare__tips-list">
+      @for (tipKey of tipKeys; track tipKey) {
+        <li class="scan-prepare__tip-item">
+          <mat-icon class="scan-prepare__tip-icon">check_circle</mat-icon>
+          <span>{{ tipKey | translate }}</span>
+        </li>
+      }
+    </ul>
+  </div>
+
+  <!-- Actions -->
+  <div class="scan-prepare__actions">
+    <label class="scan-prepare__upload-btn">
+      <mat-icon>upload</mat-icon>
+      {{ 'skinAnalysis.scanPrepare.uploadBtn' | translate }}
+      <input type="file" accept="image/*" (change)="onUploadPhoto($event)" hidden />
+    </label>
+    <button class="scan-prepare__start-btn" (click)="onStartScan()">
+      <mat-icon>face_retouching_natural</mat-icon>
+      {{ 'skinAnalysis.scanPrepare.startBtn' | translate }}
+    </button>
+  </div>
+
+</div>
