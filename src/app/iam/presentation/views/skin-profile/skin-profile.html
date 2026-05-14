@@ -1,0 +1,154 @@
+<div class="skin-profile">
+
+  <!-- MOBILE -->
+  <div class="skin-profile__mobile">
+    <div class="skin-profile__mobile-header">
+      <button class="skin-profile__back-btn" (click)="onBack()" aria-label="Back">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h1 class="skin-profile__mobile-title">{{ 'iam.skinProfile.title' | translate }}</h1>
+    </div>
+    <p class="skin-profile__mobile-subtitle">{{ 'iam.skinProfile.subtitle' | translate }}</p>
+
+    <div class="skin-profile__mobile-body">
+      <div class="skin-profile__field">
+        <label class="skin-profile__label">{{ 'iam.skinProfile.skinTypeLabel' | translate }}</label>
+        <div class="skin-profile__select-wrap">
+          <select class="skin-profile__select" [ngModel]="skinType()" (ngModelChange)="skinType.set($event)">
+            @for (opt of skinTypeOptions; track opt) {
+              <option [value]="opt">{{ opt }}</option>
+            }
+          </select>
+          <mat-icon class="skin-profile__select-arrow">expand_more</mat-icon>
+        </div>
+      </div>
+
+      <div class="skin-profile__field">
+        <label class="skin-profile__label">{{ 'iam.skinProfile.waterLabel' | translate }}</label>
+        <div class="skin-profile__select-wrap">
+          <select class="skin-profile__select" [ngModel]="waterIntake()" (ngModelChange)="waterIntake.set($event)">
+            @for (opt of waterOptions; track opt) {
+              <option [value]="opt">{{ opt }}</option>
+            }
+          </select>
+          <mat-icon class="skin-profile__select-arrow">expand_more</mat-icon>
+        </div>
+      </div>
+
+      <div class="skin-profile__field">
+        <label class="skin-profile__label">{{ 'iam.skinProfile.sunLabel' | translate }}</label>
+        <div class="skin-profile__select-wrap">
+          <select class="skin-profile__select" [ngModel]="sunExposure()" (ngModelChange)="sunExposure.set($event)">
+            @for (opt of sunOptions; track opt) {
+              <option [value]="opt">{{ opt }}</option>
+            }
+          </select>
+          <mat-icon class="skin-profile__select-arrow">expand_more</mat-icon>
+        </div>
+      </div>
+
+      <div class="skin-profile__field">
+        <label class="skin-profile__label">{{ 'iam.skinProfile.sleepLabel' | translate }}</label>
+        <div class="skin-profile__select-wrap">
+          <select class="skin-profile__select" [ngModel]="sleepHabits()" (ngModelChange)="sleepHabits.set($event)">
+            @for (opt of sleepOptions; track opt) {
+              <option [value]="opt">{{ opt }}</option>
+            }
+          </select>
+          <mat-icon class="skin-profile__select-arrow">expand_more</mat-icon>
+        </div>
+      </div>
+
+      <button
+        class="skin-profile__save-btn"
+        [class.skin-profile__save-btn--success]="saveSuccess()"
+        (click)="onSave()"
+      >
+        @if (saveSuccess()) {
+          {{ 'iam.skinProfile.saved' | translate }}
+        } @else {
+          {{ 'iam.skinProfile.saveChanges' | translate }}
+        }
+      </button>
+    </div>
+  </div>
+
+  <!-- DESKTOP -->
+  <div class="skin-profile__desktop">
+    <div class="skin-profile__desktop-header">
+      <button class="skin-profile__desktop-back" (click)="onBack()" aria-label="Back">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div>
+        <h1 class="skin-profile__desktop-title">{{ 'iam.skinProfile.title' | translate }}</h1>
+        <p class="skin-profile__desktop-subtitle">{{ 'iam.skinProfile.subtitle' | translate }}</p>
+      </div>
+    </div>
+    <div class="skin-profile__desktop-divider"></div>
+
+    <div class="skin-profile__desktop-body">
+      <div class="skin-profile__card">
+        <div class="skin-profile__field">
+          <label class="skin-profile__label">{{ 'iam.skinProfile.skinTypeLabel' | translate }}</label>
+          <div class="skin-profile__select-wrap">
+            <select class="skin-profile__select" [ngModel]="skinType()" (ngModelChange)="skinType.set($event)">
+              @for (opt of skinTypeOptions; track opt) {
+                <option [value]="opt">{{ opt }}</option>
+              }
+            </select>
+            <mat-icon class="skin-profile__select-arrow">expand_more</mat-icon>
+          </div>
+        </div>
+
+        <div class="skin-profile__field">
+          <label class="skin-profile__label">{{ 'iam.skinProfile.waterLabel' | translate }}</label>
+          <div class="skin-profile__select-wrap">
+            <select class="skin-profile__select" [ngModel]="waterIntake()" (ngModelChange)="waterIntake.set($event)">
+              @for (opt of waterOptions; track opt) {
+                <option [value]="opt">{{ opt }}</option>
+              }
+            </select>
+            <mat-icon class="skin-profile__select-arrow">expand_more</mat-icon>
+          </div>
+        </div>
+
+        <div class="skin-profile__field">
+          <label class="skin-profile__label">{{ 'iam.skinProfile.sunLabel' | translate }}</label>
+          <div class="skin-profile__select-wrap">
+            <select class="skin-profile__select" [ngModel]="sunExposure()" (ngModelChange)="sunExposure.set($event)">
+              @for (opt of sunOptions; track opt) {
+                <option [value]="opt">{{ opt }}</option>
+              }
+            </select>
+            <mat-icon class="skin-profile__select-arrow">expand_more</mat-icon>
+          </div>
+        </div>
+
+        <div class="skin-profile__field">
+          <label class="skin-profile__label">{{ 'iam.skinProfile.sleepLabel' | translate }}</label>
+          <div class="skin-profile__select-wrap">
+            <select class="skin-profile__select" [ngModel]="sleepHabits()" (ngModelChange)="sleepHabits.set($event)">
+              @for (opt of sleepOptions; track opt) {
+                <option [value]="opt">{{ opt }}</option>
+              }
+            </select>
+            <mat-icon class="skin-profile__select-arrow">expand_more</mat-icon>
+          </div>
+        </div>
+
+        <button
+          class="skin-profile__save-btn"
+          [class.skin-profile__save-btn--success]="saveSuccess()"
+          (click)="onSave()"
+        >
+          @if (saveSuccess()) {
+            {{ 'iam.skinProfile.saved' | translate }}
+          } @else {
+            {{ 'iam.skinProfile.saveChanges' | translate }}
+          }
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,100 @@
+<div class="scan-prepare">
+
+  <!-- Header -->
+  <div class="scan-prepare__header">
+    <button class="scan-prepare__back-btn" (click)="navigateBack()" aria-label="Go back">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div>
+      <h1 class="scan-prepare__title">{{ 'skinAnalysis.scanPrepare.title' | translate }}</h1>
+      <p class="scan-prepare__subtitle">{{ 'skinAnalysis.scanPrepare.subtitle' | translate }}</p>
+    </div>
+  </div>
+
+  <div class="scan-prepare__divider"></div>
+
+  <!-- Camera preview (live) -->
+  @if (cameraActive()) {
+    <div class="scan-prepare__camera-wrap">
+      <video #videoEl class="scan-prepare__camera-video" autoplay playsinline muted></video>
+      <canvas #canvasEl class="scan-prepare__canvas" hidden></canvas>
+      <div class="scan-prepare__camera-overlay">
+        <div class="scan-prepare__face-guide"></div>
+      </div>
+      <div class="scan-prepare__camera-actions">
+        <button class="scan-prepare__capture-btn" (click)="onCapture()" aria-label="Capture photo">
+          <mat-icon>camera</mat-icon>
+        </button>
+        <button class="scan-prepare__stop-camera-btn" (click)="stopCamera()" aria-label="Close camera">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- Photo preview (uploaded or captured) -->
+  @if (uploadedPhotoUrl() && !cameraActive()) {
+    <div class="scan-prepare__preview">
+      <img class="scan-prepare__preview-img" [src]="uploadedPhotoUrl()" alt="Face photo for scan" />
+    </div>
+  }
+
+  <!-- Camera error -->
+  @if (cameraError()) {
+    <div class="scan-prepare__camera-error">
+      <mat-icon class="scan-prepare__error-icon">videocam_off</mat-icon>
+      <p>{{ 'skinAnalysis.scanPrepare.cameraError' | translate }}</p>
+    </div>
+  }
+
+  <!-- Tips (visible solo cuando no hay foto y no está la cámara activa) -->
+  @if (!cameraActive() && !uploadedPhotoUrl()) {
+    <div class="scan-prepare__tips">
+      <p class="scan-prepare__tips-title">{{ 'skinAnalysis.scanPrepare.tipsTitle' | translate }}</p>
+      <ul class="scan-prepare__tips-list">
+        @for (tipKey of tipKeys; track tipKey) {
+          <li class="scan-prepare__tip-item">
+            <mat-icon class="scan-prepare__tip-icon">check_circle</mat-icon>
+            <span>{{ tipKey | translate }}</span>
+          </li>
+        }
+      </ul>
+    </div>
+  }
+
+  <!-- Initial actions: Camera + Upload (visible cuando no hay foto y no está la cámara activa) -->
+  @if (!cameraActive() && !uploadedPhotoUrl()) {
+    <div class="scan-prepare__actions">
+      <!-- Open camera -->
+      <button class="scan-prepare__camera-btn" (click)="onOpenCamera()">
+        <mat-icon>videocam</mat-icon>
+        {{ 'skinAnalysis.scanPrepare.openCamera' | translate }}
+      </button>
+
+      <!-- Upload from file -->
+      <label class="scan-prepare__upload-btn">
+        <mat-icon>upload</mat-icon>
+        {{ 'skinAnalysis.scanPrepare.uploadBtn' | translate }}
+        <input type="file" accept="image/*" (change)="onUploadPhoto($event)" hidden />
+      </label>
+    </div>
+  }
+
+  <!-- Final actions: Retake + Start scan (visible cuando ya hay foto) -->
+  @if (uploadedPhotoUrl() && !cameraActive()) {
+    <div class="scan-prepare__actions">
+      <!-- Retake photo -->
+      <button class="scan-prepare__retake-photo-btn" (click)="uploadedPhotoUrl.set(null)">
+        <mat-icon>refresh</mat-icon>
+        {{ 'skinAnalysis.scanPrepare.retake' | translate }}
+      </button>
+
+      <!-- Start scan -->
+      <button class="scan-prepare__start-btn" (click)="onStartScan()">
+        <mat-icon>face_retouching_natural</mat-icon>
+        {{ 'skinAnalysis.scanPrepare.startBtn' | translate }}
+      </button>
+    </div>
+  }
+
+</div>

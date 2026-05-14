@@ -1,0 +1,234 @@
+/* ── Desktop sidebar (always visible above 1024px) ── */
+.sidebar {
+  width: 256px;
+  min-width: 256px;
+  height: 100vh;
+  background: #a26769;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0px 12px rgba(0, 0, 0, 0.12);
+  position: relative;
+  z-index: 100;
+}
+
+/* Brand */
+.sidebar__brand {
+  padding: 32px 24px 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebar__logo {
+  width: 36px;
+  height: 36px;
+  background: #cebebe;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sidebar__logo-icon {
+  color: #a26769;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.sidebar__title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.sidebar__subtitle {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 2px 0 0 0;
+}
+
+/* Divider */
+.sidebar__divider {
+  margin: 0 24px 20px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Section label */
+.sidebar__section-label {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0 28px;
+  margin-bottom: 12px;
+}
+
+/* Nav */
+.sidebar__nav {
+  flex: 1;
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sidebar__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  transition: background 0.15s, color 0.15s;
+}
+
+.sidebar__item:hover { background: rgba(255, 255, 255, 0.1); }
+
+.sidebar__item--active {
+  background: #cebebe;
+  color: #5a3a3b;
+  font-weight: 600;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar__item--active .sidebar__icon { color: #a26769; }
+.sidebar__item--active .sidebar__dot { display: block; }
+
+.sidebar__icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.sidebar__label { flex: 1; }
+
+.sidebar__dot {
+  display: none;
+  width: 6px;
+  height: 6px;
+  background: #a26769;
+  border-radius: 50%;
+  margin-left: auto;
+}
+
+/* ── Mobile: hamburger button (only visible on mobile) ── */
+.sidebar__hamburger {
+  display: none;
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 200;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #a26769;
+  border: none;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(162, 103, 105, 0.4);
+  transition: background 0.15s;
+}
+
+.sidebar__hamburger:hover { background: #8e5759; }
+
+.sidebar__hamburger mat-icon {
+  color: #fff;
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+}
+
+/* ── Mobile: drawer overlay ── */
+.sidebar__overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 150;
+  backdrop-filter: blur(2px);
+}
+
+/* ── Mobile breakpoint ── */
+@media (max-width: 1023px) {
+  /* Hide desktop sidebar */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 160;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    width: 280px;
+    min-width: 280px;
+  }
+
+  /* When open */
+  .sidebar--open {
+    transform: translateX(0);
+  }
+
+  /* Show hamburger */
+  .sidebar__hamburger {
+    display: flex;
+  }
+
+  /* Show overlay when open */
+  .sidebar__overlay {
+    display: block;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+
+  .sidebar__overlay--visible {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  /* Close button inside sidebar on mobile */
+  .sidebar__close-btn {
+    display: flex;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+  }
+
+  .sidebar__close-btn:hover { background: rgba(255, 255, 255, 0.25); }
+
+  .sidebar__close-btn mat-icon {
+    color: #fff;
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .sidebar__close-btn { display: none; }
+}

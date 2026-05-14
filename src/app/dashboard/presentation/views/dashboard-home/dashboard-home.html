@@ -1,0 +1,441 @@
+<!-- Dashboard Home View
+     Aggregates data from four bounded context stores:
+     skin-analysis, routine-management, dermatology-care, product-discovery.
+     All displayed values are derived from computed signals in dashboard-home.ts.
+-->
+
+<!-- Loading overlay -->
+@if (isLoading()) {
+  <div class="dashboard__loading" role="status" aria-live="polite">
+    <mat-icon class="dashboard__loading-icon">spa</mat-icon>
+    <p class="dashboard__loading-text">{{ 'dashboard.loading' | translate }}</p>
+  </div>
+}
+
+<!-- Error banner -->
+@if (errorMessage()) {
+  <div class="dashboard__error-banner" role="alert">
+    <mat-icon class="dashboard__error-icon">error_outline</mat-icon>
+    <span>{{ 'dashboard.error' | translate }}</span>
+  </div>
+}
+
+<!-- Main dashboard content -->
+@if (!isLoading()) {
+  <div class="dashboard">
+
+    <!-- ── Top header ──────────────────────────────────────────────────────── -->
+    <header class="dashboard__header">
+      <div class="dashboard__header-left">
+        <h1 class="dashboard__greeting">
+          {{ greetingKey() | translate }}, Sofia 👋
+        </h1>
+        <p class="dashboard__date">
+          {{ formattedToday() }} · {{ 'dashboard.statusLine' | translate }}
+        </p>
+      </div>
+
+      <div class="dashboard__header-right">
+        <button class="dashboard__notification-btn" aria-label="Notifications">
+          <mat-icon>notifications</mat-icon>
+          <span class="dashboard__notification-dot"></span>
+        </button>
+        <div class="dashboard__avatar" aria-label="User profile">S</div>
+      </div>
+    </header>
+
+    <!-- ── Stat cards row ──────────────────────────────────────────────────── -->
+    <section class="dashboard__stats" aria-label="Summary statistics">
+      @for (card of statCards(); track card.titleKey) {
+        <div class="stat-card">
+          <div class="stat-card__header">
+            <span class="stat-card__title">{{ card.titleKey | translate }}</span>
+            <div class="stat-card__icon-wrapper">
+              <mat-icon class="stat-card__icon">{{ card.icon }}</mat-icon>
+            </div>
+          </div>
+          <p class="stat-card__value">{{ card.value }}</p>
+          @if (card.subtitle) {
+            <p class="stat-card__subtitle">{{ card.subtitle }}</p>
+          }
+        </div>
+      }
+    </section>
+
+    <!-- ── Main grid ───────────────────────────────────────────────────────── -->
+    <div class="dashboard__grid">
+
+      <!-- ── Left column ──────────────────────────────────────────────────── -->
+      <div class="dashboard__col dashboard__col--left">
+
+        <!-- Skin Status widget -->
+        <section class="widget" aria-labelledby="skin-status-title">
+          <div class="widget__header">
+            <h2 class="widget__title" id="skin-status-title">
+              {{ 'dashboard.skinStatus.title' | translate }}
+            </h2>
+            <span
+              class="trend-badge"
+              [class]="skinStatusTrendClass()"
+              aria-live="polite"
+            >
+              {{ skinStatusTrendKey() | translate }}
+            </span>
+          </div>
+
+          <div class="skin-status">
+            <!-- Score circle -->
+            <div class="skin-status__score-circle" aria-label="Skin score {{ skinStatusScore() }}">
+              <span class="skin-status__score-number">{{ skinStatusScore() }}</span>
+            </div>
+
+            <!-- Skin type description -->
+            <div class="skin-status__description">
+              <p class="skin-status__type">{{ skinTypeLabel() }}</p>
+              <p class="skin-status__sensitivity">{{ skinSensitivityLabel() }}</p>
+            </div>
+          </div>
+
+          <!-- Score bars -->
+          <div class="skin-metrics" aria-label="Skin metric breakdown">
+
+            <div class="skin-metric">
+              <span class="skin-metric__label">
+                {{ 'dashboard.skinStatus.hydration' | translate }}
+              </span>
+              <div class="skin-metric__bar-track" role="progressbar"
+                   [attr.aria-valuenow]="hydrationScore()"
+                   aria-valuemin="0" aria-valuemax="100">
+                <div
+                  class="skin-metric__bar-fill"
+                  [style.width.%]="hydrationScore()"
+                ></div>
+              </div>
+              <span class="skin-metric__value">{{ hydrationScore() }}%</span>
+            </div>
+
+            <div class="skin-metric">
+              <span class="skin-metric__label">
+                {{ 'dashboard.skinStatus.texture' | translate }}
+              </span>
+              <div class="skin-metric__bar-track" role="progressbar"
+                   [attr.aria-valuenow]="textureScore()"
+                   aria-valuemin="0" aria-valuemax="100">
+                <div
+                  class="skin-metric__bar-fill"
+                  [style.width.%]="textureScore()"
+                ></div>
+              </div>
+              <span class="skin-metric__value">{{ textureScore() }}%</span>
+            </div>
+
+            <div class="skin-metric">
+              <span class="skin-metric__label">
+                {{ 'dashboard.skinStatus.sensitivity' | translate }}
+              </span>
+              <div class="skin-metric__bar-track" role="progressbar"
+                   [attr.aria-valuenow]="sensitivityScore()"
+                   aria-valuemin="0" aria-valuemax="100">
+                <div
+                  class="skin-metric__bar-fill"
+                  [style.width.%]="sensitivityScore()"
+                ></div>
+              </div>
+              <span class="skin-metric__value">{{ sensitivityScore() }}%</span>
+            </div>
+
+            <div class="skin-metric">
+              <span class="skin-metric__label">
+                {{ 'dashboard.skinStatus.brightness' | translate }}
+              </span>
+              <div class="skin-metric__bar-track" role="progressbar"
+                   [attr.aria-valuenow]="brightnessScore()"
+                   aria-valuemin="0" aria-valuemax="100">
+                <div
+                  class="skin-metric__bar-fill"
+                  [style.width.%]="brightnessScore()"
+                ></div>
+              </div>
+              <span class="skin-metric__value">{{ brightnessScore() }}%</span>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Skin Progress widget -->
+        <section class="widget" aria-labelledby="skin-progress-title">
+          <div class="widget__header">
+            <h2 class="widget__title" id="skin-progress-title">
+              {{ 'dashboard.skinProgress.title' | translate }}
+            </h2>
+            <span class="widget__badge">
+              {{ 'dashboard.skinProgress.last30Days' | translate }}
+            </span>
+          </div>
+          <p class="widget__subtitle">
+            {{ 'dashboard.skinProgress.overallScore' | translate }}
+          </p>
+
+          <!-- Bar chart -->
+          <div class="progress-chart" role="img" aria-label="Skin progress chart last 30 days">
+            <div class="progress-chart__bars">
+              @for (bar of skinProgressBars(); track bar.weekLabel) {
+                <div class="progress-chart__column">
+                  <div class="progress-chart__bar-wrapper">
+                    <div
+                      class="progress-chart__bar"
+                      [class.progress-chart__bar--latest]="bar.isLatest"
+                      [style.height.%]="bar.heightPercent"
+                      [attr.aria-label]="bar.weekLabel + ': ' + bar.score"
+                    ></div>
+                  </div>
+                  <span class="progress-chart__label">{{ bar.weekLabel }}</span>
+                </div>
+              }
+            </div>
+          </div>
+        </section>
+
+        <!-- Upcoming Actions widget -->
+        <section class="widget" aria-labelledby="upcoming-actions-title">
+          <h2 class="widget__title" id="upcoming-actions-title">
+            {{ 'dashboard.upcomingActions.title' | translate }}
+          </h2>
+
+          @if (upcomingActions().length === 0) {
+            <p class="widget__empty">
+              {{ 'dashboard.upcomingActions.noActions' | translate }}
+            </p>
+          }
+
+          @for (action of upcomingActions(); track action.route) {
+            <button
+              class="action-item"
+              (click)="navigateToAction(action.route)"
+              [attr.aria-label]="action.label"
+            >
+              <div class="action-item__icon-wrapper" [class]="action.iconColor">
+                <mat-icon class="action-item__icon">{{ action.icon }}</mat-icon>
+              </div>
+              <div class="action-item__content">
+                <p class="action-item__label">{{ action.label }}</p>
+                <p class="action-item__context">{{ action.context }}</p>
+              </div>
+              <mat-icon class="action-item__chevron">chevron_right</mat-icon>
+            </button>
+          }
+        </section>
+
+      </div>
+
+      <!-- ── Center column ─────────────────────────────────────────────────── -->
+      <div class="dashboard__col dashboard__col--center">
+
+        <!-- Today's Routine widget -->
+        <section class="widget" aria-labelledby="todays-routine-title">
+          <div class="widget__header">
+            <div>
+              <h2 class="widget__title" id="todays-routine-title">
+                {{ 'dashboard.todaysRoutine.title' | translate }}
+              </h2>
+              <p class="widget__subtitle">
+                {{ formattedToday() }} ·
+                {{ 'dashboard.todaysRoutine.stepsDone'
+                | translate : {
+                done: completedRoutineItemsToday(),
+                total: todaysRoutineItems().length
+              }
+                }}
+              </p>
+            </div>
+            <button
+              class="widget__action-btn"
+              (click)="goToRoutine()"
+              aria-label="View full routine"
+            >
+              {{ 'dashboard.todaysRoutine.fullRoutine' | translate }}
+            </button>
+          </div>
+
+          <!-- Progress bar -->
+          <div
+            class="routine-progress"
+            role="progressbar"
+            [attr.aria-valuenow]="routineProgressPercent()"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          >
+            <div
+              class="routine-progress__fill"
+              [style.width.%]="routineProgressPercent()"
+            ></div>
+          </div>
+
+          <!-- Routine items list -->
+          @if (!hasActiveRoutine()) {
+            <div class="widget__empty-state">
+              <mat-icon>auto_awesome</mat-icon>
+              <p>{{ 'dashboard.todaysRoutine.noRoutineMessage' | translate }}</p>
+              <button class="widget__action-btn" (click)="goToSkinScan()">
+                {{ 'dashboard.todaysRoutine.noRoutine' | translate }}
+              </button>
+            </div>
+          }
+
+          @for (item of todaysRoutineItems(); track item.id) {
+            <div
+              class="routine-item"
+              [class.routine-item--completed]="completedRoutineItemsToday() > 0"
+            >
+              <div class="routine-item__icon-col">
+                <mat-icon class="routine-item__icon">spa</mat-icon>
+              </div>
+              <div class="routine-item__content">
+                <span class="routine-item__step">
+                  {{ item.order }} · {{ ('routineStep.' + item.step) | translate }}
+                </span>
+                <p class="routine-item__time">{{ item.scheduledTime }}</p>
+              </div>
+              <div class="routine-item__check">
+                @if (completedRoutineItemsToday() > 0) {
+                  <mat-icon class="routine-item__check-icon">check_circle</mat-icon>
+                }
+              </div>
+            </div>
+          }
+        </section>
+
+        <!-- Personalized Recommendations widget -->
+        <section class="widget" aria-labelledby="recommendations-title">
+          <div class="widget__header">
+            <h2 class="widget__title" id="recommendations-title">
+              {{ 'dashboard.recommendations.title' | translate }}
+            </h2>
+            <button
+              class="widget__link-btn"
+              (click)="goToTrending()"
+              aria-label="See all recommendations"
+            >
+              {{ 'dashboard.recommendations.seeAll' | translate }}
+            </button>
+          </div>
+
+          @if (recommendedProducts().length === 0) {
+            <p class="widget__empty">
+              {{ 'dashboard.recommendations.noRecommendations' | translate }}
+            </p>
+          }
+
+          <div class="recommendations-grid">
+            @for (product of recommendedProducts(); track product.id) {
+              <button
+                class="recommendation-card"
+                (click)="goToTrending()"
+                [attr.aria-label]="product.name + ' by ' + product.brand"
+              >
+                <p class="recommendation-card__brand">{{ product.brand }}</p>
+                <p class="recommendation-card__name">{{ product.name }}</p>
+                <div class="recommendation-card__icon-area">
+                  <mat-icon class="recommendation-card__icon">spa</mat-icon>
+                </div>
+              </button>
+            }
+          </div>
+        </section>
+
+      </div>
+
+      <!-- ── Right column ──────────────────────────────────────────────────── -->
+      <div class="dashboard__col dashboard__col--right">
+
+        <!-- AI Assistant widget -->
+        <section class="widget widget--accent" aria-labelledby="ai-assistant-title">
+          <div class="ai-widget__header">
+            <mat-icon class="ai-widget__icon">chat_bubble_outline</mat-icon>
+            <h2 class="ai-widget__title" id="ai-assistant-title">
+              {{ 'dashboard.aiAssistant.title' | translate }}
+            </h2>
+          </div>
+
+          @if (aiAssistantLastMessage()) {
+            <p class="ai-widget__message">"{{ aiAssistantLastMessage() }}"</p>
+          }
+
+          <button
+            class="ai-widget__btn"
+            (click)="goToAiAssistant()"
+            aria-label="Ask AI assistant"
+          >
+            {{ 'dashboard.aiAssistant.askAnything' | translate }}
+          </button>
+        </section>
+
+        <!-- This Week summary widget -->
+        <section class="widget" aria-labelledby="this-week-title">
+          <h2 class="widget__title" id="this-week-title">
+            {{ 'dashboard.thisWeek.title' | translate }}
+          </h2>
+
+          <div class="week-stats">
+            <div class="week-stat">
+              <div class="week-stat__dot week-stat__dot--routine"></div>
+              <span class="week-stat__label">
+                {{ 'dashboard.thisWeek.routineCompleted' | translate }}
+              </span>
+              <span class="week-stat__value">
+                {{ weekRoutineCompletedDays() }}/7
+                {{ 'dashboard.stats.days' | translate }}
+              </span>
+            </div>
+
+            <div class="week-stat">
+              <div class="week-stat__dot week-stat__dot--scans"></div>
+              <span class="week-stat__label">
+                {{ 'dashboard.thisWeek.skinScans' | translate }}
+              </span>
+              <span class="week-stat__value">
+                {{ weekSkinScansCount() }}
+                {{ 'dashboard.thisWeek.skinScans' | translate }}
+              </span>
+            </div>
+
+            <div class="week-stat">
+              <div class="week-stat__dot week-stat__dot--products"></div>
+              <span class="week-stat__label">
+                {{ 'dashboard.thisWeek.productsApplied' | translate }}
+              </span>
+              <span class="week-stat__value">
+                {{ weekProductsAppliedCount() }}
+                {{ 'dashboard.thisWeek.times' | translate }}
+              </span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Skin Scan Due widget -->
+        @if (isSkinScanDue()) {
+          <section class="widget widget--muted" aria-labelledby="scan-due-title">
+            <h2 class="scan-due__title" id="scan-due-title">
+              {{ 'dashboard.skinScanDue.title' | translate }}
+            </h2>
+            <p class="scan-due__message">
+              {{ 'dashboard.skinScanDue.message' | translate }}
+            </p>
+            <div class="scan-due__illustration" aria-hidden="true">
+              <mat-icon class="scan-due__illustration-icon">face</mat-icon>
+            </div>
+            <button
+              class="scan-due__btn"
+              (click)="goToSkinScan()"
+              aria-label="Start skin scan"
+            >
+              {{ 'dashboard.skinScanDue.startScan' | translate }}
+            </button>
+          </section>
+        }
+
+      </div>
+
+    </div>
+  </div>
+}

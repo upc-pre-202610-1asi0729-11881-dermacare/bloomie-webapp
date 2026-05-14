@@ -1,0 +1,28 @@
+.derm-agenda { padding: 32px 40px; background: #fffdf8; min-height: 100%; }
+.derm-agenda__title { font-family: 'Montserrat', sans-serif; font-weight: 300; font-size: 32px; color: #333; margin: 0 0 24px; }
+.derm-agenda__day-strip { display: flex; gap: 8px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 4px; }
+.derm-agenda__day-btn { width: 64px; height: 86px; border-radius: 20px; border: none; background: rgba(162,103,105,0.15); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: background 0.15s; flex-shrink: 0; }
+.derm-agenda__day-btn--today,
+.derm-agenda__day-btn--selected { background: #a26769; box-shadow: 0 4px 8px rgba(162,103,105,0.4); }
+.derm-agenda__day-number { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 28px; color: #a26769; line-height: 1; }
+.derm-agenda__day-btn--today .derm-agenda__day-number,
+.derm-agenda__day-btn--selected .derm-agenda__day-number { color: #fff; }
+.derm-agenda__day-name { font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 13px; color: rgba(162,103,105,0.8); margin-top: 4px; }
+.derm-agenda__day-btn--today .derm-agenda__day-name,
+.derm-agenda__day-btn--selected .derm-agenda__day-name { color: rgba(255,255,255,0.9); }
+.derm-agenda__summary { margin-bottom: 20px; }
+.derm-agenda__summary-title { font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 18px; color: #333; margin: 0 0 4px; }
+.derm-agenda__summary-count { font-family: 'Montserrat', sans-serif; font-size: 13px; color: #999; margin: 0; }
+.derm-agenda__list { background: #ffffff; border-radius: 40px 40px 24px 24px; box-shadow: 0 -2px 16px rgba(0,0,0,0.08); padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+.derm-agenda__item { display: flex; align-items: center; gap: 16px; border-radius: 20px; padding: 16px; background: rgba(162,103,105,0.08); }
+.derm-agenda__item--done { background: rgba(201,230,167,0.4); }
+.derm-agenda__avatar { width: 40px; height: 40px; border-radius: 50%; background: #a26769; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.derm-agenda__avatar mat-icon { color: #fff; font-size: 20px; }
+.derm-agenda__avatar--done { background: #7aaf7a; }
+.derm-agenda__item-info { flex: 1; }
+.derm-agenda__item-time { font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 14px; color: #333; margin: 0 0 2px; }
+.derm-agenda__item-status { font-family: 'Montserrat', sans-serif; font-size: 12px; color: #999; margin: 0; }
+.derm-agenda__start-btn { display: flex; align-items: center; gap: 4px; background: #a26769; color: #fff; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 12px; border: none; border-radius: 16px; padding: 8px 16px; cursor: pointer; transition: background 0.15s; }
+.derm-agenda__start-btn:hover { background: #8e5759; }
+.derm-agenda__done-icon { color: #7aaf7a; font-size: 24px; }
+.derm-agenda__empty { display: flex; flex-direction: column; align-items: center; padding: 48px; gap: 12px; color: #999; }

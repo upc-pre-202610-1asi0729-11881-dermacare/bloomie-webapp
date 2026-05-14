@@ -1,0 +1,52 @@
+<!-- Hamburger button (only shown on mobile, outside the sidebar) -->
+<button class="sidebar__hamburger" (click)="openSidebar()" aria-label="Open menu">
+  <mat-icon>menu</mat-icon>
+</button>
+
+<!-- Overlay (dims content when sidebar is open on mobile) -->
+<div
+  class="sidebar__overlay"
+  [class.sidebar__overlay--visible]="isOpen()"
+  (click)="closeSidebar()"
+></div>
+
+<!-- Sidebar drawer -->
+<div class="sidebar" [class.sidebar--open]="isOpen()">
+
+  <!-- Close button (mobile only) -->
+  <button class="sidebar__close-btn" (click)="closeSidebar()" aria-label="Close menu">
+    <mat-icon>close</mat-icon>
+  </button>
+
+  <!-- Brand -->
+  <div class="sidebar__brand">
+    <div class="sidebar__logo">
+      <mat-icon class="sidebar__logo-icon">spa</mat-icon>
+    </div>
+    <div class="sidebar__brand-text">
+      <h1 class="sidebar__title">Bloomie</h1>
+      <p class="sidebar__subtitle">Your skincare journal</p>
+    </div>
+  </div>
+
+  <div class="sidebar__divider"></div>
+
+  <div class="sidebar__section-label">Main Menu</div>
+
+  <!-- Nav -->
+  <nav class="sidebar__nav">
+    @for (item of navItems; track item.path) {
+      <a
+        class="sidebar__item"
+        [routerLink]="item.path"
+        routerLinkActive="sidebar__item--active"
+        (click)="closeSidebar()"
+      >
+        <mat-icon class="sidebar__icon">{{ item.icon }}</mat-icon>
+        <span class="sidebar__label">{{ item.labelKey | translate }}</span>
+        <span class="sidebar__dot"></span>
+      </a>
+    }
+  </nav>
+
+</div>

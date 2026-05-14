@@ -1,0 +1,360 @@
+.product-detail {
+  padding: 32px 40px;
+  background: #fffdf8;
+  min-height: 100%;
+}
+
+/* ── Empty state ── */
+.product-detail__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80px;
+}
+
+.product-detail__empty-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  color: #cebebe;
+  margin-bottom: 16px;
+}
+
+.product-detail__empty-text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  color: #999;
+  margin: 0;
+}
+
+/* ── Header ── */
+.product-detail__header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.product-detail__back-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid #e0d6d6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+
+.product-detail__back-btn:hover { background: #f5f0f0; }
+
+.product-detail__header-title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  font-size: 32px;
+  color: #333;
+  margin: 0;
+}
+
+.product-detail__header-brand {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  color: #999;
+  margin: 4px 0 0;
+}
+
+.product-detail__favorite-btn {
+  margin-left: auto;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid #e0d6d6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.product-detail__favorite-btn:hover { background: #f5f0f0; }
+
+.product-detail__favorite-btn mat-icon { color: #333; }
+
+.product-detail__favorite-btn--active mat-icon { color: #a26769; }
+
+.product-detail__divider {
+  height: 1px;
+  background: #e8dede;
+  margin-bottom: 32px;
+}
+
+/* ── Content layout ── */
+.product-detail__content {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+}
+
+/* ── Image panel ── */
+.product-detail__image-panel {
+  width: 420px;
+  flex-shrink: 0;
+  border-radius: 28px;
+  background: #cebebe;
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.product-detail__image-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.product-detail__image-icon {
+  font-size: 120px;
+  width: 120px;
+  height: 120px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.product-detail__image-ai-badge {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(4px);
+  border-radius: 999px;
+  padding: 6px 12px;
+}
+
+.product-detail__image-ai-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  color: #a26769;
+}
+
+.product-detail__image-ai-badge span {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  color: #333;
+}
+
+/* ── Details card ── */
+.product-detail__details-card {
+  flex: 1;
+  min-width: 0;
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  padding: 32px;
+}
+
+.product-detail__brand {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: #999;
+  margin: 0 0 4px;
+}
+
+.product-detail__name {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 24px;
+  color: #000;
+  margin: 0 0 16px;
+  line-height: 1.3;
+}
+
+.product-detail__description {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  color: #000;
+  line-height: 1.6;
+  margin: 0 0 24px;
+}
+
+/* ── AI Compatibility ── */
+.product-detail__compatibility {
+  background: linear-gradient(135deg, #f5f0f0, #ede5e5);
+  border: 1px solid #e0d0d0;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.product-detail__compatibility-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.product-detail__compatibility-ai-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  color: #a26769;
+}
+
+.product-detail__compatibility-title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+  margin: 0;
+}
+
+.product-detail__score-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.product-detail__score-bar-track {
+  flex: 1;
+  height: 12px;
+  background: #e0d0d0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.product-detail__score-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+.product-detail__score-value {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  flex-shrink: 0;
+  width: 56px;
+}
+
+.product-detail__score-label {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  margin: 0 0 8px;
+}
+
+.product-detail__compatibility-explanation {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  color: #555;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── Key Benefits ── */
+.product-detail__benefits {
+  margin-bottom: 32px;
+}
+
+.product-detail__benefits-title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  color: #000;
+  margin: 0 0 12px;
+}
+
+.product-detail__benefits-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.product-detail__benefit-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.product-detail__benefit-icon-wrapper {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(206, 190, 190, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.product-detail__benefit-icon {
+  font-size: 14px;
+  width: 14px;
+  height: 14px;
+  color: #a26769;
+}
+
+.product-detail__benefit-text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  color: #000;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ── Action buttons ── */
+.product-detail__actions {
+  display: flex;
+  gap: 16px;
+}
+
+.product-detail__routine-btn {
+  flex: 1;
+  background: #a26769;
+  color: #ffffff;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  border: none;
+  border-radius: 22px;
+  padding: 16px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.product-detail__routine-btn:hover { background: #8e5759; }
+
+.product-detail__save-btn {
+  padding: 16px 24px;
+  border-radius: 22px;
+  border: 2px solid #cebebe;
+  background: transparent;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  color: #a26769;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.product-detail__save-btn:hover { background: rgba(162, 103, 105, 0.05); }
+
+.product-detail__save-btn--active {
+  background: rgba(162, 103, 105, 0.10);
+  border-color: #a26769;
+}

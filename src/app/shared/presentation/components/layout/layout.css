@@ -1,0 +1,49 @@
+.shell {
+  display: flex;
+  height: 100vh;
+  background: #fffdf8;
+}
+
+.shell__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.shell__topbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 16px;
+  height: 56px;
+  background: #fffdf8;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.shell__content {
+  flex: 1;
+  overflow-y: auto;
+  background: #fffdf8;
+
+  .shell__fullscreen {
+    min-height: 100vh;
+    width: 100%;
+    display: block;
+  }
+}
+
+@media (max-width: 1023px) {
+  .shell__body {
+    padding-top: 0;
+  }
+
+  .shell__content {
+    padding-top: 3.5rem; /* Space for the floating hamburger button */
+  }
+
+  /* Hide the topbar language switcher on mobile (space is tight) */
+  .shell__topbar {
+    display: none;
+  }
+}

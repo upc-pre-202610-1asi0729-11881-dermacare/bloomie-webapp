@@ -1,0 +1,34 @@
+<div class="consult-home">
+
+  <!-- Header -->
+  <div class="consult-home__header">
+    <button class="consult-home__back-btn" (click)="navigateBack()" aria-label="Go back">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div class="consult-home__header-text">
+      <h1 class="consult-home__title">{{ 'dermatology.consultHome.title' | translate }}</h1>
+      <p class="consult-home__subtitle">{{ 'dermatology.consultHome.subtitle' | translate }}</p>
+    </div>
+  </div>
+
+  <div class="consult-home__divider"></div>
+
+  <!-- Cards -->
+  <div class="consult-home__cards">
+    @for (card of cards; track card.titleKey) {
+      <div class="consult-home__card">
+        <div class="consult-home__card-icon">
+          <mat-icon>{{ card.icon }}</mat-icon>
+        </div>
+        <div class="consult-home__card-body">
+          <p class="consult-home__card-title">{{ card.titleKey | translate }}</p>
+          <p class="consult-home__card-desc">{{ card.descKey | translate }}</p>
+          <button class="consult-home__card-btn" (click)="card.action()">
+            {{ card.btnKey | translate }}
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+
+</div>

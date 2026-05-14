@@ -1,0 +1,112 @@
+<div class="book-appointment">
+
+  <!-- Header -->
+  <div class="book-appointment__header">
+    <button class="book-appointment__back-btn" (click)="navigateBack()" aria-label="Go back">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1 class="book-appointment__title">{{ 'dermatology.bookAppointment.title' | translate }}</h1>
+  </div>
+
+  <div class="book-appointment__divider"></div>
+
+  <div class="book-appointment__content">
+
+    <!-- Left: Doctor profile -->
+    <div class="book-appointment__profile-section">
+      <div class="book-appointment__profile-card">
+        <div class="book-appointment__profile-avatar">
+          <mat-icon>person</mat-icon>
+        </div>
+        <div class="book-appointment__profile-info">
+          <p class="book-appointment__profile-specialty">
+            {{ store.selectedDermatologist()?.specialty }}
+          </p>
+          <p class="book-appointment__profile-fee">
+            {{ store.selectedDermatologist()?.formattedFee }} {{ 'dermatology.bookAppointment.perSession' | translate }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="book-appointment__stats">
+        <div class="book-appointment__stat">
+          <span class="book-appointment__stat-value">{{ store.selectedDermatologist()?.patientCount }}</span>
+          <span class="book-appointment__stat-label">{{ 'dermatology.bookAppointment.patients' | translate }}</span>
+        </div>
+        <div class="book-appointment__stat">
+          <span class="book-appointment__stat-value">{{ store.selectedDermatologist()?.yearsExperience }}</span>
+          <span class="book-appointment__stat-label">{{ 'dermatology.bookAppointment.yearsExp' | translate }}</span>
+        </div>
+        <div class="book-appointment__stat">
+          <span class="book-appointment__stat-value">{{ store.selectedDermatologist()?.rating }}</span>
+          <span class="book-appointment__stat-label">{{ 'dermatology.bookAppointment.rating' | translate }}</span>
+        </div>
+      </div>
+
+      <!-- About -->
+      <div class="book-appointment__about-card">
+        <p class="book-appointment__section-label">{{ 'dermatology.bookAppointment.aboutDoctor' | translate }}</p>
+        <p class="book-appointment__about-text">
+          {{ 'dermatology.bookAppointment.aboutText' | translate }}
+        </p>
+        <p class="book-appointment__section-label book-appointment__section-label--mt">
+          {{ 'dermatology.bookAppointment.workingTime' | translate }}
+        </p>
+        <p class="book-appointment__working-time">
+          {{ 'dermatology.bookAppointment.workingTimeValue' | translate }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Right: Schedule -->
+    <div class="book-appointment__schedule-card">
+      <p class="book-appointment__schedule-title">{{ 'dermatology.bookAppointment.schedule' | translate }}</p>
+
+      <!-- Day picker -->
+      <div class="book-appointment__day-header">
+        <mat-icon class="book-appointment__chevron">chevron_left</mat-icon>
+        <p class="book-appointment__month-label">{{ 'dermatology.bookAppointment.month' | translate }}</p>
+      </div>
+
+      <div class="book-appointment__days">
+        @for (calDay of calendarDays(); track calDay.day; let i = $index) {
+          <button
+            class="book-appointment__day-btn"
+            [class.book-appointment__day-btn--selected]="selectedDay() === i"
+            (click)="selectDay(i)"
+          >
+            <span class="book-appointment__day-number">{{ calDay.day || i + 1 }}</span>
+            <span class="book-appointment__day-name">{{ calDay.name }}</span>
+          </button>
+        }
+      </div>
+
+      <!-- Time slots -->
+      <p class="book-appointment__section-label">{{ 'dermatology.bookAppointment.availableTimes' | translate }}</p>
+      <div class="book-appointment__time-slots">
+        @for (slot of timeSlots(); track slot) {
+          <button
+            class="book-appointment__time-btn"
+            [class.book-appointment__time-btn--selected]="selectedTime() === slot"
+            (click)="selectTime(slot)"
+          >
+            {{ slot }}
+          </button>
+        }
+        @if (timeSlots().length === 0) {
+          <p class="book-appointment__no-slots">{{ 'dermatology.bookAppointment.noSlots' | translate }}</p>
+        }
+      </div>
+
+      <button
+        class="book-appointment__continue-btn"
+        [disabled]="!selectedTime()"
+        (click)="confirmBooking()"
+      >
+        {{ 'dermatology.bookAppointment.continue' | translate }}
+      </button>
+    </div>
+
+  </div>
+</div>

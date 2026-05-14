@@ -1,0 +1,85 @@
+.scan-analyzing {
+  padding: 32px 40px;
+  background: #fffdf8;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.scan-analyzing__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: center;
+}
+
+.scan-analyzing__icon {
+  font-size: 72px;
+  color: #d4a99a;
+  animation: scan-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes scan-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.6; transform: scale(1.05); }
+}
+
+.scan-analyzing__title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  font-size: 28px;
+  color: #333;
+  margin: 0;
+}
+
+.scan-analyzing__subtitle {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  color: #888;
+  margin: 0;
+  max-width: 400px;
+}
+
+.scan-analyzing__progress-bar {
+  width: 320px;
+  height: 8px;
+  background: #ede8e8;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.scan-analyzing__progress-fill {
+  height: 100%;
+  background: #d4a99a;
+  border-radius: 4px;
+  transition: width 0.08s linear;
+}
+
+.scan-analyzing__percentage {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  color: #d4a99a;
+  margin: 0;
+}
+
+.scan-analyzing__footer {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 16px;
+}
+
+.scan-analyzing__cancel-btn {
+  background: transparent;
+  color: #aaa;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+}

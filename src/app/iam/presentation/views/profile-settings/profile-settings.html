@@ -1,0 +1,131 @@
+<div class="settings">
+
+  <!-- MOBILE -->
+  <div class="settings__mobile">
+    <div class="settings__mobile-header">
+      <button class="settings__back-btn" (click)="onBack()" aria-label="Back">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h1 class="settings__mobile-title">{{ 'iam.settings.title' | translate }}</h1>
+    </div>
+
+    <div class="settings__mobile-body">
+      <div class="settings__card">
+        <!-- Notifications -->
+        <div class="settings__row">
+          <p class="settings__row-label">{{ 'iam.settings.notifications' | translate }}</p>
+          <button class="settings__toggle" [class.settings__toggle--active]="notifications()" (click)="toggleNotifications()">
+            <div class="settings__toggle-thumb"></div>
+            @if (notifications()) {
+              <mat-icon class="settings__toggle-check">check</mat-icon>
+            }
+          </button>
+        </div>
+
+        <!-- Dark Mode -->
+        <div class="settings__row">
+          <p class="settings__row-label">{{ 'iam.settings.darkMode' | translate }}</p>
+          <button class="settings__toggle" [class.settings__toggle--active]="darkMode()" (click)="toggleDarkMode()">
+            <div class="settings__toggle-thumb"></div>
+            @if (darkMode()) {
+              <mat-icon class="settings__toggle-check">check</mat-icon>
+            }
+          </button>
+        </div>
+
+        <!-- Language -->
+        <div class="settings__row settings__row--no-border">
+          <p class="settings__row-label">{{ 'iam.settings.language' | translate }}</p>
+          <div class="settings__lang-group">
+            <button
+              class="settings__lang-btn"
+              [class.settings__lang-btn--active]="language() === 'en'"
+              (click)="selectLanguage('en')"
+            >English</button>
+            <button
+              class="settings__lang-btn"
+              [class.settings__lang-btn--active]="language() === 'es'"
+              (click)="selectLanguage('es')"
+            >Spanish</button>
+          </div>
+        </div>
+      </div>
+
+      <button
+        class="settings__save-btn"
+        [class.settings__save-btn--success]="saveSuccess()"
+        (click)="onSave()"
+      >
+        @if (saveSuccess()) {
+          {{ 'iam.settings.saved' | translate }}
+        } @else {
+          {{ 'iam.settings.saveChanges' | translate }}
+        }
+      </button>
+    </div>
+  </div>
+
+  <!-- DESKTOP -->
+  <div class="settings__desktop">
+    <div class="settings__desktop-header">
+      <button class="settings__desktop-back" (click)="onBack()" aria-label="Back">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h1 class="settings__desktop-title">{{ 'iam.settings.title' | translate }}</h1>
+    </div>
+    <div class="settings__desktop-divider"></div>
+
+    <div class="settings__desktop-body">
+      <div class="settings__card">
+        <div class="settings__row">
+          <p class="settings__row-label">{{ 'iam.settings.notifications' | translate }}</p>
+          <button class="settings__toggle" [class.settings__toggle--active]="notifications()" (click)="toggleNotifications()">
+            <div class="settings__toggle-thumb"></div>
+            @if (notifications()) {
+              <mat-icon class="settings__toggle-check">check</mat-icon>
+            }
+          </button>
+        </div>
+
+        <div class="settings__row">
+          <p class="settings__row-label">{{ 'iam.settings.darkMode' | translate }}</p>
+          <button class="settings__toggle" [class.settings__toggle--active]="darkMode()" (click)="toggleDarkMode()">
+            <div class="settings__toggle-thumb"></div>
+            @if (darkMode()) {
+              <mat-icon class="settings__toggle-check">check</mat-icon>
+            }
+          </button>
+        </div>
+
+        <div class="settings__row settings__row--no-border">
+          <p class="settings__row-label">{{ 'iam.settings.language' | translate }}</p>
+          <div class="settings__lang-group">
+            <button
+              class="settings__lang-btn"
+              [class.settings__lang-btn--active]="language() === 'en'"
+              (click)="selectLanguage('en')"
+            >English</button>
+            <button
+              class="settings__lang-btn"
+              [class.settings__lang-btn--active]="language() === 'es'"
+              (click)="selectLanguage('es')"
+            >Spanish</button>
+          </div>
+        </div>
+      </div>
+
+      <button
+        class="settings__save-btn"
+        [class.settings__save-btn--success]="saveSuccess()"
+        (click)="onSave()"
+      >
+        @if (saveSuccess()) {
+          {{ 'iam.settings.saved' | translate }}
+        } @else {
+          {{ 'iam.settings.saveChanges' | translate }}
+        }
+      </button>
+    </div>
+  </div>
+
+</div>

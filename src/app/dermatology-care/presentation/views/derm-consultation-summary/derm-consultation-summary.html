@@ -1,0 +1,75 @@
+<div class="derm-summary">
+
+  <div class="derm-summary__header">
+    <button class="derm-summary__back-btn" (click)="navigateBack()" aria-label="Go back">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1 class="derm-summary__title">{{ 'dermatology.dermSummary.title' | translate }}</h1>
+  </div>
+  <div class="derm-summary__divider"></div>
+
+  @if (store.selectedConsultation(); as consultation) {
+    <div class="derm-summary__layout">
+
+      <!-- Left -->
+      <div class="derm-summary__left">
+
+        <!-- Green info card -->
+        <div class="derm-summary__info-card">
+          <div class="derm-summary__row">
+            <mat-icon class="derm-summary__row-icon">calendar_today</mat-icon>
+            <span class="derm-summary__row-label">{{ 'dermatology.dermSummary.date' | translate }}</span>
+            <span class="derm-summary__chip">{{ consultation.startedAt }}</span>
+            <span class="derm-summary__chip">{{ consultation.finishedAt }}</span>
+          </div>
+          <div class="derm-summary__row">
+            <mat-icon class="derm-summary__row-icon">timer</mat-icon>
+            <span class="derm-summary__row-label">{{ 'dermatology.dermSummary.duration' | translate }}</span>
+            <span>{{ consultation.durationInMinutes }} min</span>
+          </div>
+
+          @if (consultation.hasClinicalPhotos) {
+            <div class="derm-summary__photos-label">
+              <mat-icon>photo_camera</mat-icon>
+              <span class="derm-summary__row-label">{{ 'dermatology.dermSummary.clinicalPhotos' | translate }}</span>
+            </div>
+            <div class="derm-summary__photos">
+              @for (url of consultation.clinicalPhotoUrls; track url) {
+                <img class="derm-summary__photo" [src]="url" alt="Clinical photo" />
+              }
+            </div>
+          } @else {
+            <div class="derm-summary__no-photos">
+              <mat-icon>hide_image</mat-icon>
+              <span>{{ 'dermatology.dermSummary.noPhotos' | translate }}</span>
+            </div>
+          }
+        </div>
+
+        <!-- Diagnosis card -->
+        <div class="derm-summary__body-card">
+          <p class="derm-summary__section-label">{{ 'dermatology.dermSummary.diagnosis' | translate }}</p>
+          <p class="derm-summary__body-text">{{ consultation.notes }}</p>
+
+          <p class="derm-summary__section-label">{{ 'dermatology.dermSummary.recommendations' | translate }}</p>
+          <p class="derm-summary__body-text">{{ consultation.recommendations }}</p>
+        </div>
+
+      </div>
+
+      <!-- Right: return button -->
+      <div class="derm-summary__right">
+        <button class="derm-summary__return-btn" (click)="navigateBack()">
+          {{ 'dermatology.dermSummary.returnBtn' | translate }}
+        </button>
+      </div>
+
+    </div>
+  } @else {
+    <div class="derm-summary__empty">
+      <mat-icon>info</mat-icon>
+      <p>{{ 'dermatology.dermSummary.noData' | translate }}</p>
+    </div>
+  }
+
+</div>

@@ -1,0 +1,20 @@
+<div class="scan-analyzing">
+
+  <div class="scan-analyzing__content">
+    <mat-icon class="scan-analyzing__icon">face_retouching_natural</mat-icon>
+    <h2 class="scan-analyzing__title">{{ 'skinAnalysis.scanAnalyzing.title' | translate }}</h2>
+    <p class="scan-analyzing__subtitle">{{ 'skinAnalysis.scanAnalyzing.subtitle' | translate }}</p>
+
+    <div class="scan-analyzing__progress-bar">
+      <div class="scan-analyzing__progress-fill" [style.width.%]="progress()"></div>
+    </div>
+    <p class="scan-analyzing__percentage">{{ progress() }}%</p>
+  </div>
+
+  <div class="scan-analyzing__footer">
+    <button class="scan-analyzing__cancel-btn" (click)="navigateBack()">
+      {{ 'skinAnalysis.scanAnalyzing.backBtn' | translate }}
+    </button>
+  </div>
+
+</div>

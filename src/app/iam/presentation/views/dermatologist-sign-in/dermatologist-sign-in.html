@@ -1,0 +1,87 @@
+<div class="derm-sign-in">
+  <div class="derm-sign-in__panel">
+    <button type="button" class="derm-sign-in__back" (click)="onBack()" aria-label="Back">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1 class="derm-sign-in__title">{{ 'iam.dermSignIn.title' | translate }}</h1>
+    <p class="derm-sign-in__tagline">{{ 'iam.dermSignIn.tagline' | translate }}</p>
+  </div>
+
+  <div class="derm-sign-in__form-wrapper">
+    <form class="derm-sign-in__form" [formGroup]="form" (ngSubmit)="onSubmit()">
+
+      <div class="derm-sign-in__form-header">
+        <h2 class="derm-sign-in__form-title">{{ 'iam.dermSignIn.formTitle' | translate }}</h2>
+        <app-language-switcher></app-language-switcher>
+      </div>
+
+      <div class="derm-sign-in__field">
+        <label class="derm-sign-in__label" for="derm-email">
+          {{ 'iam.dermSignIn.emailLabel' | translate }}
+        </label>
+        <input
+          id="derm-email"
+          type="email"
+          class="derm-sign-in__input"
+          formControlName="email"
+          [placeholder]="'iam.dermSignIn.emailPlaceholder' | translate"
+          autocomplete="email"
+        />
+        @if (submitted() && form.get('email')?.hasError('required')) {
+          <p class="derm-sign-in__error">{{ 'iam.dermSignIn.errors.emailRequired' | translate }}</p>
+        }
+        @if (submitted() && form.get('email')?.hasError('email')) {
+          <p class="derm-sign-in__error">{{ 'iam.dermSignIn.errors.emailInvalid' | translate }}</p>
+        }
+      </div>
+
+      <div class="derm-sign-in__field">
+        <label class="derm-sign-in__label" for="derm-password">
+          {{ 'iam.dermSignIn.passwordLabel' | translate }}
+        </label>
+        <div class="derm-sign-in__password-wrapper">
+          <input
+            id="derm-password"
+            [type]="showPassword() ? 'text' : 'password'"
+            class="derm-sign-in__input"
+            formControlName="password"
+            placeholder="••••••••"
+            autocomplete="current-password"
+          />
+          <button
+            type="button"
+            class="derm-sign-in__password-toggle"
+            (click)="togglePasswordVisibility()"
+            [attr.aria-label]="'iam.dermSignIn.togglePassword' | translate"
+          >
+            @if (showPassword()) {
+              <mat-icon>visibility_off</mat-icon>
+            } @else {
+              <mat-icon>visibility</mat-icon>
+            }
+          </button>
+        </div>
+        @if (submitted() && form.get('password')?.hasError('required')) {
+          <p class="derm-sign-in__error">{{ 'iam.dermSignIn.errors.passwordRequired' | translate }}</p>
+        }
+        @if (submitted() && form.get('password')?.hasError('minlength')) {
+          <p class="derm-sign-in__error">{{ 'iam.dermSignIn.errors.passwordTooShort' | translate }}</p>
+        }
+      </div>
+
+      @if (iamStore.error()) {
+        <div class="derm-sign-in__banner" role="alert">
+          {{ iamStore.error() }}
+        </div>
+      }
+
+      <button type="submit" class="derm-sign-in__submit" [disabled]="iamStore.loading()">
+        @if (iamStore.loading()) {
+          {{ 'iam.dermSignIn.loadingButton' | translate }}
+        } @else {
+          {{ 'iam.dermSignIn.submitButton' | translate }}
+        }
+      </button>
+    </form>
+  </div>
+</div>

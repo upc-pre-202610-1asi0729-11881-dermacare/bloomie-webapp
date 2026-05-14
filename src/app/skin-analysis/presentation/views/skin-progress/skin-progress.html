@@ -1,0 +1,78 @@
+<div class="skin-progress">
+
+  <!-- Header -->
+  <div class="skin-progress__header">
+    <button class="skin-progress__back-btn" (click)="navigateBack()" aria-label="Go back">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div>
+      <h1 class="skin-progress__title">{{ 'skinAnalysis.skinProgress.title' | translate }}</h1>
+      <p class="skin-progress__subtitle">{{ 'skinAnalysis.skinProgress.subtitle' | translate }}</p>
+    </div>
+  </div>
+
+  <div class="skin-progress__divider"></div>
+
+  @if (!hasData) {
+    <!-- Empty state -->
+    <div class="skin-progress__empty">
+      <mat-icon class="skin-progress__empty-icon">insights</mat-icon>
+      <p class="skin-progress__empty-text">{{ 'skinAnalysis.skinProgress.noData' | translate }}</p>
+      <p class="skin-progress__empty-desc">{{ 'skinAnalysis.skinProgress.noDataDesc' | translate }}</p>
+    </div>
+  } @else {
+    <!-- Metric cards -->
+    <div class="skin-progress__metrics">
+
+      <div class="skin-progress__metric-card">
+        <mat-icon class="skin-progress__metric-icon">local_fire_department</mat-icon>
+        <div class="skin-progress__metric-body">
+          <p class="skin-progress__metric-value">{{ store.currentStreak() }}</p>
+          <p class="skin-progress__metric-label">{{ 'skinAnalysis.skinProgress.streakLabel' | translate }}</p>
+          <p class="skin-progress__metric-sublabel">{{ 'skinAnalysis.skinProgress.streakSubtitle' | translate }}</p>
+        </div>
+      </div>
+
+      <div class="skin-progress__metric-card">
+        <mat-icon class="skin-progress__metric-icon">event_available</mat-icon>
+        <div class="skin-progress__metric-body">
+          <p class="skin-progress__metric-value">{{ store.adherenceRate() }}%</p>
+          <p class="skin-progress__metric-label">{{ 'skinAnalysis.skinProgress.adherenceLabel' | translate }}</p>
+          <p class="skin-progress__metric-sublabel">{{ 'skinAnalysis.skinProgress.adherenceSubtitle' | translate }}</p>
+        </div>
+      </div>
+
+      <div class="skin-progress__metric-card">
+        <mat-icon class="skin-progress__metric-icon">favorite</mat-icon>
+        <div class="skin-progress__metric-body">
+          <p class="skin-progress__metric-value">{{ store.latestCompletedScan()?.overallScore ?? 0 }}</p>
+          <p class="skin-progress__metric-label">{{ 'skinAnalysis.skinProgress.scoreLabel' | translate }}</p>
+          <p class="skin-progress__metric-sublabel">{{ 'skinAnalysis.skinProgress.scoreSubtitle' | translate }}</p>
+        </div>
+      </div>
+
+      <div class="skin-progress__metric-card"
+           [class.skin-progress__metric-card--positive]="store.overallScoreImprovement() > 0"
+           [class.skin-progress__metric-card--negative]="store.overallScoreImprovement() < 0">
+        <mat-icon class="skin-progress__metric-icon">trending_up</mat-icon>
+        <div class="skin-progress__metric-body">
+          <p class="skin-progress__metric-value">
+            {{ store.overallScoreImprovement() > 0 ? '+' : '' }}{{ store.overallScoreImprovement() }}
+          </p>
+          <p class="skin-progress__metric-label">{{ 'skinAnalysis.skinProgress.improvementLabel' | translate }}</p>
+          <p class="skin-progress__metric-sublabel">{{ 'skinAnalysis.skinProgress.improvementSubtitle' | translate }}</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Routine CTA -->
+    <div class="skin-progress__cta">
+      <button class="skin-progress__routine-btn" (click)="onNavigateToRoutine()">
+        <mat-icon>spa</mat-icon>
+        {{ 'skinAnalysis.skinProgress.routineBtn' | translate }}
+      </button>
+    </div>
+  }
+
+</div>

@@ -1,0 +1,694 @@
+{
+  "nav": {
+    "dashboard": "Inicio",
+    "aiAssistant": "Asistente IA",
+    "appointments": "Citas",
+    "myRoutine": "Mi Rutina",
+    "skinScan": "Análisis de Piel",
+    "trending": "Tendencias",
+    "profile": "Perfil"
+  },
+  "dashboard": {
+    "greeting": {
+      "morning": "Buenos días",
+      "afternoon": "Buenas tardes",
+      "evening": "Buenas noches"
+    },
+    "statusLine": "Tu piel está mejorando",
+    "stats": {
+      "skinHealthScore": "Puntaje de Salud",
+      "routineStreak": "Racha de Rutina",
+      "nextAppointment": "Próxima Cita",
+      "productsInRoutine": "Productos en Rutina",
+      "days": "días",
+      "steps": "pasos",
+      "thisWeek": "+{{value}} esta semana",
+      "keepItUp": "¡Sigue así!",
+      "lastUpdatedToday": "Actualizado hoy",
+      "noAppointment": "Sin próximas"
+    },
+    "skinStatus": {
+      "title": "Estado de Piel",
+      "improving": "Mejorando",
+      "stable": "Estable",
+      "declining": "Declinando",
+      "hydration": "Hidratación",
+      "texture": "Textura",
+      "sensitivity": "Sensibilidad",
+      "brightness": "Luminosidad",
+      "skinTypes": {
+        "NORMAL": "Normal",
+        "DRY": "Seca",
+        "OILY": "Grasa",
+        "COMBINATION": "Mixta",
+        "SENSITIVE": "Sensible",
+        "NORMAL_DRY": "Normal a Seca"
+      },
+      "sensitivity_levels": {
+        "LOW": "con baja sensibilidad",
+        "MEDIUM": "con sensibilidad moderada",
+        "HIGH": "con alta sensibilidad"
+      }
+    },
+    "skinProgress": {
+      "title": "Progreso de Piel",
+      "last30Days": "Últimos 30 días",
+      "overallScore": "Puntaje general de salud a lo largo del tiempo",
+      "weeks": {
+        "w1": "S1",
+        "w2": "S2",
+        "w3": "S3",
+        "w4": "S4"
+      }
+    },
+    "todaysRoutine": {
+      "title": "Rutina de Hoy",
+      "stepsDone": "{{done}}/{{total}} pasos completados",
+      "fullRoutine": "Rutina completa",
+      "noRoutine": "Sin rutina activa",
+      "noRoutineMessage": "Inicia un análisis de piel para obtener tu rutina personalizada."
+    },
+    "upcomingActions": {
+      "title": "Próximas Acciones",
+      "weeklySkiScan": "Análisis Semanal de Piel",
+      "dueInDays": "Vence en {{days}} días",
+      "dueToday": "Vence hoy",
+      "overdue": "Vencido",
+      "updateRoutine": "Actualizar Rutina",
+      "newAiSuggestion": "Nueva sugerencia de IA",
+      "noActions": "Sin próximas acciones"
+    },
+    "recommendations": {
+      "title": "Recomendaciones Personalizadas",
+      "seeAll": "Ver todo",
+      "aiRecommended": "Recomendado por IA",
+      "noRecommendations": "Aún sin recomendaciones"
+    },
+    "thisWeek": {
+      "title": "Esta Semana",
+      "routineCompleted": "Rutina completada",
+      "skinScans": "Análisis de piel",
+      "productsApplied": "Productos aplicados",
+      "times": "veces"
+    },
+    "skinScanDue": {
+      "title": "Análisis Pendiente",
+      "message": "Tu análisis semanal está listo. Evalúa el progreso de tu piel.",
+      "startScan": "Iniciar análisis"
+    },
+    "aiAssistant": {
+      "title": "Asistente IA",
+      "askAnything": "Pregúntale a la IA →",
+      "tipHydration": "Tu piel necesita más hidratación. Intenta agregar un sérum de ácido hialurónico a tu rutina.",
+      "tipBrightness": "Tu puntaje de luminosidad es bajo. Un sérum de vitamina C puede ayudarte a unificar el tono.",
+      "tipTexture": "La textura de tu piel necesita atención. Un exfoliante suave 2 veces por semana puede ayudar.",
+      "tipSensitivity": "Tu piel muestra alta sensibilidad. Usa productos suaves y sin fragancia esta semana."
+    },
+    "loading": "Cargando dashboard...",
+    "error": "No se pudieron cargar los datos del dashboard."
+  },
+  "routineStep": {
+    "CLEANSE": "Limpieza",
+    "ESSENCE": "Esencia",
+    "TONER": "Tónico",
+    "MOISTURIZER": "Hidratante",
+    "SUNSCREEN": "Protector solar",
+    "SERUM": "Sérum"
+  },
+  "derm": {
+    "nav": {
+      "agenda": "Agenda",
+      "pastConsultations": "Consultas Pasadas",
+      "profile": "Perfil"
+    }
+  },
+  "dermatology": {
+    "consultHome": {
+      "title": "Consulta con un dermatólogo",
+      "subtitle": "Gestiona tus citas y recomendaciones fácilmente.",
+      "bookTitle": "Reservar nueva cita",
+      "bookDesc": "Agenda una consulta online con uno de nuestros especialistas.",
+      "bookBtn": "Reservar ahora",
+      "pastTitle": "Ver consultas pasadas",
+      "pastDesc": "Revisa tus sesiones anteriores y recomendaciones.",
+      "pastBtn": "Ver consulta",
+      "scheduledTitle": "Tus citas programadas",
+      "scheduledDesc": "Mira, gestiona y cancela tus próximas citas.",
+      "scheduledBtn": "Ver citas"
+    },
+    "selectDoctor": {
+      "title": "Selecciona un dermatólogo",
+      "searchPlaceholder": "Buscar por especialidad...",
+      "perSession": "por sesión",
+      "yearsExp": "años de exp.",
+      "bookBtn": "Reservar cita",
+      "filterByPrice": "Filtrar por precio",
+      "allPrices": "Todos los precios",
+      "under30": "Menos de $30",
+      "range3035": "$30 – $35",
+      "over35": "Más de $35",
+      "noSpecialists": "Sin especialistas disponibles",
+      "noSpecialistsDesc": "No hay dermatólogos que coincidan con tu búsqueda en este momento. Intenta ajustar los filtros o vuelve más tarde."
+    },
+    "bookAppointment": {
+      "title": "Reservar cita",
+      "perSession": "por sesión",
+      "patients": "Pacientes",
+      "yearsExp": "Años Exp",
+      "rating": "Calificación",
+      "aboutDoctor": "Sobre el Doctor",
+      "aboutText": "Dermatólogo certificado especializado en tratamientos personalizados de cuidado de la piel.",
+      "workingTime": "Horario de Atención",
+      "workingTimeValue": "Lunes – Viernes, 9:00 – 18:00",
+      "schedule": "Horario",
+      "month": "Octubre 2026",
+      "availableTimes": "Horarios Disponibles",
+      "noSlots": "No hay horarios disponibles para este día.",
+      "continue": "Continuar"
+    },
+    "payment": {
+      "title": "Método de pago",
+      "chooseMethod": "Elige cómo deseas pagar",
+      "enterDetails": "Ingresa los datos de tu tarjeta",
+      "selectMethod": "Selecciona tu método de pago",
+      "creditDebit": "Tarjeta de crédito / débito",
+      "digitalWallets": "Billeteras digitales",
+      "creditCard": "Tarjeta de crédito",
+      "debitCard": "Tarjeta de débito",
+      "googlePay": "Google Pay",
+      "yape": "Yape",
+      "add": "Agregar",
+      "cardholderName": "Nombre del titular",
+      "cardholderPlaceholder": "Sofia Mendez",
+      "cardNumber": "Número de tarjeta",
+      "expirationDate": "Fecha de vencimiento",
+      "cvv": "CVV",
+      "securityNote": "Tu información de pago está cifrada y segura",
+      "payNow": "Pagar ahora",
+      "errorMessage": "Pago fallido. Verifica los datos de tu tarjeta e intenta nuevamente.",
+      "confirmationTitle": "¡Pago confirmado!",
+      "confirmationDesc": "Tu cita ha sido reservada exitosamente. Recibirás una confirmación en breve.",
+      "confirmationSpecialist": "Especialista",
+      "confirmationFee": "Monto pagado",
+      "goToAppointments": "Ver mis citas"
+    },
+    "virtualCall": {
+      "doctorLabel": "Doctor/a",
+      "youLabel": "Tú",
+      "chatTitle": "Chat",
+      "inputPlaceholder": "Escribe un mensaje...",
+      "endCallTitle": "¿Finalizar consulta?",
+      "endCallDesc": "¿Estás seguro de que deseas finalizar esta consulta?",
+      "stayBtn": "Permanecer",
+      "endBtn": "Finalizar llamada"
+    },
+    "dermCall": {
+      "patientLabel": "Paciente",
+      "youLabel": "Tú (Dra.)",
+      "chatTab": "Chat",
+      "notesTab": "Notas",
+      "clinicalNotes": "Notas clínicas",
+      "inputPlaceholder": "Escribe un mensaje...",
+      "endCallTitle": "¿Finalizar consulta?",
+      "endCallDesc": "La consulta será marcada como completada.",
+      "stayBtn": "Permanecer",
+      "endBtn": "Finalizar consulta"
+    },
+    "scheduledAppointments": {
+      "title": "Tus Citas Programadas",
+      "activeLabel": "citas activas",
+      "noAppointments": "No tienes citas programadas aún.",
+      "cancelBtn": "Cancelar cita",
+      "joinNow": "Unirse ahora",
+      "startCall": "Iniciar llamada",
+      "cancelledNotice": "Esta cita ha sido cancelada",
+      "status": {
+        "SCHEDULED": "Programada",
+        "CONFIRMED": "Confirmada",
+        "IN_PROGRESS": "En progreso",
+        "COMPLETED": "Completada",
+        "CANCELLED": "Cancelada"
+      }
+    },
+    "cancelAppointment": {
+      "title": "Cancelar esta cita",
+      "policyText": "Entendemos que los planes pueden cambiar. Cancelar o faltar a muchas citas puede restringir temporalmente tu cuenta.",
+      "prompt": "¿Cuál es el motivo de tu cancelación?",
+      "confirmBtn": "Continuar cancelación",
+      "keepBtn": "Mantener cita",
+      "rebookBtn": "Reservar nueva cita",
+      "homeBtn": "Ir al inicio",
+      "successTitle": "Cita cancelada",
+      "successDesc": "Tu cita ha sido cancelada exitosamente.",
+      "reason": {
+        "scheduleConflict": "Tengo un conflicto de horario",
+        "foundOther": "Encontré otro dermatólogo disponible antes",
+        "platformIssue": "Tuve un problema con la plataforma o conexión",
+        "mistakenBooking": "La consulta fue reservada por error",
+        "noLongerNeeded": "Ya no necesito esta cita",
+        "other": "Otro motivo"
+      }
+    },
+    "selectConsultation": {
+      "title": "Consultas Pasadas",
+      "found": "consultas encontradas",
+      "date": "Fecha:",
+      "status": "Estado:",
+      "noConsultations": "No se encontraron consultas.",
+      "viewDetails": "Ver detalles",
+      "rebook": "Volver a reservar",
+      "statusValue": {
+        "COMPLETED": "Completada",
+        "CANCELLED": "Cancelada",
+        "PENDING": "Pendiente",
+        "IN_PROGRESS": "En progreso"
+      }
+    },
+    "consultationSummary": {
+      "title": "Resumen de Consulta",
+      "date": "Fecha:",
+      "doctor": "Nombre del doctor:",
+      "uploadedImages": "Imágenes de la consulta:",
+      "diagnosis": "Diagnóstico",
+      "recommendations": "Recomendaciones del doctor",
+      "duration": "Duración",
+      "returnBtn": "Volver a Consultas",
+      "noData": "No hay consulta seleccionada."
+    },
+    "dermAgenda": {
+      "title": "Mi Agenda",
+      "dayLabel": "Viernes, 24 de Abril",
+      "consultations": "consultas",
+      "completed": "completadas",
+      "noAppointments": "No hay citas para hoy.",
+      "startCall": "Iniciar llamada"
+    },
+    "dermPastConsultations": {
+      "title": "Consultas Pasadas",
+      "searchPlaceholder": "Buscar por paciente, tipo o fecha...",
+      "date": "Fecha:",
+      "diagnosis": "Diagnóstico",
+      "photos": "fotos",
+      "noPhotos": "Sin fotos",
+      "noResults": "No se encontraron consultas.",
+      "viewBtn": "Ver detalles"
+    },
+    "dermSummary": {
+      "title": "Resumen de Consulta",
+      "date": "Fecha:",
+      "duration": "Duración",
+      "clinicalPhotos": "Fotos clínicas:",
+      "noPhotos": "Sin fotos cargadas",
+      "diagnosis": "Diagnóstico",
+      "recommendations": "Recomendaciones",
+      "returnBtn": "Volver",
+      "noData": "No hay consulta seleccionada."
+    },
+    "dermAvailability": {
+      "title": "Mi Disponibilidad",
+      "workingDays": "Días de Atención",
+      "workingHours": "Horario de Atención",
+      "startTime": "Hora de Inicio",
+      "endTime": "Hora de Fin",
+      "slotDuration": "Duración de Cita",
+      "min": "min",
+      "active": "Activo",
+      "saveBtn": "Guardar disponibilidad",
+      "savedSuccess": "Disponibilidad guardada exitosamente.",
+      "days": {
+        "monday": "Lunes",
+        "tuesday": "Martes",
+        "wednesday": "Miércoles",
+        "thursday": "Jueves",
+        "friday": "Viernes",
+        "saturday": "Sábado",
+        "sunday": "Domingo"
+      }
+    }
+  },
+  "intelligentSupport": {
+    "chat": {
+      "title": "¡Pregúntame lo que quieras!",
+      "subtitle": "Asistente de cuidado de piel Bloomie IA",
+      "inputPlaceholder": "Escribe tu pregunta aquí...",
+      "faqTitle": "Preguntas frecuentes",
+      "faq": {
+        "preventInjury": "¿Qué puedo hacer para proteger mi piel de lesiones?",
+        "faceMask": "¿Con qué frecuencia debo usar una mascarilla facial?",
+        "oilySkin": "¿Cuál es la mejor rutina para la piel grasa?"
+      },
+      "limitation": {
+        "title": "Limitación de la IA",
+        "description": "Esta pregunta requiere evaluación profesional. Reserva una consulta con un dermatólogo.",
+        "bookBtn": "Reservar con especialista"
+      },
+      "reminder": {
+        "title": "Recordatorio",
+        "description": "Este asistente de IA ofrece información general sobre el cuidado de la piel. Para consejo médico, consulta a un dermatólogo."
+      }
+    }
+  },
+  "routine": {
+    "productList": {
+      "title": "Mi Rutina de Cuidado",
+      "previousMonth": "Mes anterior",
+      "nextMonth": "Mes siguiente",
+      "stepsLabel": "pasos en tu rutina",
+      "completed": "Rutina completada",
+      "markDone": "Marcar como hecha",
+      "loading": "Cargando rutina...",
+      "empty": "No hay productos en la rutina.",
+      "productLabel": "Producto",
+      "orderLabel": "Orden del paso",
+      "replaceBtn": "Reemplazar Producto",
+      "streakLabel": "Racha de Rutina",
+      "streakSubtitle": "días esta semana",
+      "completionLabel": "Cumplimiento (30 días)",
+      "completionSubtitle": "Basado en los últimos 30 días"
+    },
+    "productReplacement": {
+      "title": "Reemplazar Producto",
+      "subtitle": "Selecciona una alternativa compatible para tu rutina",
+      "back": "Volver",
+      "currentLabel": "Actualmente en tu rutina",
+      "productLabel": "Producto",
+      "alternativesTitle": "Alternativas Compatibles",
+      "alternativesSubtitle": "Ordenadas por compatibilidad con tu perfil de piel",
+      "bestMatch": "Mejor Opción",
+      "alternativeProduct": "Alternativa",
+      "continueBtn": "Continuar con la Selección",
+      "howWeRankTitle": "Cómo clasificamos",
+      "howWeRankText": "Los productos se clasifican por compatibilidad con tu tipo de piel, rutina actual y preocupaciones identificadas.",
+      "compatibilityGuide": "Guía de Compatibilidad",
+      "compatibility": {
+        "excellent": "Excelente Compatibilidad",
+        "good": "Buena Compatibilidad",
+        "fair": "Compatibilidad Regular"
+      }
+    },
+    "replaceConfirmation": {
+      "title": "Confirmar Reemplazo",
+      "subtitle": "Revisa el cambio de producto antes de confirmar",
+      "back": "Volver",
+      "swapTitle": "Cambio de Producto",
+      "removing": "Eliminando",
+      "adding": "Agregando",
+      "product": "Producto",
+      "compatibleWith": "compatible con tu rutina",
+      "notice": "Este cambio actualizará tu rutina de inmediato. Siempre puedes revertirlo seleccionando el producto original nuevamente.",
+      "confirmBtn": "Confirmar Reemplazo",
+      "cancelBtn": "Volver",
+      "scoreLabel": "Puntuación de Compatibilidad",
+      "compatibility": {
+        "excellent": "¡Excelente Compatibilidad!",
+        "good": "Buena Compatibilidad",
+        "fair": "Compatibilidad Regular"
+      },
+      "tipTitle": "Consejo Rápido",
+      "tipText": "Introduce el nuevo producto gradualmente — pruébalo cada dos días la primera semana para verificar la reacción de tu piel."
+    }
+  },
+  "productDiscovery": {
+    "trendingItems": {
+      "title": "Tendencias",
+      "productsLabel": "productos",
+      "searchPlaceholder": "Busca un producto o marca...",
+      "tabAll": "Todos los productos",
+      "tabFavorites": "Favoritos",
+      "aiRecommended": "Recomendado por IA",
+      "aiOnly": "Solo IA",
+      "noProducts": "Ningún producto coincide con tu búsqueda.",
+      "filterTitle": "Filtrar productos",
+      "filterByCategory": "Filtrar por categoría",
+      "filterByAi": "Filtrar por recomendación IA",
+      "aiOnlyOption": "Solo recomendados por IA",
+      "showAllOption": "Mostrar todos los productos",
+      "applyFilters": "Aplicar filtros",
+      "clearAll": "Limpiar todo"
+    },
+    "productDetail": {
+      "title": "Detalle del producto",
+      "aiRecommended": "Recomendado por IA",
+      "aiCompatibilityTitle": "Compatibilidad de piel IA",
+      "keyBenefits": "Beneficios clave",
+      "addToRoutineBtn": "Añadir a mi rutina",
+      "saveBtn": "Guardar",
+      "savedBtn": "Guardado ♡",
+      "noProduct": "Ningún producto seleccionado."
+    }
+  },
+  "skinAnalysis": {
+    "scanHome": {
+      "title": "Análisis de Piel",
+      "subtitle": "Analiza tu piel y sigue tu progreso a lo largo del tiempo.",
+      "startTitle": "Iniciar nuevo escaneo",
+      "startDesc": "Toma una foto facial para analizar el estado de tu piel.",
+      "startBtn": "Iniciar escaneo",
+      "historyTitle": "Análisis anteriores",
+      "historyDesc": "Revisa tus resultados previos y sigue los cambios.",
+      "historyBtn": "Ver historial",
+      "progressTitle": "Progreso de piel",
+      "progressDesc": "Ve cómo ha mejorado tu piel con el tiempo.",
+      "progressBtn": "Ver progreso"
+    },
+    "scanPrepare": {
+      "title": "Prepara tu escaneo",
+      "subtitle": "Sigue estos consejos para un análisis preciso.",
+      "tipsTitle": "Consejos para un buen escaneo",
+      "tip1": "Asegúrate de que tu cara esté limpia y sin maquillaje.",
+      "tip2": "Usa iluminación natural o frontal brillante.",
+      "tip3": "Mantén tu cara centrada en el encuadre.",
+      "tip4": "Sostén la cámara a la altura de los ojos.",
+      "uploadBtn": "Subir foto",
+      "startBtn": "Iniciar escaneo",
+      "backBtn": "Volver",
+      "openCamera": "Abrir Cámara",
+      "retake": "Retomar",
+      "cameraError": "Acceso a la cámara denegado. Permite los permisos de cámara o sube una foto."
+    },
+    "scanProgress": {
+      "title": "Procesando tu escaneo",
+      "subtitle": "Por favor espera mientras analizamos tu piel.",
+      "failedTitle": "Escaneo fallido",
+      "failedSubtitle": "No pudimos procesar tu escaneo. Por favor intenta de nuevo.",
+      "continueBtn": "Continuar",
+      "retryBtn": "Intentar de nuevo",
+      "backBtn": "Volver"
+    },
+    "scanAnalyzing": {
+      "title": "Analizando tu piel...",
+      "subtitle": "Nuestra IA está revisando los resultados de tu escaneo facial.",
+      "backBtn": "Cancelar"
+    },
+    "scanResult": {
+      "title": "Tu Análisis de Piel",
+      "overallScore": "Puntaje General",
+      "hydration": "Hidratación",
+      "texture": "Textura",
+      "sensitivity": "Sensibilidad",
+      "brightness": "Luminosidad",
+      "diagnosis": "Diagnóstico",
+      "viewReport": "Ver reporte completo",
+      "saveReport": "Guardar reporte",
+      "backBtn": "Volver"
+    },
+    "scanError": {
+      "title": "Algo salió mal",
+      "subtitle": "No pudimos completar tu análisis de piel.",
+      "retryBtn": "Intentar de nuevo",
+      "supportBtn": "Contactar soporte",
+      "backBtn": "Volver"
+    },
+    "pastAnalyses": {
+      "title": "Análisis Anteriores",
+      "scansFound": "escaneos encontrados",
+      "date": "Fecha:",
+      "overallScore": "Puntaje General:",
+      "noScans": "No se encontraron análisis.",
+      "noScansDesc": "Aún no has completado ningún escaneo. Inicia tu primer escaneo para ver resultados aquí.",
+      "viewBtn": "Ver detalles",
+      "status": {
+        "IN_PROGRESS": "En progreso",
+        "COMPLETED": "Completado",
+        "FAILED": "Fallido"
+      }
+    },
+    "skinProgress": {
+      "title": "Progreso de Piel",
+      "subtitle": "Sigue cómo ha cambiado tu piel con el tiempo.",
+      "noData": "Aún no hay datos de escaneo.",
+      "noDataDesc": "Completa al menos un escaneo para ver tu progreso.",
+      "streakLabel": "Racha Actual",
+      "streakSubtitle": "días consecutivos",
+      "adherenceLabel": "Adherencia de Escaneo",
+      "adherenceSubtitle": "Últimos 30 días",
+      "scoreLabel": "Puntaje Actual",
+      "scoreSubtitle": "Salud general de la piel",
+      "improvementLabel": "Mejora de Puntaje",
+      "improvementSubtitle": "Desde el primer escaneo",
+      "routineBtn": "Ir a mi rutina",
+      "backBtn": "Volver"
+    }
+  },
+  "iam": {
+    "signInHome": {
+      "title": "Bloomie",
+      "tagline": "Tu viaje de cuidado de la piel comienza aquí",
+      "loginButton": "Iniciar sesión",
+      "signUpButton": "Registrarse",
+      "dermatologistQuestion": "¿Eres dermatólogo?",
+      "dermatologistRegisterLink": "Regístrate aquí como especialista.",
+      "dermatologistLoginLink": "Inicia sesión como especialista."
+    },
+    "signIn": {
+      "title": "Bloomie",
+      "tagline": "Bienvenida de vuelta a tu viaje de cuidado de la piel",
+      "formTitle": "Iniciar sesión",
+      "emailLabel": "Correo electrónico",
+      "emailPlaceholder": "ejemplo@correo.com",
+      "passwordLabel": "Contraseña",
+      "togglePassword": "Mostrar u ocultar contraseña",
+      "submitButton": "Iniciar sesión",
+      "loadingButton": "Iniciando sesión...",
+      "noAccountQuestion": "¿No tienes cuenta?",
+      "createAccountLink": "Crea una aquí",
+      "errors": {
+        "emailRequired": "El correo es obligatorio.",
+        "emailInvalid": "Ingresa un correo válido.",
+        "passwordRequired": "La contraseña es obligatoria.",
+        "passwordTooShort": "La contraseña debe tener al menos 8 caracteres."
+      }
+    },
+    "dermSignIn": {
+      "title": "Bloomie",
+      "tagline": "Portal del dermatólogo — gestiona tus pacientes y consultas",
+      "formTitle": "Iniciar sesión como especialista",
+      "emailLabel": "Correo electrónico",
+      "emailPlaceholder": "doctor@bloomie.com",
+      "passwordLabel": "Contraseña",
+      "togglePassword": "Mostrar u ocultar contraseña",
+      "loadingButton": "Iniciando sesión...",
+      "submitButton": "Iniciar sesión",
+      "errors": {
+        "emailRequired": "El correo es obligatorio.",
+        "emailInvalid": "Ingresa un correo válido.",
+        "passwordRequired": "La contraseña es obligatoria.",
+        "passwordTooShort": "La contraseña debe tener al menos 8 caracteres."
+      }
+    },
+    "profile": {
+      "title": "Perfil",
+      "subtitle": "Tus datos, preferencias y progreso de skincare",
+      "changePhoto": "Cambiar foto",
+      "personalInfo": "Información Personal",
+      "nameLabel": "Nombre",
+      "emailLabel": "Correo electrónico",
+      "skinProfile": "Perfil de Piel",
+      "skinProfileSub": "Tipo de piel y hábitos",
+      "settings": "Configuración",
+      "settingsSub": "Idioma y preferencias",
+      "myPlan": "Mi Plan",
+      "myPlanSub": "Advanced · $9.99/mes — Activo",
+      "active": "Activo",
+      "planName": "Plan Advanced · Activo",
+      "planDetail": "$9.99/mes · Próxima facturación 1 Jun, 2026",
+      "manage": "Gestionar",
+      "currentPlan": "Plan Actual",
+      "month": "mes",
+      "renewDate": "Se renueva el 1 Jun, 2026",
+      "saveChanges": "Guardar cambios",
+      "saved": "Cambios guardados",
+      "accountSections": "Secciones de Cuenta",
+      "logout": "Cerrar sesión"
+    },
+    "dermProfile": {
+      "title": "Perfil",
+      "subtitle": "Información profesional y preferencias",
+      "desktopSubtitle": "Información profesional y configuración de cuenta",
+      "changePhoto": "Cambiar foto",
+      "personalInfo": "Información Personal",
+      "nameLabel": "Nombre",
+      "emailLabel": "Correo electrónico",
+      "professionalInfo": "Información Profesional",
+      "specialtyLabel": "Especialidad",
+      "experienceLabel": "Años de Experiencia",
+      "feeLabel": "Tarifa de Consulta ($)",
+      "specialistLabel": "Especialista",
+      "yrsExperience": "años de experiencia",
+      "yearsExperience": "años de experiencia",
+      "consultationFeeLabel": "Tarifa de consulta",
+      "session": "sesión",
+      "saveChanges": "Guardar cambios",
+      "saved": "Cambios guardados",
+      "availability": "Disponibilidad",
+      "availabilitySub": "Configura tu horario de trabajo",
+      "settingsLabel": "Configuración",
+      "settingsSub": "Idioma y preferencias",
+      "accountSections": "Secciones de Cuenta",
+      "logout": "Cerrar sesión"
+    },
+    "settings": {
+      "title": "Configuración",
+      "notifications": "Notificaciones",
+      "darkMode": "Modo Oscuro",
+      "language": "Idioma",
+      "saveChanges": "Guardar Cambios",
+      "saved": "Cambios guardados!"
+    },
+    "skinProfile": {
+      "title": "Perfil de Piel",
+      "subtitle": "Tus datos de perfil de piel en un solo lugar",
+      "skinTypeLabel": "Selecciona tu tipo de piel (Opcional)",
+      "waterLabel": "Consumo de Agua (por día)",
+      "sunLabel": "Exposición Solar",
+      "sleepLabel": "Hábitos de Sueño",
+      "saveChanges": "Guardar Cambios",
+      "saved": "¡Guardado!"
+    },
+    "myPlan": {
+      "title": "Mi Plan",
+      "desktopTitle": "Mi Plan y Suscripción",
+      "subtitle": "Gestiona tu suscripción y facturación",
+      "active": "Activo",
+      "month": "mes",
+      "nextBilling": "Próxima facturación",
+      "paymentMethod": "Método de Pago",
+      "update": "Actualizar",
+      "changePlan": "Cambiar Plan",
+      "collapse": "Colapsar",
+      "viewOptions": "Ver opciones",
+      "upgradeOrDowngrade": "Sube o baja de plan",
+      "switchTo": "Cambiar a",
+      "cancelSubscription": "Cancelar suscripción",
+      "quickActions": "Acciones Rápidas",
+      "updatePayment": "Actualizar método de pago",
+      "changeCardOrWallet": "Cambiar tarjeta o billetera",
+      "dataKept30Days": "Tus datos se conservan por 30 días",
+      "currentPlanLabel": "Plan Actual",
+      "nextBillingLabel": "Próxima Facturación",
+      "autoRenew": "Renovación automática activada",
+      "paymentOnFile": "Método de Pago Registrado",
+      "switchPlan": "Cambiar Plan",
+      "proratedBilling": "Facturación proporcional al subir. Cambios aplican en el siguiente ciclo al bajar.",
+      "comparePlans": "Comparar planes",
+      "activeSubscription": "Suscripción activa",
+      "cancelTitle": "¿Cancelar Suscripción?",
+      "cancelDesc": "Perderás acceso a todas las funciones Advanced el 1 de Junio, 2026. Tus datos se conservarán por 30 días.",
+      "keepSubscription": "Mantener mi suscripción",
+      "yesCancelAnyway": "Sí, cancelar de todos modos",
+      "cancelledTitle": "Cancelación Solicitada",
+      "cancelledDesc": "Tu suscripción permanecerá activa hasta el 1 de Junio, 2026. Recibirás un correo de confirmación.",
+      "done": "Listo"
+    }
+  },
+  "routineStep": {
+    "CLEANSE": "Limpieza",
+    "ESSENCE": "Esencia",
+    "TONER": "Tónico",
+    "MOISTURIZER": "Hidratante",
+    "SUNSCREEN": "Protector solar",
+    "SERUM": "Sérum"
+  }
+}
+
+

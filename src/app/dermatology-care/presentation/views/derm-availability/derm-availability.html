@@ -1,0 +1,85 @@
+<div class="derm-availability">
+
+  <div class="derm-availability__header">
+    <button class="derm-availability__back-btn" (click)="navigateBack()" aria-label="Go back">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1 class="derm-availability__title">{{ 'dermatology.dermAvailability.title' | translate }}</h1>
+  </div>
+  <div class="derm-availability__divider"></div>
+
+  <div class="derm-availability__content">
+
+    <!-- Working days -->
+    <div class="derm-availability__section-card">
+      <p class="derm-availability__section-title">{{ 'dermatology.dermAvailability.workingDays' | translate }}</p>
+      <div class="derm-availability__days">
+        @for (day of days; track day.id) {
+          <button
+            class="derm-availability__day-btn"
+            [class.derm-availability__day-btn--active]="activeDays().has(day.id)"
+            (click)="toggleDay(day.id)"
+            [attr.aria-label]="day.labelKey | translate"
+          >
+            {{ day.short }}
+          </button>
+        }
+      </div>
+      <p class="derm-availability__active-label">
+        {{ 'dermatology.dermAvailability.active' | translate }}: {{ activeDaysLabel() }}
+      </p>
+    </div>
+
+    <!-- Working hours -->
+    <div class="derm-availability__section-card">
+      <p class="derm-availability__section-title">{{ 'dermatology.dermAvailability.workingHours' | translate }}</p>
+      <div class="derm-availability__hours-grid">
+        <div>
+          <p class="derm-availability__field-label">{{ 'dermatology.dermAvailability.startTime' | translate }}</p>
+          <mat-select class="derm-availability__select" [(ngModel)]="startTime">
+            @for (time of timeOptions; track time) {
+              <mat-option [value]="time">{{ time }}</mat-option>
+            }
+          </mat-select>
+        </div>
+        <div>
+          <p class="derm-availability__field-label">{{ 'dermatology.dermAvailability.endTime' | translate }}</p>
+          <mat-select class="derm-availability__select" [(ngModel)]="endTime">
+            @for (time of timeOptions; track time) {
+              <mat-option [value]="time">{{ time }}</mat-option>
+            }
+          </mat-select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slot duration -->
+    <div class="derm-availability__section-card">
+      <p class="derm-availability__section-title">{{ 'dermatology.dermAvailability.slotDuration' | translate }}</p>
+      <div class="derm-availability__slots">
+        @for (option of slotOptions; track option) {
+          <button
+            class="derm-availability__slot-btn"
+            [class.derm-availability__slot-btn--selected]="slotDuration() === option"
+            (click)="slotDuration.set(option)"
+          >
+            {{ option }} {{ 'dermatology.dermAvailability.min' | translate }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Success banner -->
+    @if (saveSuccess()) {
+      <div class="derm-availability__success-banner">
+        <mat-icon>check_circle</mat-icon>
+        <span>{{ 'dermatology.dermAvailability.savedSuccess' | translate }}</span>
+      </div>
+    }
+
+    <button class="derm-availability__save-btn" (click)="saveAvailability()">
+      {{ 'dermatology.dermAvailability.saveBtn' | translate }}
+    </button>
+
+  </div>
+</div>
