@@ -53,10 +53,11 @@
 .scan-prepare__camera-error p { font-family: 'Montserrat', sans-serif; font-size: 13px; color: #e05252; margin: 0; }
 
 /* ── Responsive: mobile ── */
-@media (max-width: 768px) {
-  .scan-prepare { padding: 1.5rem 1.25rem; }
+@media (max-width: 1023px) {
+  .scan-prepare { padding: 1rem 1rem 1.5rem; }
   .scan-prepare__title { font-size: 22px; }
-  .scan-prepare__actions { flex-direction: column; }
+  .scan-prepare__tips { max-width: 100%; }
+  .scan-prepare__actions { flex-direction: column; max-width: 100%; }
   .scan-prepare__camera-btn, .scan-prepare__upload-btn, .scan-prepare__start-btn, .scan-prepare__retake-photo-btn { width: 100%; min-width: unset; }
   .scan-prepare__camera-wrap { max-width: 100%; }
   .scan-prepare__face-guide { width: 160px; height: 200px; }

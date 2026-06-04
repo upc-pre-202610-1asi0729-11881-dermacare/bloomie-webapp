@@ -156,3 +156,35 @@
 }
 
 .skin-progress__routine-btn:hover { background: #c09080; }
+
+@media (max-width: 1023px) {
+  .skin-progress {
+    padding: 1rem 1rem 1.5rem;
+  }
+
+  .skin-progress__title {
+    font-size: 22px;
+  }
+
+  .skin-progress__metrics {
+    grid-template-columns: 1fr;
+    max-width: 100%;
+  }
+
+  .skin-progress__metric-value {
+    font-size: 22px;
+  }
+
+  .skin-progress__cta {
+    max-width: 100%;
+  }
+
+  .skin-progress__routine-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .skin-progress__empty {
+    padding: 40px 16px;
+  }
+}
