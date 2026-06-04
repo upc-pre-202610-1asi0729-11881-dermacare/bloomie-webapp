@@ -38,12 +38,18 @@
     padding-top: 0;
   }
 
-  .shell__content {
-    padding-top: 3.5rem; /* Space for the floating hamburger button */
+  /* Show topbar as a proper navbar — hamburger lives here visually */
+  .shell__topbar {
+    display: flex;
+    flex-shrink: 0;
+    /* Left padding reserves space for the fixed hamburger button (44px + 2×14px margins) */
+    padding: 0 16px 0 72px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+    z-index: 90;
   }
 
-  /* Hide the topbar language switcher on mobile (space is tight) */
-  .shell__topbar {
-    display: none;
+  /* Content starts right below the topbar — no extra padding needed */
+  .shell__content {
+    padding-top: 0;
   }
 }

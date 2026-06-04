@@ -172,3 +172,33 @@
 }
 
 .scan-result__save-btn:hover { opacity: 0.88; }
+
+@media (max-width: 1023px) {
+  .scan-result {
+    padding: 1rem 1rem 1.5rem;
+  }
+
+  .scan-result__title {
+    font-size: 22px;
+  }
+
+  .scan-result__score-circle {
+    width: 96px;
+    height: 96px;
+  }
+
+  .scan-result__score-value {
+    font-size: 28px;
+  }
+
+  .scan-result__metrics,
+  .scan-result__diagnosis,
+  .scan-result__actions {
+    max-width: 100%;
+  }
+
+  .scan-result__save-btn {
+    width: 100%;
+    padding: 14px 24px;
+  }
+}

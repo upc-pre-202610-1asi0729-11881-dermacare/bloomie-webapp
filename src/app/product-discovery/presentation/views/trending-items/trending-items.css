@@ -177,7 +177,7 @@
   overflow: hidden;
   text-align: left;
   background: #cebebe;
-  height: 220px;
+  aspect-ratio: 3 / 4;
   cursor: pointer;
   border: none;
   padding: 0;
@@ -189,7 +189,7 @@
   transform: translateY(-2px);
 }
 
-.trending-items__card--tall { height: 280px; }
+.trending-items__card--tall { aspect-ratio: 3 / 4; }
 
 /* AI badge */
 .trending-items__card-ai-badge {
@@ -240,15 +240,18 @@
 
 .trending-items__card-image-icon { font-size: 64px; width: 64px; height: 64px; color: rgba(255, 255, 255, 0.6); }
 
-/* Product info footer */
+/* Product info footer — fixed height so all cards are visually uniform */
 .trending-items__card-footer {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
+  height: 52px;
+  box-sizing: border-box;
   background: rgba(179, 179, 179, 0.38);
   backdrop-filter: blur(2px);
   padding: 8px 12px;
+  overflow: hidden;
 }
 
 .trending-items__card-name {
@@ -258,10 +261,9 @@
   color: #000;
   margin: 0;
   line-height: 1.3;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .trending-items__card-brand {
@@ -270,6 +272,9 @@
   font-size: 11px;
   color: #a26769;
   margin: 2px 0 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ── Empty state ── */
@@ -351,45 +356,56 @@
 @media (max-width: 1023px) {
   .trending-items {
     padding: 1rem 1rem 1.5rem;
+    overflow-x: hidden;
   }
 
   .trending-items__title { font-size: 22px; }
 
-  /* Stack grid and filter vertically */
+  /* align-items: stretch (overrides flex-start) so grid-section fills full width */
   .trending-items__content {
     flex-direction: column;
+    align-items: stretch;
     gap: 0;
   }
 
-  /* Filter panel becomes a bottom sheet / hidden by default on mobile */
+  .trending-items__grid-section { width: 100%; }
+
+  /* Filter panel: fixed bottom sheet so it never pushes products down */
   .trending-items__filter-panel {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
     width: 100%;
-    border-radius: 16px;
-    margin-bottom: 1rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    max-height: 80dvh;
+    overflow-y: auto;
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.15);
+    z-index: 200;
+    padding: 20px;
   }
 
-  /* 2-column grid on mobile */
+  /* Fluid 2-column grid: auto-fill adapts to the available width */
   .trending-items__grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 12px;
   }
 
-  .trending-items__card { height: 180px; }
-  .trending-items__card--tall { height: 200px; }
-
   .trending-items__card-image-icon { font-size: 48px; width: 48px; height: 48px; }
 
-  /* Wider tabs on mobile */
+  /* Full-width tabs */
   .trending-items__tabs { width: 100%; }
   .trending-items__tab { flex: 1; justify-content: center; padding: 8px 12px; font-size: 12px; }
 
   .trending-items__search-input { font-size: 13px; }
+
+  /* Compact empty state */
+  .trending-items__empty { padding: 32px 16px; }
+  .trending-items__empty-icon { font-size: 40px; width: 40px; height: 40px; }
+  .trending-items__empty-text { font-size: 14px; }
 }
 
 @media (max-width: 480px) {
-  /* 1 column on very small screens */
-  .trending-items__grid {
-    grid-template-columns: 1fr 1fr;
-  }
+  /* Very small: tighter grid minimum so cards don't get too narrow */
+  .trending-items__grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
 }

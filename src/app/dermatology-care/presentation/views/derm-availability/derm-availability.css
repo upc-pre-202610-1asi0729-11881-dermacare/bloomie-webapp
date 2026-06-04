@@ -22,3 +22,11 @@
 .derm-availability__success-banner { display: flex; align-items: center; gap: 8px; background: #c9e6a7; border-radius: 12px; padding: 12px 16px; font-family: 'Montserrat', sans-serif; font-size: 14px; color: #333; }
 .derm-availability__save-btn { background: #a26769; color: #fff; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 15px; border: none; border-radius: 22px; padding: 14px 40px; cursor: pointer; transition: background 0.15s; align-self: flex-start; }
 .derm-availability__save-btn:hover { background: #8e5759; }
+
+@media (max-width: 1023px) {
+  .derm-availability { padding: 1rem 1rem 1.5rem; }
+  .derm-availability__title { font-size: 22px; }
+  .derm-availability__content { max-width: 100%; }
+  .derm-availability__hours-grid { grid-template-columns: 1fr; }
+  .derm-availability__save-btn { width: 100%; align-self: stretch; }
+}

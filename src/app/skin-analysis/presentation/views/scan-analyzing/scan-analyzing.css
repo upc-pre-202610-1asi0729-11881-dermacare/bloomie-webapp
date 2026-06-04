@@ -83,3 +83,22 @@
   cursor: pointer;
   text-decoration: underline;
 }
+
+@media (max-width: 1023px) {
+  .scan-analyzing {
+    padding: 1rem 1rem 1.5rem;
+  }
+
+  .scan-analyzing__title {
+    font-size: 22px;
+  }
+
+  .scan-analyzing__subtitle {
+    font-size: 13px;
+  }
+
+  .scan-analyzing__progress-bar {
+    width: 100%;
+    max-width: 320px;
+  }
+}

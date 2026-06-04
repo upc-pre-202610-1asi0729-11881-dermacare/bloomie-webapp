@@ -26,3 +26,15 @@
 .derm-agenda__start-btn:hover { background: #8e5759; }
 .derm-agenda__done-icon { color: #7aaf7a; font-size: 24px; }
 .derm-agenda__empty { display: flex; flex-direction: column; align-items: center; padding: 48px; gap: 12px; color: #999; }
+
+@media (max-width: 1023px) {
+  .derm-agenda { padding: 1rem 1rem 1.5rem; }
+  .derm-agenda__title { font-size: 22px; margin-bottom: 16px; }
+  .derm-agenda__day-btn { width: 52px; height: 72px; border-radius: 16px; }
+  .derm-agenda__day-number { font-size: 22px; }
+  .derm-agenda__day-name { font-size: 11px; }
+  .derm-agenda__list { border-radius: 24px; padding: 16px; gap: 12px; }
+  .derm-agenda__item { padding: 12px; gap: 12px; border-radius: 16px; }
+  .derm-agenda__item-time { font-size: 13px; }
+  .derm-agenda__start-btn { font-size: 11px; padding: 6px 12px; }
+}

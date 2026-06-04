@@ -33,3 +33,19 @@
 .cancel-appointment__rebook-btn:hover { background: #8e5759; }
 .cancel-appointment__home-btn { flex: 1; background: #d9d9d9; color: #1e1e1e; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 14px; border: none; border-radius: 22px; padding: 12px 24px; cursor: pointer; transition: background 0.15s; }
 .cancel-appointment__home-btn:hover { background: #c5c5c5; }
+
+@media (max-width: 1023px) {
+  .cancel-appointment { padding: 1rem 1rem 1.5rem; }
+  .cancel-appointment__title { font-size: 22px; }
+  .cancel-appointment__container { max-width: 100%; }
+  .cancel-appointment__card { padding: 20px; border-radius: 18px; }
+  .cancel-appointment__policy-text { font-size: 13px; }
+  .cancel-appointment__reason-text { font-size: 13px; }
+  .cancel-appointment__actions { flex-direction: column; gap: 10px; }
+  .cancel-appointment__success { padding: 40px 16px; }
+  .cancel-appointment__success-circle { width: 140px; height: 140px; margin-bottom: 24px; }
+  .cancel-appointment__success-icon { font-size: 60px; width: 60px; height: 60px; }
+  .cancel-appointment__success-title { font-size: 24px; }
+  .cancel-appointment__success-desc { font-size: 14px; margin-bottom: 28px; }
+  .cancel-appointment__success-actions { flex-direction: column; gap: 10px; }
+}

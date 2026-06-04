@@ -184,9 +184,15 @@
     transform: translateX(0);
   }
 
-  /* Show hamburger */
+  /* Show hamburger — vertically centered in the 56px topbar */
   .sidebar__hamburger {
     display: flex;
+    top: 6px;   /* (56px topbar - 44px button) / 2 */
+    box-shadow: none;
+  }
+
+  .sidebar__hamburger--hidden {
+    display: none;
   }
 
   /* Show overlay when open */

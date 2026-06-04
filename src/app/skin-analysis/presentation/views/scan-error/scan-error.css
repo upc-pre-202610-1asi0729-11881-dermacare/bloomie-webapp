@@ -72,3 +72,26 @@
   cursor: pointer;
   text-decoration: underline;
 }
+
+@media (max-width: 1023px) {
+  .scan-error {
+    padding: 1rem;
+  }
+
+  .scan-error__icon {
+    font-size: 56px;
+  }
+
+  .scan-error__title {
+    font-size: 22px;
+  }
+
+  .scan-error__subtitle {
+    font-size: 13px;
+  }
+
+  .scan-error__actions {
+    width: 100%;
+    max-width: 100%;
+  }
+}
