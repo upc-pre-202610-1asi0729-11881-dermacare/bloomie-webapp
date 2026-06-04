@@ -1,5 +1,5 @@
 <!-- Hamburger button (only shown on mobile, outside the sidebar) -->
-<button class="sidebar__hamburger" (click)="openSidebar()" aria-label="Open menu">
+<button class="sidebar__hamburger" (click)="openSidebar()" aria-label="Open menu" [class.sidebar__hamburger--hidden]="isOpen()">
   <mat-icon>menu</mat-icon>
 </button>
 
