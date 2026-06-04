@@ -22,3 +22,14 @@
 .derm-past__view-btn { background: #7aaf7a; color: #fff; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 13px; border: none; border-radius: 20px; padding: 8px 20px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.15); transition: background 0.15s; }
 .derm-past__view-btn:hover { background: #68a068; }
 .derm-past__empty { display: flex; flex-direction: column; align-items: center; padding: 64px; gap: 16px; color: #999; }
+
+@media (max-width: 1023px) {
+  .derm-past { padding: 1rem 1rem 1.5rem; }
+  .derm-past__title { font-size: 22px; }
+  .derm-past__search { max-width: 100%; padding: 10px 16px; }
+  .derm-past__cards { max-width: 100%; }
+  .derm-past__card { padding: 14px; }
+  .derm-past__row { font-size: 13px; }
+  .derm-past__chip { font-size: 12px; padding: 3px 10px; }
+  .derm-past__empty { padding: 40px 16px; }
+}

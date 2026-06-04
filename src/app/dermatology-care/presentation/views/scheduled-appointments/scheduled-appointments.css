@@ -175,3 +175,29 @@
   color: #999;
   margin: 0;
 }
+
+@media (max-width: 1023px) {
+  .scheduled-appointments {
+    padding: 1rem 1rem 1.5rem;
+  }
+
+  .scheduled-appointments__title {
+    font-size: 22px;
+  }
+
+  .scheduled-appointments__cards {
+    max-width: 100%;
+  }
+
+  .scheduled-appointments__card {
+    padding: 16px;
+  }
+
+  .scheduled-appointments__empty {
+    padding: 40px 16px;
+  }
+
+  .scheduled-appointments__empty-icon {
+    font-size: 40px;
+  }
+}

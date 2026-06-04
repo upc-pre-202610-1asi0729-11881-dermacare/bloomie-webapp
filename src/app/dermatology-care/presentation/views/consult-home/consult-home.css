@@ -117,3 +117,21 @@
 .consult-home__card-btn:hover {
   background: #8e5759;
 }
+
+@media (max-width: 1023px) {
+  .consult-home {
+    padding: 1rem 1rem 1.5rem;
+  }
+
+  .consult-home__title {
+    font-size: 22px;
+  }
+
+  .consult-home__cards {
+    grid-template-columns: 1fr;
+  }
+
+  .consult-home__card {
+    padding: 20px;
+  }
+}
