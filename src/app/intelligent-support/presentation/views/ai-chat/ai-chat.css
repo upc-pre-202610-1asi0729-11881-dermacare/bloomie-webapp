@@ -362,44 +362,10 @@
     gap: 0;
     flex: 1;
     min-height: 0;
+    overflow: visible;
   }
 
-  /* On mobile, FAQ panel becomes a collapsible bottom section */
-  .ai-chat__faq-panel {
-    width: 100%;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    gap: 8px;
-    padding: 8px 0;
-    flex-shrink: 0;
-  }
-
-  .ai-chat__faq-title { display: none; }
-
-  .ai-chat__faq-list {
-    display: flex;
-    flex-direction: row;
-    gap: 8px;
-    padding: 8px 4px;
-    background: transparent;
-    box-shadow: none;
-    border-radius: 0;
-    width: max-content;
-  }
-
-  .ai-chat__faq-item {
-    white-space: nowrap;
-    flex-shrink: 0;
-    font-size: 11px;
-    padding: 8px 14px;
-    border-radius: 20px;
-    background: #fff;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  }
-
-  .ai-chat__reminder { display: none; }
-
+  /* Chat panel fills the available space above the FAQ section */
   .ai-chat__panel {
     flex: 1;
     min-height: 0;
@@ -414,4 +380,54 @@
   .ai-chat__input-bar { padding: 12px 16px; }
   .ai-chat__input { font-size: 13px; padding: 10px 16px; }
   .ai-chat__send-btn { width: 40px; height: 40px; }
+
+  /* FAQ panel: column stack — title, horizontal chips, reminder */
+  .ai-chat__faq-panel {
+    width: 100%;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px 0 14px;
+  }
+
+  .ai-chat__faq-title {
+    display: block;
+    font-size: 12px;
+    margin: 0;
+  }
+
+  .ai-chat__faq-list {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    gap: 8px;
+    padding: 4px 2px;
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  .ai-chat__faq-list::-webkit-scrollbar { display: none; }
+
+  .ai-chat__faq-item {
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-size: 11px;
+    padding: 8px 14px;
+    border-radius: 20px;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Reminder: compact but visible */
+  .ai-chat__reminder {
+    display: block;
+    padding: 10px 12px;
+  }
+
+  .ai-chat__reminder-title { font-size: 11px; }
+  .ai-chat__reminder-desc { font-size: 10px; }
 }
