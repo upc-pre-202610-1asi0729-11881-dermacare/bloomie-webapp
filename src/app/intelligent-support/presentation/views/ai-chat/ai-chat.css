@@ -351,7 +351,7 @@
 @media (max-width: 1023px) {
   .ai-chat {
     padding: 1rem 1rem 0;
-    height: 100dvh;
+    height: calc(100dvh - 56px); /* 56px = mobile topbar height */
   }
 
   .ai-chat__title { font-size: 20px; }
