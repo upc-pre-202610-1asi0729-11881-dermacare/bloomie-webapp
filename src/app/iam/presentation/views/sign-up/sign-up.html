@@ -1,0 +1,133 @@
+<div class="sign-up">
+  <div class="sign-up__panel">
+    <button type="button" class="sign-up__back" (click)="onBack()" aria-label="Back">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1 class="sign-up__title">{{ 'iam.signUp.title' | translate }}</h1>
+    <p class="sign-up__tagline">{{ 'iam.signUp.tagline' | translate }}</p>
+  </div>
+
+  <div class="sign-up__form-wrapper">
+    <form class="sign-up__form" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <h2 class="sign-up__form-title">{{ 'iam.signUp.formTitle' | translate }}</h2>
+
+      <div class="sign-up__field">
+        <label class="sign-up__label" for="sign-up-email">
+          {{ 'iam.signUp.emailLabel' | translate }}
+        </label>
+        <input
+          id="sign-up-email"
+          type="email"
+          class="sign-up__input"
+          formControlName="email"
+          [placeholder]="'iam.signUp.emailPlaceholder' | translate"
+          autocomplete="email"
+        />
+        @if (submitted() && form.get('email')?.hasError('required')) {
+          <p class="sign-up__error">{{ 'iam.signUp.errors.emailRequired' | translate }}</p>
+        }
+        @if (submitted() && form.get('email')?.hasError('email')) {
+          <p class="sign-up__error">{{ 'iam.signUp.errors.emailInvalid' | translate }}</p>
+        }
+      </div>
+
+      <div class="sign-up__field">
+        <label class="sign-up__label" for="sign-up-password">
+          {{ 'iam.signUp.passwordLabel' | translate }}
+        </label>
+        <div class="sign-up__password-wrapper">
+          <input
+            id="sign-up-password"
+            [type]="showPassword() ? 'text' : 'password'"
+            class="sign-up__input"
+            formControlName="password"
+            placeholder="••••••••"
+            autocomplete="new-password"
+          />
+          <button
+            type="button"
+            class="sign-up__password-toggle"
+            (click)="togglePasswordVisibility()"
+            [attr.aria-label]="'iam.signUp.togglePassword' | translate"
+          >
+            @if (showPassword()) {
+              <mat-icon>visibility_off</mat-icon>
+            } @else {
+              <mat-icon>visibility</mat-icon>
+            }
+          </button>
+        </div>
+        <p class="sign-up__hint">{{ 'iam.signUp.passwordHint' | translate }}</p>
+        @if (submitted() && form.get('password')?.hasError('required')) {
+          <p class="sign-up__error">{{ 'iam.signUp.errors.passwordRequired' | translate }}</p>
+        }
+        @if (submitted() && form.get('password')?.hasError('minlength')) {
+          <p class="sign-up__error">{{ 'iam.signUp.errors.passwordTooShort' | translate }}</p>
+        }
+      </div>
+
+      <div class="sign-up__name-row">
+        <div class="sign-up__field">
+          <label class="sign-up__label" for="sign-up-name">
+            {{ 'iam.signUp.nameLabel' | translate }}
+          </label>
+          <input
+            id="sign-up-name"
+            type="text"
+            class="sign-up__input"
+            formControlName="name"
+            [placeholder]="'iam.signUp.namePlaceholder' | translate"
+            autocomplete="given-name"
+          />
+          @if (submitted() && form.get('name')?.hasError('required')) {
+            <p class="sign-up__error">{{ 'iam.signUp.errors.nameRequired' | translate }}</p>
+          }
+        </div>
+
+        <div class="sign-up__field">
+          <label class="sign-up__label" for="sign-up-last-name">
+            {{ 'iam.signUp.lastNameLabel' | translate }}
+          </label>
+          <input
+            id="sign-up-last-name"
+            type="text"
+            class="sign-up__input"
+            formControlName="lastName"
+            [placeholder]="'iam.signUp.lastNamePlaceholder' | translate"
+            autocomplete="family-name"
+          />
+          @if (submitted() && form.get('lastName')?.hasError('required')) {
+            <p class="sign-up__error">{{ 'iam.signUp.errors.lastNameRequired' | translate }}</p>
+          }
+        </div>
+      </div>
+
+      <div class="sign-up__checkbox-row">
+        <label class="sign-up__checkbox-label">
+          <input
+            type="checkbox"
+            class="sign-up__checkbox"
+            formControlName="rememberMe"
+          />
+          {{ 'iam.signUp.rememberMe' | translate }}
+        </label>
+      </div>
+
+      @if (iamStore.error()) {
+        <div class="sign-up__banner" role="alert">
+          {{ iamStore.error() }}
+        </div>
+      }
+
+      <div class="sign-up__actions">
+        <button type="submit" class="sign-up__submit" [disabled]="iamStore.loading()">
+          @if (iamStore.loading()) {
+            {{ 'iam.signUp.loadingButton' | translate }}
+          } @else {
+            {{ 'iam.signUp.submitButton' | translate }}
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
