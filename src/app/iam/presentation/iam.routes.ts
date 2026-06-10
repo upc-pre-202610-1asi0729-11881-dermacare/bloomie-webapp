@@ -13,6 +13,9 @@ const dermatologistSignIn = () =>
     (module) => module.DermatologistSignIn,
   );
 
+const signUp = () =>
+  import('./views/sign-up/sign-up').then((module) => module.SignUp);
+
 const userProfile = () =>
   import('./views/user-profile/user-profile').then((module) => module.UserProfile);
 
@@ -36,6 +39,7 @@ export const profileRoutes: Routes = [
 export const iamRoutes: Routes = [
   { path: 'sign-in-home', loadComponent: signInHome },
   { path: 'sign-in', loadComponent: signIn },
+  { path: 'sign-up', loadComponent: signUp },
   { path: 'dermatologist-sign-in', loadComponent: dermatologistSignIn },
   { path: '', redirectTo: 'sign-in-home', pathMatch: 'full' },
 ];
