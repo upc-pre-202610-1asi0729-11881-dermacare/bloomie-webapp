@@ -538,6 +538,31 @@
       "dermatologistRegisterLink": "Register here as a specialist.",
       "dermatologistLoginLink": "Log in as a specialist."
     },
+    "signUp": {
+      "title": "Bloomie",
+      "tagline": "Create your account and start your skincare journey",
+      "formTitle": "Sign Up",
+      "emailLabel": "Email",
+      "emailPlaceholder": "Ej: \"example@email.com\"",
+      "passwordLabel": "Password",
+      "passwordHint": "Your password must contain at least 8 characters",
+      "togglePassword": "Toggle password visibility",
+      "nameLabel": "Name",
+      "namePlaceholder": "Value",
+      "lastNameLabel": "Last Name",
+      "lastNamePlaceholder": "Value",
+      "rememberMe": "Remember me",
+      "submitButton": "Next",
+      "loadingButton": "Creating account...",
+      "errors": {
+        "emailRequired": "Email is required.",
+        "emailInvalid": "Enter a valid email address.",
+        "passwordRequired": "Password is required.",
+        "passwordTooShort": "Password must be at least 8 characters.",
+        "nameRequired": "Name is required.",
+        "lastNameRequired": "Last name is required."
+      }
+    },
     "signIn": {
       "title": "Bloomie",
       "tagline": "Welcome back to your skincare journey",
