@@ -174,11 +174,27 @@
 .book-appointment__day-header {
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: space-between;
   margin-bottom: 12px;
 }
 
-.book-appointment__chevron { color: #999; cursor: pointer; }
+.book-appointment__nav-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #49454f;
+  transition: background 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+
+.book-appointment__nav-btn:hover:not(:disabled) { background: #f0ece8; }
+.book-appointment__nav-btn:disabled { opacity: 0.25; cursor: not-allowed; }
 
 .book-appointment__month-label {
   font-family: 'Montserrat', sans-serif;
@@ -186,14 +202,17 @@
   font-size: 16px;
   color: #999;
   margin: 0;
+  flex: 1;
+  text-align: center;
+  text-transform: capitalize;
 }
 
 .book-appointment__days {
   display: flex;
   gap: 12px;
   margin-bottom: 24px;
-  overflow-x: auto;
-  padding-bottom: 4px;
+  overflow: hidden;
+  touch-action: pan-y;
 }
 
 .book-appointment__day-btn {
