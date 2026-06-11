@@ -36,8 +36,8 @@
 .sign-in__tagline {
   font-family: 'Montserrat', sans-serif;
   font-weight: 500;
+  line-height: 1.1;
   font-size: 16px;
-  margin: 0;
   opacity: 0.9;
 }
 
