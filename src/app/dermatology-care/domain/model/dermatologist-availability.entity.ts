@@ -64,6 +64,11 @@ export class DermatologistAvailability implements BaseEntity {
   get slotDuration(): number { return this._slotDuration; }
   set slotDuration(value: number) { this._slotDuration = value; }
 
+  private static readonly DAY_INDEX: Record<string, number> = {
+    SUNDAY: 0, MONDAY: 1, TUESDAY: 2, WEDNESDAY: 3,
+    THURSDAY: 4, FRIDAY: 5, SATURDAY: 6,
+  };
+
   /**
    * Calculates the total number of appointment slots available in this window.
    * @returns Number of slots based on window duration and slot duration.
@@ -73,5 +78,35 @@ export class DermatologistAvailability implements BaseEntity {
     const [endHour, endMinute]     = this._endTime.split(':').map(Number);
     const windowMinutes = (endHour * 60 + endMinute) - (startHour * 60 + startMinute);
     return windowMinutes > 0 ? Math.floor(windowMinutes / this._slotDuration) : 0;
+  }
+
+  /**
+   * Returns true if this availability applies to the given calendar date.
+   * @param date - The calendar date to check.
+   */
+  matchesDate(date: Date): boolean {
+    return date.getDay() === DermatologistAvailability.DAY_INDEX[this._dayOfWeek];
+  }
+
+  /**
+   * Generates all bookable time slot strings for this availability window.
+   * @returns Array of "HH:mm - HH:mm" strings, one per slot duration interval.
+   */
+  get timeSlots(): string[] {
+    const slots: string[] = [];
+    const [startHour]     = this._startTime.split(':').map(Number);
+    const [endHour]       = this._endTime.split(':').map(Number);
+    let current           = startHour * 60;
+    const end             = endHour * 60;
+    while (current + this._slotDuration <= end) {
+      const sh  = String(Math.floor(current / 60)).padStart(2, '0');
+      const sm  = String(current % 60).padStart(2, '0');
+      const em  = current + this._slotDuration;
+      const eh  = String(Math.floor(em / 60)).padStart(2, '0');
+      const emm = String(em % 60).padStart(2, '0');
+      slots.push(`${sh}:${sm} - ${eh}:${emm}`);
+      current += this._slotDuration;
+    }
+    return slots;
   }
 }
