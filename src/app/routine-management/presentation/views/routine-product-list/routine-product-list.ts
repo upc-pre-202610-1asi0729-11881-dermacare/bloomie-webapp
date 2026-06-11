@@ -5,15 +5,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { RoutineManagementStore } from '../../../application/routine-management.store';
 import { RoutineItem } from '../../../domain/model/routine-item.entity';
 
-/** Represents a day entry in the weekly day strip. */
-interface WeekDay {
-  date: Date;
-  dayNumber: number;
-  dayName: string;
-  isToday: boolean;
-  isCompleted: boolean;
-}
-
 /**
  * Displays the active skincare routine with a weekly calendar,
  * daily completion tracking, and expandable product steps.
@@ -38,28 +29,6 @@ export class RoutineProductList {
 
   /** Calendar month offset from current month (0 = current). */
   calendarMonthOffset = signal<number>(0);
-
-  /**
-   * Computed signal for the 7-day strip centered on today.
-   * Shows 3 days before today and 3 days after.
-   */
-  readonly weekDays = computed((): WeekDay[] => {
-    const dayNames = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
-    const today = new Date();
-    const completedSet = new Set(this.store.completedDays());
-    return Array.from({ length: 7 }, (_, index) => {
-      const date = new Date(today);
-      date.setDate(today.getDate() - 3 + index);
-      const dateString = date.toISOString().split('T')[0];
-      return {
-        date,
-        dayNumber: date.getDate(),
-        dayName: dayNames[date.getDay()],
-        isToday: date.toDateString() === today.toDateString(),
-        isCompleted: completedSet.has(dateString),
-      };
-    });
-  });
 
   /**
    * Computed signal for the display label of the selected date.
@@ -139,11 +108,6 @@ export class RoutineProductList {
     const dateString = this.selectedDate().toISOString().split('T')[0];
     return this.store.completedDays().includes(dateString);
   });
-
-  /** Selects a day from the weekly strip. */
-  selectWeekDay(day: WeekDay): void {
-    this.selectedDate.set(day.date);
-  }
 
   /** Selects a day number from the month calendar. */
   selectCalendarDay(day: number | null): void {

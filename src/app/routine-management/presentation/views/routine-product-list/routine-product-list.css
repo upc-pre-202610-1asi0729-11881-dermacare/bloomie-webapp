@@ -20,31 +20,6 @@
 .routine-product-list__content { display: flex; gap: 2rem; align-items: flex-start; }
 .routine-product-list__main { flex: 1; min-width: 0; }
 
-/* ── Day strip ── */
-.routine-product-list__day-strip {
-  display: flex; gap: 0.5rem; margin-bottom: 1.5rem;
-  overflow-x: auto; padding-bottom: 0.25rem;
-}
-
-.routine-product-list__day-btn {
-  flex-shrink: 0; width: 64px; height: 86px; border-radius: 20px;
-  border: none; cursor: pointer; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; gap: 0.25rem;
-  background-color: rgba(162, 103, 105, 0.15); transition: all 0.2s;
-}
-
-.routine-product-list__day-btn--selected {
-  background-color: #a26769; box-shadow: 0 4px 8px rgba(162, 103, 105, 0.4);
-}
-
-.routine-product-list__day-btn--today { background-color: rgba(162, 103, 105, 0.35); }
-
-.routine-product-list__day-number { font-size: 1.5rem; font-weight: 700; color: #a26769; line-height: 1; }
-.routine-product-list__day-btn--selected .routine-product-list__day-number { color: white; }
-.routine-product-list__day-name { font-size: 0.75rem; font-weight: 600; color: rgba(162, 103, 105, 0.8); }
-.routine-product-list__day-btn--selected .routine-product-list__day-name { color: rgba(255, 255, 255, 0.9); }
-.routine-product-list__day-check { font-size: 1rem; color: #7aaf7a; }
-
 /* ── Calendar ── */
 .routine-product-list__calendar-card {
   background: white; border-radius: 20px;
@@ -206,11 +181,6 @@
   /* Compact stats text */
   .routine-product-list__streak-count { font-size: 1.75rem; }
   .routine-product-list__completion-value { font-size: 1.5rem; }
-
-  /* Smaller day strip buttons */
-  .routine-product-list__day-btn { width: 48px; height: 68px; border-radius: 14px; }
-  .routine-product-list__day-number { font-size: 1.15rem; }
-  .routine-product-list__day-name { font-size: 0.6rem; }
 
   /* Calendar card: reduce padding so the grid fits narrow screens */
   .routine-product-list__calendar-card { padding: 1rem; }
