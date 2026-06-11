@@ -540,6 +540,31 @@
       "dermatologistRegisterLink": "Regístrate aquí como especialista.",
       "dermatologistLoginLink": "Inicia sesión como especialista."
     },
+    "signUp": {
+      "title": "Bloomie",
+      "tagline": "Crea tu cuenta y comienza tu viaje de cuidado de la piel",
+      "formTitle": "Registrarse",
+      "emailLabel": "Correo electrónico",
+      "emailPlaceholder": "Ej: \"ejemplo@correo.com\"",
+      "passwordLabel": "Contraseña",
+      "passwordHint": "Tu contraseña debe tener al menos 8 caracteres",
+      "togglePassword": "Mostrar u ocultar contraseña",
+      "nameLabel": "Nombre",
+      "namePlaceholder": "Valor",
+      "lastNameLabel": "Apellido",
+      "lastNamePlaceholder": "Valor",
+      "rememberMe": "Recuérdame",
+      "submitButton": "Siguiente",
+      "loadingButton": "Creando cuenta...",
+      "errors": {
+        "emailRequired": "El correo es obligatorio.",
+        "emailInvalid": "Ingresa un correo válido.",
+        "passwordRequired": "La contraseña es obligatoria.",
+        "passwordTooShort": "La contraseña debe tener al menos 8 caracteres.",
+        "nameRequired": "El nombre es obligatorio.",
+        "lastNameRequired": "El apellido es obligatorio."
+      }
+    },
     "signIn": {
       "title": "Bloomie",
       "tagline": "Bienvenida de vuelta a tu viaje de cuidado de la piel",

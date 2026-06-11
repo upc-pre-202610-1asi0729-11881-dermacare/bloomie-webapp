@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  serverBasePath: 'bloomie-frontend-mockapi.azurewebsites.net',
+  serverBasePath: 'https://bloomie-frontend-mockapi.azurewebsites.net/api/v1',
   usersEndpointPath: '/users',
   sessionsEndpointPath: '/sessions',
   skinProfilesEndpointPath: '/skin_profiles',

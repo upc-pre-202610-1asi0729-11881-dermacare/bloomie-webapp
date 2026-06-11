@@ -1,0 +1,246 @@
+<div class="lf">
+
+  <!-- PAGE HEADER -->
+  <div class="lf__header">
+    <button class="lf__back" (click)="onBack()" aria-label="Back">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1 class="lf__title">{{ 'iam.lifestyleForm.title' | translate }}</h1>
+  </div>
+
+  <div class="lf__subheader">
+    <div class="lf__progress-bar">
+      <div class="lf__progress-fill"></div>
+    </div>
+    <span class="lf__step-label">
+      {{ 'iam.lifestyleForm.step' | translate }} {{ step }} {{ 'iam.lifestyleForm.of' | translate }} {{ totalSteps }}
+    </span>
+  </div>
+
+  <!-- BODY -->
+  <div class="lf__body">
+
+    <!-- FORM CARD -->
+    <div class="lf__card">
+
+      <!-- Skin Type -->
+      <div class="lf__field">
+        <label class="lf__label" for="lf-skin">
+          {{ 'iam.lifestyleForm.skinTypeLabel' | translate }}
+        </label>
+        <div class="lf__select-wrap">
+          <select
+            id="lf-skin"
+            class="lf__select"
+            [ngModel]="skinType()"
+            (ngModelChange)="skinType.set($event)"
+          >
+            <option value="" disabled>{{ 'iam.lifestyleForm.skinTypePlaceholder' | translate }}</option>
+            @for (opt of skinTypeOptions; track opt) {
+              <option [value]="opt">{{ opt }}</option>
+            }
+          </select>
+          <mat-icon class="lf__select-arrow">expand_more</mat-icon>
+        </div>
+
+        <button class="lf__guide-link" type="button" (click)="openGuide()">
+          {{ 'iam.lifestyleForm.skinTypeGuideLine1' | translate }}<br>
+          {{ 'iam.lifestyleForm.skinTypeGuideLine2' | translate }}
+        </button>
+      </div>
+
+      <!-- Water Intake -->
+      <div class="lf__field">
+        <label class="lf__label" for="lf-water">
+          {{ 'iam.lifestyleForm.waterLabel' | translate }}
+        </label>
+        <p class="lf__field-hint">{{ 'iam.lifestyleForm.waterHint' | translate }}</p>
+        <div class="lf__select-wrap">
+          <select
+            id="lf-water"
+            class="lf__select"
+            [ngModel]="waterIntake()"
+            (ngModelChange)="waterIntake.set($event)"
+          >
+            <option value="" disabled>{{ 'iam.lifestyleForm.selectOption' | translate }}</option>
+            @for (opt of waterOptions; track opt) {
+              <option [value]="opt">{{ opt }}</option>
+            }
+          </select>
+          <mat-icon class="lf__select-arrow">expand_more</mat-icon>
+        </div>
+      </div>
+
+      <!-- Sun Exposure -->
+      <div class="lf__field">
+        <label class="lf__label" for="lf-sun">
+          {{ 'iam.lifestyleForm.sunLabel' | translate }}
+        </label>
+        <p class="lf__field-hint">{{ 'iam.lifestyleForm.sunHint' | translate }}</p>
+        <div class="lf__select-wrap">
+          <select
+            id="lf-sun"
+            class="lf__select"
+            [ngModel]="sunExposure()"
+            (ngModelChange)="sunExposure.set($event)"
+          >
+            <option value="" disabled>{{ 'iam.lifestyleForm.selectOption' | translate }}</option>
+            @for (opt of sunOptions; track opt) {
+              <option [value]="opt">{{ opt }}</option>
+            }
+          </select>
+          <mat-icon class="lf__select-arrow">expand_more</mat-icon>
+        </div>
+      </div>
+
+      <!-- Sleep Habits -->
+      <div class="lf__field">
+        <label class="lf__label" for="lf-sleep">
+          {{ 'iam.lifestyleForm.sleepLabel' | translate }}
+        </label>
+        <p class="lf__field-hint">{{ 'iam.lifestyleForm.sleepHint' | translate }}</p>
+        <div class="lf__select-wrap">
+          <select
+            id="lf-sleep"
+            class="lf__select"
+            [ngModel]="sleepHabits()"
+            (ngModelChange)="sleepHabits.set($event)"
+          >
+            <option value="" disabled>{{ 'iam.lifestyleForm.selectOption' | translate }}</option>
+            @for (opt of sleepOptions; track opt) {
+              <option [value]="opt">{{ opt }}</option>
+            }
+          </select>
+          <mat-icon class="lf__select-arrow">expand_more</mat-icon>
+        </div>
+      </div>
+
+      <!-- Next button -->
+      <div class="lf__card-actions">
+        <button class="lf__next-btn" type="button" (click)="onNext()">
+          {{ 'iam.lifestyleForm.nextButton' | translate }}
+        </button>
+      </div>
+    </div>
+
+    <!-- SKIN TYPES GUIDE (desktop only) -->
+    <aside class="lf__guide">
+      <div class="lf__guide-top">
+        <span class="lf__guide-title">{{ 'iam.lifestyleForm.guideTitle' | translate }}</span>
+        <span class="lf__guide-badge">{{ 'iam.lifestyleForm.guideBadge' | translate }}</span>
+      </div>
+      <div class="lf__guide-scroll">
+        <div class="lf__skin-entry">
+          <h3 class="lf__skin-name">{{ 'iam.lifestyleForm.guide.normal.name' | translate }}</h3>
+          <div class="lf__skin-row">
+            <img class="lf__skin-img lf__skin-img--normal" src="lifestyle-form/normal-skin.jpg" alt="Normal skin" />
+            <ul class="lf__skin-traits">
+              <li>{{ 'iam.lifestyleForm.guide.normal.trait1' | translate }}</li>
+              <li>{{ 'iam.lifestyleForm.guide.normal.trait2' | translate }}</li>
+              <li>{{ 'iam.lifestyleForm.guide.normal.trait3' | translate }}</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="lf__skin-entry">
+          <h3 class="lf__skin-name">{{ 'iam.lifestyleForm.guide.dry.name' | translate }}</h3>
+          <div class="lf__skin-row">
+            <img class="lf__skin-img lf__skin-img--dry" src="lifestyle-form/dry-skin.jpg" alt="Dry skin" />
+            <ul class="lf__skin-traits">
+              <li>{{ 'iam.lifestyleForm.guide.dry.trait1' | translate }}</li>
+              <li>{{ 'iam.lifestyleForm.guide.dry.trait2' | translate }}</li>
+              <li>{{ 'iam.lifestyleForm.guide.dry.trait3' | translate }}</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="lf__skin-entry">
+          <h3 class="lf__skin-name">{{ 'iam.lifestyleForm.guide.oily.name' | translate }}</h3>
+          <div class="lf__skin-row">
+            <img class="lf__skin-img lf__skin-img--oily" src="lifestyle-form/oily-skin.jpg" alt="Oily skin" />
+            <ul class="lf__skin-traits">
+              <li>{{ 'iam.lifestyleForm.guide.oily.trait1' | translate }}</li>
+              <li>{{ 'iam.lifestyleForm.guide.oily.trait2' | translate }}</li>
+              <li>{{ 'iam.lifestyleForm.guide.oily.trait3' | translate }}</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="lf__skin-entry">
+          <h3 class="lf__skin-name">{{ 'iam.lifestyleForm.guide.combo.name' | translate }}</h3>
+          <div class="lf__skin-row">
+            <img class="lf__skin-img lf__skin-img--combo" src="lifestyle-form/combination-skin.jpg" alt="Combination skin" />
+            <ul class="lf__skin-traits">
+              <li>{{ 'iam.lifestyleForm.guide.combo.trait1' | translate }}</li>
+              <li>{{ 'iam.lifestyleForm.guide.combo.trait2' | translate }}</li>
+              <li>{{ 'iam.lifestyleForm.guide.combo.trait3' | translate }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- MOBILE GUIDE MODAL -->
+  @if (guideOpen()) {
+    <div class="lf__guide-modal">
+      <div class="lf__guide-modal-header">
+        <button class="lf__guide-modal-back" type="button" (click)="closeGuide()" aria-label="Close guide">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <h2 class="lf__guide-modal-title">{{ 'iam.lifestyleForm.mobileGuideTitle' | translate }}</h2>
+      </div>
+      <div class="lf__guide-modal-scroll">
+        <div class="lf__skin-entry">
+          <h3 class="lf__skin-name">{{ 'iam.lifestyleForm.guide.normal.name' | translate }}</h3>
+          <div class="lf__skin-row">
+            <img class="lf__skin-img lf__skin-img--normal" src="lifestyle-form/normal-skin.jpg" alt="Normal skin" />
+            <ul class="lf__skin-traits">
+              <li>{{ 'iam.lifestyleForm.guide.normal.trait1' | translate }}</li>
+              <li>{{ 'iam.lifestyleForm.guide.normal.trait2' | translate }}</li>
+              <li>{{ 'iam.lifestyleForm.guide.normal.trait3' | translate }}</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="lf__skin-entry">
+          <h3 class="lf__skin-name">{{ 'iam.lifestyleForm.guide.dry.name' | translate }}</h3>
+          <div class="lf__skin-row">
+            <img class="lf__skin-img lf__skin-img--dry" src="lifestyle-form/dry-skin.jpg" alt="Dry skin" />
+            <ul class="lf__skin-traits">
+              <li>{{ 'iam.lifestyleForm.guide.dry.trait1' | translate }}</li>
+              <li>{{ 'iam.lifestyleForm.guide.dry.trait2' | translate }}</li>
+              <li>{{ 'iam.lifestyleForm.guide.dry.trait3' | translate }}</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="lf__skin-entry">
+          <h3 class="lf__skin-name">{{ 'iam.lifestyleForm.guide.oily.name' | translate }}</h3>
+          <div class="lf__skin-row">
+            <img class="lf__skin-img lf__skin-img--oily" src="lifestyle-form/oily-skin.jpg" alt="Oily skin" />
+            <ul class="lf__skin-traits">
+              <li>{{ 'iam.lifestyleForm.guide.oily.trait1' | translate }}</li>
+              <li>{{ 'iam.lifestyleForm.guide.oily.trait2' | translate }}</li>
+              <li>{{ 'iam.lifestyleForm.guide.oily.trait3' | translate }}</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="lf__skin-entry">
+          <h3 class="lf__skin-name">{{ 'iam.lifestyleForm.guide.combo.name' | translate }}</h3>
+          <div class="lf__skin-row">
+            <img class="lf__skin-img lf__skin-img--combo" src="lifestyle-form/combination-skin.jpg" alt="Combination skin" />
+            <ul class="lf__skin-traits">
+              <li>{{ 'iam.lifestyleForm.guide.combo.trait1' | translate }}</li>
+              <li>{{ 'iam.lifestyleForm.guide.combo.trait2' | translate }}</li>
+              <li>{{ 'iam.lifestyleForm.guide.combo.trait3' | translate }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+</div>
