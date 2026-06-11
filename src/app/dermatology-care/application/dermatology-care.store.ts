@@ -14,6 +14,8 @@ import {DermatologyCareApi} from '../infrastructure/dermatology-care-api';
 @Injectable({providedIn: 'root'})
 export class DermatologyCareStore {
 
+  private static readonly AVAILABILITY_LOOKAHEAD_DAYS = 120;
+
   private readonly dermatologistProfilesSignal  = signal<DermatologistProfile[]>([]);
   private readonly availabilitiesSignal          = signal<DermatologistAvailability[]>([]);
   private readonly appointmentsSignal            = signal<Appointment[]>([]);
@@ -82,6 +84,32 @@ export class DermatologyCareStore {
   readonly confirmedAppointmentCount = computed(() =>
     this.appointments().filter(appointment => appointment.isConfirmed).length
   );
+
+  /**
+   * Upcoming calendar dates (starting tomorrow) that match the loaded dermatologist availabilities.
+   */
+  readonly upcomingAvailableDates = computed((): Date[] => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const availabilities = this.availabilitiesSignal();
+    const dates: Date[] = [];
+    for (let i = 1; i <= DermatologyCareStore.AVAILABILITY_LOOKAHEAD_DAYS; i++) {
+      const date = new Date(today);
+      date.setDate(today.getDate() + i);
+      if (availabilities.length === 0 || availabilities.some(a => a.matchesDate(date))) {
+        dates.push(date);
+      }
+    }
+    return dates;
+  });
+
+  /**
+   * Returns the bookable time slots for a given date based on loaded availabilities.
+   * @param date - The calendar date to get slots for.
+   */
+  timeSlotsForDate(date: Date): string[] {
+    return this.availabilitiesSignal().find(a => a.matchesDate(date))?.timeSlots ?? [];
+  }
 
   /**
    * Creates an instance of DermatologyCareStore and loads initial data.
