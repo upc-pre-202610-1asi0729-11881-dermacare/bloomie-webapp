@@ -31,6 +31,19 @@ export class RoutineProductList {
   calendarMonthOffset = signal<number>(0);
 
   /**
+   * Computed signal for the 7-day strip centered on today.
+   * Shows 3 days before today and 3 days after.
+   */
+  readonly calendarDayKeys = [
+    'routine.productList.dayAbbrev.su',
+    'routine.productList.dayAbbrev.mo',
+    'routine.productList.dayAbbrev.tu',
+    'routine.productList.dayAbbrev.we',
+    'routine.productList.dayAbbrev.th',
+    'routine.productList.dayAbbrev.fr',
+    'routine.productList.dayAbbrev.sa',
+  ];
+  /**
    * Computed signal for the display label of the selected date.
    * Returns a formatted string like 'Wednesday, 11'.
    */

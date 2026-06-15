@@ -16,7 +16,7 @@
         <div class="skin-profile__select-wrap">
           <select class="skin-profile__select" [ngModel]="skinType()" (ngModelChange)="skinType.set($event)">
             @for (opt of skinTypeOptions; track opt) {
-              <option [value]="opt">{{ opt }}</option>
+              <option [value]="opt">{{ skinTypeLabelKeys[opt] | translate }}</option>
             }
           </select>
           <mat-icon class="skin-profile__select-arrow">expand_more</mat-icon>
@@ -28,7 +28,7 @@
         <div class="skin-profile__select-wrap">
           <select class="skin-profile__select" [ngModel]="waterIntake()" (ngModelChange)="waterIntake.set($event)">
             @for (opt of waterOptions; track opt) {
-              <option [value]="opt">{{ opt }}</option>
+              <option [value]="opt">{{ waterLabelKeys[opt] | translate }}</option>
             }
           </select>
           <mat-icon class="skin-profile__select-arrow">expand_more</mat-icon>
@@ -40,7 +40,7 @@
         <div class="skin-profile__select-wrap">
           <select class="skin-profile__select" [ngModel]="sunExposure()" (ngModelChange)="sunExposure.set($event)">
             @for (opt of sunOptions; track opt) {
-              <option [value]="opt">{{ opt }}</option>
+              <option [value]="opt">{{ sunLabelKeys[opt] | translate }}</option>
             }
           </select>
           <mat-icon class="skin-profile__select-arrow">expand_more</mat-icon>
@@ -52,7 +52,7 @@
         <div class="skin-profile__select-wrap">
           <select class="skin-profile__select" [ngModel]="sleepHabits()" (ngModelChange)="sleepHabits.set($event)">
             @for (opt of sleepOptions; track opt) {
-              <option [value]="opt">{{ opt }}</option>
+              <option [value]="opt">{{ sleepLabelKeys[opt] | translate }}</option>
             }
           </select>
           <mat-icon class="skin-profile__select-arrow">expand_more</mat-icon>

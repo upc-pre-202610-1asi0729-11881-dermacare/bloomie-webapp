@@ -6,7 +6,10 @@
     "myRoutine": "Mi Rutina",
     "skinScan": "Análisis de Piel",
     "trending": "Tendencias",
-    "profile": "Perfil"
+    "profile": "Perfil",
+    "subtitle": "Tu diario de cuidado de piel",
+    "dermSubtitle": "Portal de especialistas",
+    "mainMenu": "Menú Principal"
   },
   "dashboard": {
     "greeting": {
@@ -211,7 +214,12 @@
       "endCallTitle": "¿Finalizar consulta?",
       "endCallDesc": "La consulta será marcada como completada.",
       "stayBtn": "Permanecer",
-      "endBtn": "Finalizar consulta"
+      "endBtn": "Finalizar consulta",
+      "notesTemplate": "Paciente: [Paciente]\nFecha: [Fecha]\n\n[Notas Clínicas]\n- Tipo de piel: \n- Motivo de consulta: \n- Inicio: \n\n[Observaciones]\n- \n\n[Plan]\n1. \n2. \n3. ",
+      "mockMessage1": "¡Hola doctor! Quería mostrarle el enrojecimiento de mi mejilla del que hablé antes.",
+      "mockMessage2": "¡Hola! Adelante, por favor describa la zona para que pueda verla.",
+      "mockMessage3": "Empezó hace una semana, principalmente por las mañanas.",
+      "mockAutoReply": "Gracias, aprecio su orientación."
     },
     "scheduledAppointments": {
       "title": "Tus Citas Programadas",
@@ -272,7 +280,8 @@
       "recommendations": "Recomendaciones del doctor",
       "duration": "Duración",
       "returnBtn": "Volver a Consultas",
-      "noData": "No hay consulta seleccionada."
+      "noData": "No hay consulta seleccionada.",
+      "doctorLabel": "Dermatólogo"
     },
     "dermAgenda": {
       "title": "Mi Agenda",
@@ -363,7 +372,16 @@
       "streakLabel": "Racha de Rutina",
       "streakSubtitle": "días esta semana",
       "completionLabel": "Cumplimiento (30 días)",
-      "completionSubtitle": "Basado en los últimos 30 días"
+      "completionSubtitle": "Basado en los últimos 30 días",
+      "dayAbbrev": {
+        "su": "Do",
+        "mo": "Lu",
+        "tu": "Ma",
+        "we": "Mi",
+        "th": "Ju",
+        "fr": "Vi",
+        "sa": "Sá"
+      }
     },
     "productReplacement": {
       "title": "Reemplazar Producto",
@@ -487,6 +505,7 @@
       "sensitivity": "Sensibilidad",
       "brightness": "Luminosidad",
       "diagnosis": "Diagnóstico",
+      "saveAndDoneBtn": "Guardar y listo",
       "viewReport": "Ver reporte completo",
       "saveReport": "Guardar reporte",
       "backBtn": "Volver"
@@ -748,7 +767,34 @@
       "sunLabel": "Exposición Solar",
       "sleepLabel": "Hábitos de Sueño",
       "saveChanges": "Guardar Cambios",
-      "saved": "¡Guardado!"
+      "saved": "¡Guardado!",
+      "skinTypes": {
+        "normal": "Piel normal",
+        "oily": "Piel grasa",
+        "dry": "Piel seca",
+        "combination": "Piel mixta",
+        "sensitive": "Piel sensible"
+      },
+      "waterOptions": {
+        "lessThan3": "Menos de 3 vasos",
+        "3to5": "3 - 5 vasos",
+        "5to9": "5 - 9 vasos",
+        "moreThan9": "Más de 9 vasos"
+      },
+      "sunOptions": {
+        "lessThan15": "Menos de 15 minutos",
+        "15to30": "15 - 30 minutos",
+        "30to60": "30 - 60 minutos",
+        "moreThan1h": "Más de 1 hora"
+      },
+      "sleepOptions": {
+        "lessThan5": "Menos de 5 horas",
+        "5to6": "5 - 6 horas",
+        "6hours": "6 horas",
+        "7to8": "7 - 8 horas",
+        "8hours": "8 horas",
+        "moreThan8": "Más de 8 horas"
+      }
     },
     "myPlan": {
       "title": "Mi Plan",
@@ -783,7 +829,48 @@
       "yesCancelAnyway": "Sí, cancelar de todos modos",
       "cancelledTitle": "Cancelación Solicitada",
       "cancelledDesc": "Tu suscripción permanecerá activa hasta el 1 de Junio, 2026. Recibirás un correo de confirmación.",
-      "done": "Listo"
+      "done": "Listo",
+      "upgrade": "Subir de plan",
+      "downgrade": "Bajar de plan",
+      "perMonth": "/mes",
+      "default": "Predeterminado",
+      "visaCard": "Visa •••• {{last4}}",
+      "cardExpires": "Vence el {{date}}",
+      "visaEndingIn": "Visa terminada en {{last4}}",
+      "cardholderExpires": "{{name}} · Vence el {{date}}",
+      "billingDate": "1 de Junio, 2026",
+      "planFeatures": {
+        "unlimitedSkinAnalyses": "Análisis de piel ilimitados",
+        "aiPoweredRoutines": "Rutinas potenciadas con IA",
+        "dermatologistDirectory": "Directorio de dermatólogos",
+        "smartChatbot": "Chatbot inteligente"
+      },
+      "plans": {
+        "starter": {
+          "tagline": "Introducción al cuidado personalizado",
+          "f1": "Hasta 5 análisis de piel mensuales",
+          "f2": "Recomendaciones generales de productos",
+          "f3": "Acceso al catálogo de productos",
+          "f4": "Chatbot básico (FAQ)",
+          "f5": "Historial limitado (últimos 3 análisis)"
+        },
+        "advanced": {
+          "tagline": "Personalización y seguimiento continuo",
+          "f1": "Análisis faciales ilimitados",
+          "f2": "Rutinas personalizadas generadas por IA",
+          "f3": "Historial completo y seguimiento de progreso",
+          "f4": "Acceso al directorio de dermatólogos",
+          "f5": "Chatbot inteligente con memoria"
+        },
+        "elite": {
+          "tagline": "Cuidado dermatológico avanzado y preventivo",
+          "f1": "Consultas dermatológicas prioritarias",
+          "f2": "Reportes clínicos exportables",
+          "f3": "Rutinas dinámicas (adaptadas al clima)",
+          "f4": "Notificaciones y recordatorios inteligentes",
+          "f5": "Todas las funciones Advanced incluidas"
+        }
+      }
     }
   },
   "routineStep": {

@@ -19,14 +19,14 @@
           </div>
           <div class="my-plan__current-info">
             <p class="my-plan__current-name" [style.color]="currentPlan.textColor">Plan {{ currentPlan.name }}</p>
-            <p class="my-plan__current-tagline" [style.color]="currentPlan.textColor">{{ currentPlan.tagline }}</p>
+            <p class="my-plan__current-tagline" [style.color]="currentPlan.textColor">{{ currentPlan.taglineKey | translate }}</p>
           </div>
           <span class="my-plan__active-badge">{{ 'iam.myPlan.active' | translate }}</span>
         </div>
         <p class="my-plan__current-price" [style.color]="currentPlan.textColor">${{ currentPlan.price }}<span class="my-plan__current-period">/{{ 'iam.myPlan.month' | translate }}</span></p>
         <div class="my-plan__current-billing">
           <mat-icon class="my-plan__billing-icon" [style.color]="currentPlan.textColor">calendar_today</mat-icon>
-          <p [style.color]="currentPlan.textColor">{{ 'iam.myPlan.nextBilling' | translate }}: <strong>June 1, 2026</strong></p>
+          <p [style.color]="currentPlan.textColor">{{ 'iam.myPlan.nextBilling' | translate }}: <strong>{{ billingDate }}</strong></p>
         </div>
       </div>
 
@@ -38,8 +38,8 @@
             <mat-icon class="my-plan__payment-icon">credit_card</mat-icon>
           </div>
           <div class="my-plan__payment-info">
-            <p class="my-plan__payment-card">Visa •••• 4242</p>
-            <p class="my-plan__payment-exp">Expires 08/2028</p>
+            <p class="my-plan__payment-card">{{ 'iam.myPlan.visaCard' | translate: {last4: cardLast4} }}</p>
+            <p class="my-plan__payment-exp">{{ 'iam.myPlan.cardExpires' | translate: {date: cardExpiry} }}</p>
           </div>
           <button class="my-plan__update-link">{{ 'iam.myPlan.update' | translate }}</button>
         </div>
@@ -73,13 +73,13 @@
                   </div>
                   <div>
                     <p class="my-plan__plan-option-name" [style.color]="plan.textColor">Plan {{ plan.name }}</p>
-                    <p class="my-plan__plan-option-tagline" [style.color]="plan.textColor">{{ plan.tagline }}</p>
+                    <p class="my-plan__plan-option-tagline" [style.color]="plan.textColor">{{ plan.taglineKey | translate }}</p>
                   </div>
                 </div>
                 <div class="my-plan__plan-option-right">
-                  <p class="my-plan__plan-option-price" [style.color]="plan.textColor">${{ plan.price }}<span>/mo</span></p>
+                  <p class="my-plan__plan-option-price" [style.color]="plan.textColor">${{ plan.price }}<span>{{ 'iam.myPlan.perMonth' | translate }}</span></p>
                   <span class="my-plan__plan-option-badge" [class.my-plan__plan-option-badge--upgrade]="isUpgrade(plan)">
-                    @if (isUpgrade(plan)) { Upgrade } @else { Downgrade }
+                    @if (isUpgrade(plan)) { {{ 'iam.myPlan.upgrade' | translate }} } @else { {{ 'iam.myPlan.downgrade' | translate }} }
                   </span>
                 </div>
               </button>
@@ -134,24 +134,24 @@
             </div>
             <div class="my-plan__current-info">
               <p class="my-plan__current-name" [style.color]="currentPlan.textColor">Plan {{ currentPlan.name }}</p>
-              <p class="my-plan__current-tagline" [style.color]="currentPlan.textColor">{{ currentPlan.tagline }}</p>
+              <p class="my-plan__current-tagline" [style.color]="currentPlan.textColor">{{ currentPlan.taglineKey | translate }}</p>
             </div>
             <span class="my-plan__active-badge">{{ 'iam.myPlan.active' | translate }}</span>
           </div>
           <p class="my-plan__current-price my-plan__current-price--large" [style.color]="currentPlan.textColor">${{ currentPlan.price }}<span class="my-plan__current-period">/{{ 'iam.myPlan.month' | translate }}</span></p>
 
           <ul class="my-plan__features-list">
-            @for (feat of currentPlan.features; track feat) {
+            @for (feat of currentPlan.featureKeys; track feat) {
               <li class="my-plan__feature-item">
                 <mat-icon class="my-plan__feature-check" [style.color]="currentPlan.textColor">check</mat-icon>
-                <span [style.color]="currentPlan.textColor">{{ feat }}</span>
+                <span [style.color]="currentPlan.textColor">{{ feat | translate }}</span>
               </li>
             }
           </ul>
 
           <div class="my-plan__current-billing">
             <mat-icon class="my-plan__billing-icon" [style.color]="currentPlan.textColor">calendar_today</mat-icon>
-            <p [style.color]="currentPlan.textColor">{{ 'iam.myPlan.nextBilling' | translate }}: <strong>June 1, 2026</strong></p>
+            <p [style.color]="currentPlan.textColor">{{ 'iam.myPlan.nextBilling' | translate }}: <strong>{{ billingDate }}</strong></p>
           </div>
         </div>
 
@@ -206,7 +206,7 @@
                 <mat-icon style="color: #b3cee3;">calendar_today</mat-icon>
               </div>
             </div>
-            <p class="my-plan__kpi-value">June 1, 2026</p>
+            <p class="my-plan__kpi-value">{{ billingDate }}</p>
             <p class="my-plan__kpi-sub">{{ 'iam.myPlan.autoRenew' | translate }}</p>
           </div>
         </div>
@@ -220,10 +220,10 @@
           <div class="my-plan__payment-card-row">
             <div class="my-plan__visa-badge">VISA</div>
             <div class="my-plan__payment-info">
-              <p class="my-plan__payment-card">Visa ending in 4242</p>
-              <p class="my-plan__payment-exp">Sofia Mendez · Expires 08/2028</p>
+              <p class="my-plan__payment-card">{{ 'iam.myPlan.visaEndingIn' | translate: {last4: cardLast4} }}</p>
+              <p class="my-plan__payment-exp">{{ 'iam.myPlan.cardholderExpires' | translate: {name: currentUserFullName(), date: cardExpiry} }}</p>
             </div>
-            <span class="my-plan__default-badge">Default</span>
+            <span class="my-plan__default-badge">{{ 'iam.myPlan.default' | translate }}</span>
           </div>
         </div>
 
@@ -254,7 +254,7 @@
                     </div>
                     <div>
                       <p class="my-plan__plan-option-name" [style.color]="plan.textColor">Plan {{ plan.name }}</p>
-                      <p class="my-plan__plan-option-tagline" [style.color]="plan.textColor">{{ plan.tagline }}</p>
+                      <p class="my-plan__plan-option-tagline" [style.color]="plan.textColor">{{ plan.taglineKey | translate }}</p>
                     </div>
                   </div>
                   <div class="my-plan__plan-option-right">
@@ -280,10 +280,10 @@
                   </div>
                   <div class="my-plan__plan-preview-info">
                     <p class="my-plan__plan-preview-name">Plan {{ plan.name }}</p>
-                    <p class="my-plan__plan-preview-price">${{ plan.price }}/{{ 'iam.myPlan.month' | translate }}</p>
+                    <p class="my-plan__plan-preview-price">${{ plan.price }}{{ 'iam.myPlan.perMonth' | translate }}</p>
                   </div>
                   <span class="my-plan__plan-preview-badge" [class.my-plan__plan-preview-badge--upgrade]="isUpgrade(plan)">
-                    @if (isUpgrade(plan)) { Upgrade } @else { Downgrade }
+                    @if (isUpgrade(plan)) { {{ 'iam.myPlan.upgrade' | translate }} } @else { {{ 'iam.myPlan.downgrade' | translate }} }
                   </span>
                 </button>
               }
@@ -305,10 +305,10 @@
           <h3 class="my-plan__modal-title">{{ 'iam.myPlan.cancelTitle' | translate }}</h3>
           <p class="my-plan__modal-desc">{{ 'iam.myPlan.cancelDesc' | translate }}</p>
           <div class="my-plan__modal-features">
-            <div class="my-plan__modal-feature"><mat-icon class="my-plan__modal-x">close</mat-icon><span>Unlimited skin analyses</span></div>
-            <div class="my-plan__modal-feature"><mat-icon class="my-plan__modal-x">close</mat-icon><span>AI-powered routines</span></div>
-            <div class="my-plan__modal-feature"><mat-icon class="my-plan__modal-x">close</mat-icon><span>Dermatologist directory</span></div>
-            <div class="my-plan__modal-feature"><mat-icon class="my-plan__modal-x">close</mat-icon><span>Smart chatbot</span></div>
+            <div class="my-plan__modal-feature"><mat-icon class="my-plan__modal-x">close</mat-icon><span>{{ 'iam.myPlan.planFeatures.unlimitedSkinAnalyses' | translate }}</span></div>
+            <div class="my-plan__modal-feature"><mat-icon class="my-plan__modal-x">close</mat-icon><span>{{ 'iam.myPlan.planFeatures.aiPoweredRoutines' | translate }}</span></div>
+            <div class="my-plan__modal-feature"><mat-icon class="my-plan__modal-x">close</mat-icon><span>{{ 'iam.myPlan.planFeatures.dermatologistDirectory' | translate }}</span></div>
+            <div class="my-plan__modal-feature"><mat-icon class="my-plan__modal-x">close</mat-icon><span>{{ 'iam.myPlan.planFeatures.smartChatbot' | translate }}</span></div>
           </div>
           <button class="my-plan__modal-keep-btn" (click)="onCloseCancelModal()">{{ 'iam.myPlan.keepSubscription' | translate }}</button>
           <button class="my-plan__modal-cancel-btn" (click)="onConfirmCancel()">{{ 'iam.myPlan.yesCancelAnyway' | translate }}</button>
