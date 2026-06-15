@@ -65,18 +65,37 @@
 
       <!-- Day picker -->
       <div class="book-appointment__day-header">
-        <mat-icon class="book-appointment__chevron">chevron_left</mat-icon>
-        <p class="book-appointment__month-label">{{ 'dermatology.bookAppointment.month' | translate }}</p>
+        <button
+          class="book-appointment__nav-btn"
+          [disabled]="!hasPrevPage()"
+          (click)="prevPage()"
+          aria-label="Previous days"
+        >
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+        <p class="book-appointment__month-label">{{ calendarMonth() }}</p>
+        <button
+          class="book-appointment__nav-btn"
+          [disabled]="!hasNextPage()"
+          (click)="nextPage()"
+          aria-label="Next days"
+        >
+          <mat-icon>chevron_right</mat-icon>
+        </button>
       </div>
 
-      <div class="book-appointment__days">
-        @for (calDay of calendarDays(); track calDay.day; let i = $index) {
+      <div
+        class="book-appointment__days"
+        (touchstart)="onTouchStart($event)"
+        (touchend)="onTouchEnd($event)"
+      >
+        @for (calDay of calendarDays(); track calDay.date.getTime(); let i = $index) {
           <button
             class="book-appointment__day-btn"
             [class.book-appointment__day-btn--selected]="selectedDay() === i"
             (click)="selectDay(i)"
           >
-            <span class="book-appointment__day-number">{{ calDay.day || i + 1 }}</span>
+            <span class="book-appointment__day-number">{{ calDay.day }}</span>
             <span class="book-appointment__day-name">{{ calDay.name }}</span>
           </button>
         }

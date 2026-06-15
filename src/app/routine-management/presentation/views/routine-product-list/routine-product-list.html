@@ -12,24 +12,6 @@
     <!-- Left: Calendar + Products -->
     <div class="routine-product-list__main">
 
-      <!-- Weekly Day Strip -->
-      <div class="routine-product-list__day-strip">
-        @for (weekDay of weekDays(); track weekDay.dayNumber) {
-          <button
-            class="routine-product-list__day-btn"
-            [class.routine-product-list__day-btn--selected]="weekDay.date.toDateString() === selectedDate().toDateString()"
-            [class.routine-product-list__day-btn--today]="weekDay.isToday"
-            (click)="selectWeekDay(weekDay)"
-          >
-            <span class="routine-product-list__day-number">{{ weekDay.dayNumber }}</span>
-            <span class="routine-product-list__day-name">{{ weekDay.dayName | translate }}</span>
-            @if (weekDay.isCompleted) {
-              <mat-icon class="routine-product-list__day-check">check_circle</mat-icon>
-            }
-          </button>
-        }
-      </div>
-
       <!-- Month Calendar -->
       <div class="routine-product-list__calendar-card">
         <div class="routine-product-list__calendar-header">

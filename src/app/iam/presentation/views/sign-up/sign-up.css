@@ -1,4 +1,4 @@
-.sign-in {
+.sign-up {
   min-height: 100vh;
   width: 100%;
   display: flex;
@@ -7,14 +7,14 @@
   box-sizing: border-box;
 }
 
-.sign-in__panel {
+.sign-up__panel {
   background-color: #a26769;
   color: #ffffff;
   padding: 4rem 2.5rem 3rem;
   position: relative;
 }
 
-.sign-in__back {
+.sign-up__back {
   position: absolute;
   top: 1.5rem;
   left: 1.5rem;
@@ -26,14 +26,14 @@
   padding: 0.5rem;
 }
 
-.sign-in__title {
+.sign-up__title {
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
   font-size: 36px;
   margin: 1rem 0 0.5rem 0;
 }
 
-.sign-in__tagline {
+.sign-up__tagline {
   font-family: 'Montserrat', sans-serif;
   font-weight: 500;
   line-height: 1.1;
@@ -41,14 +41,14 @@
   opacity: 0.9;
 }
 
-.sign-in__form-wrapper {
+.sign-up__form-wrapper {
   flex: 1;
   padding: 2.5rem 2rem;
   display: flex;
   justify-content: center;
 }
 
-.sign-in__form {
+.sign-up__form {
   width: 100%;
   max-width: 28rem;
   display: flex;
@@ -56,7 +56,7 @@
   gap: 1.25rem;
 }
 
-.sign-in__form-title {
+.sign-up__form-title {
   font-family: 'Montserrat', sans-serif;
   font-weight: 600;
   font-size: 24px;
@@ -64,20 +64,21 @@
   margin: 0 0 0.5rem 0;
 }
 
-.sign-in__field {
+.sign-up__field {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
+
 }
 
-.sign-in__label {
+.sign-up__label {
   font-family: 'Montserrat', sans-serif;
   font-weight: 600;
   font-size: 14px;
   color: #1e1e1e;
 }
 
-.sign-in__input {
+.sign-up__input {
   width: 100%;
   background-color: #ffffff;
   border: 1px solid #d9d9d9;
@@ -92,19 +93,19 @@
   transition: border-color 0.2s ease;
 }
 
-.sign-in__input:focus {
+.sign-up__input:focus {
   border-color: #a26769;
 }
 
-.sign-in__password-wrapper {
+.sign-up__password-wrapper {
   position: relative;
 }
 
-.sign-in__password-wrapper .sign-in__input {
+.sign-up__password-wrapper .sign-up__input {
   padding-right: 2.75rem;
 }
 
-.sign-in__password-toggle {
+.sign-up__password-toggle {
   position: absolute;
   right: 0.75rem;
   top: 50%;
@@ -116,14 +117,52 @@
   padding: 0.25rem;
 }
 
-.sign-in__error {
+.sign-up__hint {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  color: #888888;
+  margin: 0;
+}
+
+.sign-up__error {
   font-family: 'Montserrat', sans-serif;
   font-size: 12px;
   color: #e05252;
   margin: 0;
 }
 
-.sign-in__banner {
+.sign-up__name-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.sign-up__checkbox-row {
+  display: flex;
+  align-items: center;
+}
+
+.sign-up__checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  color: #1e1e1e;
+  cursor: pointer;
+  user-select: none;
+}
+
+.sign-up__checkbox {
+  width: 16px;
+  height: 16px;
+  border: 1px solid #d9d9d9;
+  border-radius: 3px;
+  accent-color: #333333;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.sign-up__banner {
   background-color: #fdf2f2;
   border: 1px solid rgba(224, 82, 82, 0.3);
   color: #e05252;
@@ -133,56 +172,40 @@
   font-size: 13px;
 }
 
-.sign-in__submit {
+.sign-up__actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.sign-up__submit {
   background-color: #333333;
   color: #ffffff;
   border: none;
   border-radius: 26.5px;
-  padding: 0.875rem 1rem;
+  padding: 0.875rem 2rem;
   font-family: 'Montserrat', sans-serif;
   font-weight: 500;
   font-size: 15px;
   cursor: pointer;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
   transition: background-color 0.2s ease;
-  margin-top: 0.5rem;
 }
 
-.sign-in__submit:hover:not(:disabled) {
+.sign-up__submit:hover:not(:disabled) {
   background-color: #1e1e1e;
 }
 
-.sign-in__submit:disabled {
+.sign-up__submit:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
-.sign-in__footer {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 13px;
-  color: #000000;
-  text-align: center;
-  margin: 0.5rem 0 0 0;
-}
-
-.sign-in__link {
-  background: none;
-  border: none;
-  color: #a26769;
-  text-decoration: underline;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 600;
-  font-size: 13px;
-  cursor: pointer;
-  padding: 0;
-}
-
 @media (min-width: 1024px) {
-  .sign-in {
+  .sign-up {
     flex-direction: row;
   }
 
-  .sign-in__panel {
+  .sign-up__panel {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -192,22 +215,22 @@
     text-align: center;
   }
 
-  .sign-in__title {
+  .sign-up__title {
     font-size: 64px;
   }
 
-  .sign-in__tagline {
+  .sign-up__tagline {
     font-size: 22px;
     max-width: 24rem;
   }
 
-  .sign-in__form-wrapper {
+  .sign-up__form-wrapper {
     flex: 1;
     align-items: center;
     padding: 4rem;
   }
 
-  .sign-in__form-title {
+  .sign-up__form-title {
     font-size: 32px;
   }
 }

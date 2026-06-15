@@ -164,7 +164,6 @@
       "workingTime": "Horario de Atención",
       "workingTimeValue": "Lunes – Viernes, 9:00 – 18:00",
       "schedule": "Horario",
-      "month": "Octubre 2026",
       "availableTimes": "Horarios Disponibles",
       "noSlots": "No hay horarios disponibles para este día.",
       "continue": "Continuar"
@@ -559,6 +558,77 @@
       "dermatologistRegisterLink": "Regístrate aquí como especialista.",
       "dermatologistLoginLink": "Inicia sesión como especialista."
     },
+    "lifestyleForm": {
+      "title": "Preguntas de Estilo de Vida",
+      "step": "Paso",
+      "of": "de",
+      "skinTypeLabel": "Selecciona tu tipo de piel (Opcional)",
+      "skinTypePlaceholder": "Seleccionar tipo de piel",
+      "skinTypeGuideLine1": "¿No sabes cuál es tu tipo de piel?",
+      "skinTypeGuideLine2": "Toca aquí para aprender más",
+      "waterLabel": "Ingesta de Agua (por día)",
+      "waterHint": "¿Cuánta agua bebes al día?",
+      "sunLabel": "Exposición al Sol",
+      "sunHint": "¿Cuánto tiempo pasas al sol al día?",
+      "sleepLabel": "Hábitos de Sueño",
+      "sleepHint": "¿Cuántas horas duermes por noche?",
+      "selectOption": "Seleccionar opción",
+      "nextButton": "Siguiente",
+      "guideTitle": "Guía de Tipos de Piel",
+      "guideBadge": "Referencia",
+      "mobileGuideTitle": "Tipos de Piel",
+      "guide": {
+        "normal": {
+          "name": "Piel normal",
+          "trait1": "Equilibrada, ni muy grasa ni muy seca",
+          "trait2": "Poros pequeños",
+          "trait3": "Textura suave y uniforme"
+        },
+        "dry": {
+          "name": "Piel seca",
+          "trait1": "Se siente tensa después de lavar",
+          "trait2": "Descamación o parches ásperos",
+          "trait3": "Sin brillo o apagada"
+        },
+        "oily": {
+          "name": "Piel grasa",
+          "trait1": "Apariencia brillante y grasienta",
+          "trait2": "Poros dilatados",
+          "trait3": "Propensa al acné y puntos negros"
+        },
+        "combo": {
+          "name": "Piel mixta",
+          "trait1": "Grasa en frente, nariz y mentón",
+          "trait2": "Seca o normal en las mejillas",
+          "trait3": "Requiere cuidado mixto"
+        }
+      }
+    },
+    "signUp": {
+      "title": "Bloomie",
+      "tagline": "Crea tu cuenta y comienza tu viaje de cuidado de la piel",
+      "formTitle": "Registrarse",
+      "emailLabel": "Correo electrónico",
+      "emailPlaceholder": "Ej: \"ejemplo@correo.com\"",
+      "passwordLabel": "Contraseña",
+      "passwordHint": "Tu contraseña debe tener al menos 8 caracteres",
+      "togglePassword": "Mostrar u ocultar contraseña",
+      "nameLabel": "Nombre",
+      "namePlaceholder": "Valor",
+      "lastNameLabel": "Apellido",
+      "lastNamePlaceholder": "Valor",
+      "rememberMe": "Recuérdame",
+      "submitButton": "Siguiente",
+      "loadingButton": "Creando cuenta...",
+      "errors": {
+        "emailRequired": "El correo es obligatorio.",
+        "emailInvalid": "Ingresa un correo válido.",
+        "passwordRequired": "La contraseña es obligatoria.",
+        "passwordTooShort": "La contraseña debe tener al menos 8 caracteres.",
+        "nameRequired": "El nombre es obligatorio.",
+        "lastNameRequired": "El apellido es obligatorio."
+      }
+    },
     "signIn": {
       "title": "Bloomie",
       "tagline": "Bienvenida de vuelta a tu viaje de cuidado de la piel",
@@ -576,6 +646,41 @@
         "emailInvalid": "Ingresa un correo válido.",
         "passwordRequired": "La contraseña es obligatoria.",
         "passwordTooShort": "La contraseña debe tener al menos 8 caracteres."
+      }
+    },
+    "dermSignUp": {
+      "title": "Bloomie",
+      "portalLabel": "Portal de Especialistas",
+      "tagline": "Únete a Bloomie como dermatólogo certificado y gestiona tu práctica",
+      "formTitle": "Registro de Especialista",
+      "formSubtitle": "Todos los campos son obligatorios para crear tu cuenta.",
+      "roleBadge": "Registrándose como DERMATÓLOGO",
+      "firstNameLabel": "Nombre",
+      "firstNamePlaceholder": "Laura",
+      "lastNameLabel": "Apellido",
+      "lastNamePlaceholder": "Morales",
+      "emailLabel": "Correo electrónico",
+      "emailPlaceholder": "doctor@clinica.com",
+      "specialtyLabel": "Especialidad",
+      "specialtyPlaceholder": "Selecciona tu especialidad...",
+      "passwordLabel": "Contraseña",
+      "confirmPasswordLabel": "Confirmar contraseña",
+      "passwordHint": "Al menos 8 caracteres",
+      "togglePassword": "Mostrar/ocultar contraseña",
+      "submitButton": "Registrarse",
+      "loadingButton": "Creando cuenta...",
+      "alreadyHaveAccount": "¿Ya tienes una cuenta?",
+      "loginLink": "Inicia sesión como especialista",
+      "errors": {
+        "firstNameRequired": "El nombre es obligatorio.",
+        "lastNameRequired": "El apellido es obligatorio.",
+        "emailRequired": "El correo electrónico es obligatorio.",
+        "emailInvalid": "Ingresa un correo electrónico válido.",
+        "specialtyRequired": "Por favor selecciona una especialidad.",
+        "passwordRequired": "La contraseña es obligatoria.",
+        "passwordTooShort": "La contraseña debe tener al menos 8 caracteres.",
+        "confirmPasswordRequired": "Por favor confirma tu contraseña.",
+        "passwordMismatch": "Las contraseñas no coinciden."
       }
     },
     "dermSignIn": {

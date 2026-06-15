@@ -164,7 +164,6 @@
       "workingTime": "Working Time",
       "workingTimeValue": "Monday – Friday, 9:00 – 18:00",
       "schedule": "Schedule",
-      "month": "October 2026",
       "availableTimes": "Available Times",
       "noSlots": "No slots available for this day.",
       "continue": "Continue"
@@ -556,6 +555,77 @@
       "dermatologistRegisterLink": "Register here as a specialist.",
       "dermatologistLoginLink": "Log in as a specialist."
     },
+    "lifestyleForm": {
+      "title": "Lifestyle Questions",
+      "step": "Step",
+      "of": "of",
+      "skinTypeLabel": "Select your skin type (Optional)",
+      "skinTypePlaceholder": "Select skin type",
+      "skinTypeGuideLine1": "Not sure about your skin type?",
+      "skinTypeGuideLine2": "Tap here to learn more",
+      "waterLabel": "Water Intake (per day)",
+      "waterHint": "¿How much water do you drink daily?",
+      "sunLabel": "Sun Exposure",
+      "sunHint": "¿How much time do you spend in the sun daily?",
+      "sleepLabel": "Sleep Habits",
+      "sleepHint": "¿How many hours do you sleep per night?",
+      "selectOption": "Select option",
+      "nextButton": "Next",
+      "guideTitle": "Skin Types Guide",
+      "guideBadge": "Reference",
+      "mobileGuideTitle": "Skin Types",
+      "guide": {
+        "normal": {
+          "name": "Normal skin",
+          "trait1": "Balanced, not too oily or dry",
+          "trait2": "Small pores",
+          "trait3": "Soft, smooth texture"
+        },
+        "dry": {
+          "name": "Dry skin",
+          "trait1": "Feels tight after washing",
+          "trait2": "Flaky or rough patches",
+          "trait3": "Dull or less radiant"
+        },
+        "oily": {
+          "name": "Oily skin",
+          "trait1": "Shiny, greasy appearance",
+          "trait2": "Enlarged pores",
+          "trait3": "Prone to acne and blackheads"
+        },
+        "combo": {
+          "name": "Combination skin",
+          "trait1": "Oily on forehead, nose, chin",
+          "trait2": "Dry or normal on cheeks",
+          "trait3": "Needs mixed care"
+        }
+      }
+    },
+    "signUp": {
+      "title": "Bloomie",
+      "tagline": "Create your account and start your skincare journey",
+      "formTitle": "Sign Up",
+      "emailLabel": "Email",
+      "emailPlaceholder": "Ej: \"example@email.com\"",
+      "passwordLabel": "Password",
+      "passwordHint": "Your password must contain at least 8 characters",
+      "togglePassword": "Toggle password visibility",
+      "nameLabel": "Name",
+      "namePlaceholder": "Value",
+      "lastNameLabel": "Last Name",
+      "lastNamePlaceholder": "Value",
+      "rememberMe": "Remember me",
+      "submitButton": "Next",
+      "loadingButton": "Creating account...",
+      "errors": {
+        "emailRequired": "Email is required.",
+        "emailInvalid": "Enter a valid email address.",
+        "passwordRequired": "Password is required.",
+        "passwordTooShort": "Password must be at least 8 characters.",
+        "nameRequired": "Name is required.",
+        "lastNameRequired": "Last name is required."
+      }
+    },
     "signIn": {
       "title": "Bloomie",
       "tagline": "Welcome back to your skincare journey",
@@ -573,6 +643,41 @@
         "emailInvalid": "Enter a valid email address.",
         "passwordRequired": "Password is required.",
         "passwordTooShort": "Password must be at least 8 characters."
+      }
+    },
+    "dermSignUp": {
+      "title": "Bloomie",
+      "portalLabel": "Specialist Portal",
+      "tagline": "Join Bloomie as a certified dermatologist and manage your practice",
+      "formTitle": "Specialist Sign Up",
+      "formSubtitle": "All fields are required to create your account.",
+      "roleBadge": "Registering as DERMATOLOGIST",
+      "firstNameLabel": "First Name",
+      "firstNamePlaceholder": "Laura",
+      "lastNameLabel": "Last Name",
+      "lastNamePlaceholder": "Morales",
+      "emailLabel": "Email",
+      "emailPlaceholder": "doctor@clinic.com",
+      "specialtyLabel": "Specialty",
+      "specialtyPlaceholder": "Select your specialty...",
+      "passwordLabel": "Password",
+      "confirmPasswordLabel": "Confirm Password",
+      "passwordHint": "At least 8 characters",
+      "togglePassword": "Toggle password visibility",
+      "submitButton": "Register",
+      "loadingButton": "Creating account...",
+      "alreadyHaveAccount": "Already have an account?",
+      "loginLink": "Log in as specialist",
+      "errors": {
+        "firstNameRequired": "First name is required.",
+        "lastNameRequired": "Last name is required.",
+        "emailRequired": "Email is required.",
+        "emailInvalid": "Enter a valid email address.",
+        "specialtyRequired": "Please select a specialty.",
+        "passwordRequired": "Password is required.",
+        "passwordTooShort": "Password must be at least 8 characters.",
+        "confirmPasswordRequired": "Please confirm your password.",
+        "passwordMismatch": "Passwords do not match."
       }
     },
     "dermSignIn": {

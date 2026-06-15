@@ -1,0 +1,204 @@
+<div class="derm-sign-up">
+
+  <div class="derm-sign-up__panel">
+    <button type="button" class="derm-sign-up__back" (click)="onBack()" aria-label="Back">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+
+    <div class="derm-sign-up__panel-content">
+      <h1 class="derm-sign-up__title">{{ 'iam.dermSignUp.title' | translate }}</h1>
+
+      <div class="derm-sign-up__portal-badge">
+        <mat-icon class="derm-sign-up__portal-icon">medical_services</mat-icon>
+        <span>{{ 'iam.dermSignUp.portalLabel' | translate }}</span>
+      </div>
+
+      <p class="derm-sign-up__tagline">{{ 'iam.dermSignUp.tagline' | translate }}</p>
+    </div>
+  </div>
+
+  <div class="derm-sign-up__form-wrapper">
+    <form class="derm-sign-up__form" [formGroup]="form" (ngSubmit)="onSubmit()">
+
+      <h2 class="derm-sign-up__form-title">{{ 'iam.dermSignUp.formTitle' | translate }}</h2>
+      <p class="derm-sign-up__form-subtitle">{{ 'iam.dermSignUp.formSubtitle' | translate }}</p>
+
+      <div class="derm-sign-up__role-badge">
+        <mat-icon class="derm-sign-up__role-icon">medical_services</mat-icon>
+        <span>{{ 'iam.dermSignUp.roleBadge' | translate }}</span>
+      </div>
+
+      <div class="derm-sign-up__name-row">
+        <div class="derm-sign-up__field">
+          <label class="derm-sign-up__label" for="derm-sign-up-first-name">
+            {{ 'iam.dermSignUp.firstNameLabel' | translate }}
+          </label>
+          <input
+            id="derm-sign-up-first-name"
+            type="text"
+            class="derm-sign-up__input"
+            formControlName="firstName"
+            [placeholder]="'iam.dermSignUp.firstNamePlaceholder' | translate"
+            autocomplete="given-name"
+          />
+          @if (submitted() && form.get('firstName')?.hasError('required')) {
+            <p class="derm-sign-up__error">{{ 'iam.dermSignUp.errors.firstNameRequired' | translate }}</p>
+          }
+        </div>
+
+        <div class="derm-sign-up__field">
+          <label class="derm-sign-up__label" for="derm-sign-up-last-name">
+            {{ 'iam.dermSignUp.lastNameLabel' | translate }}
+          </label>
+          <input
+            id="derm-sign-up-last-name"
+            type="text"
+            class="derm-sign-up__input"
+            formControlName="lastName"
+            [placeholder]="'iam.dermSignUp.lastNamePlaceholder' | translate"
+            autocomplete="family-name"
+          />
+          @if (submitted() && form.get('lastName')?.hasError('required')) {
+            <p class="derm-sign-up__error">{{ 'iam.dermSignUp.errors.lastNameRequired' | translate }}</p>
+          }
+        </div>
+      </div>
+
+      <div class="derm-sign-up__field">
+        <label class="derm-sign-up__label" for="derm-sign-up-email">
+          {{ 'iam.dermSignUp.emailLabel' | translate }}
+        </label>
+        <input
+          id="derm-sign-up-email"
+          type="email"
+          class="derm-sign-up__input"
+          formControlName="email"
+          [placeholder]="'iam.dermSignUp.emailPlaceholder' | translate"
+          autocomplete="email"
+        />
+        @if (submitted() && form.get('email')?.hasError('required')) {
+          <p class="derm-sign-up__error">{{ 'iam.dermSignUp.errors.emailRequired' | translate }}</p>
+        }
+        @if (submitted() && form.get('email')?.hasError('email')) {
+          <p class="derm-sign-up__error">{{ 'iam.dermSignUp.errors.emailInvalid' | translate }}</p>
+        }
+      </div>
+
+      <div class="derm-sign-up__field">
+        <label class="derm-sign-up__label" for="derm-sign-up-specialty">
+          {{ 'iam.dermSignUp.specialtyLabel' | translate }}
+        </label>
+        <select
+          id="derm-sign-up-specialty"
+          class="derm-sign-up__select"
+          formControlName="specialty"
+        >
+          <option value="" disabled selected>{{ 'iam.dermSignUp.specialtyPlaceholder' | translate }}</option>
+          @for (s of specialties; track s) {
+            <option [value]="s">{{ s }}</option>
+          }
+        </select>
+        @if (submitted() && form.get('specialty')?.hasError('required')) {
+          <p class="derm-sign-up__error">{{ 'iam.dermSignUp.errors.specialtyRequired' | translate }}</p>
+        }
+      </div>
+
+      <div class="derm-sign-up__password-row">
+        <div class="derm-sign-up__field">
+          <label class="derm-sign-up__label" for="derm-sign-up-password">
+            {{ 'iam.dermSignUp.passwordLabel' | translate }}
+          </label>
+          <div class="derm-sign-up__password-wrapper">
+            <input
+              id="derm-sign-up-password"
+              [type]="showPassword() ? 'text' : 'password'"
+              class="derm-sign-up__input"
+              formControlName="password"
+              placeholder="••••••••"
+              autocomplete="new-password"
+            />
+            <button
+              type="button"
+              class="derm-sign-up__password-toggle"
+              (click)="togglePasswordVisibility()"
+              [attr.aria-label]="'iam.dermSignUp.togglePassword' | translate"
+            >
+              @if (showPassword()) {
+                <mat-icon>visibility_off</mat-icon>
+              } @else {
+                <mat-icon>visibility</mat-icon>
+              }
+            </button>
+          </div>
+          @if (submitted() && form.get('password')?.hasError('required')) {
+            <p class="derm-sign-up__error">{{ 'iam.dermSignUp.errors.passwordRequired' | translate }}</p>
+          }
+          @if (submitted() && form.get('password')?.hasError('minlength')) {
+            <p class="derm-sign-up__error">{{ 'iam.dermSignUp.errors.passwordTooShort' | translate }}</p>
+          }
+        </div>
+
+        <div class="derm-sign-up__field">
+          <label class="derm-sign-up__label" for="derm-sign-up-confirm-password">
+            {{ 'iam.dermSignUp.confirmPasswordLabel' | translate }}
+          </label>
+          <div class="derm-sign-up__password-wrapper">
+            <input
+              id="derm-sign-up-confirm-password"
+              [type]="showConfirmPassword() ? 'text' : 'password'"
+              class="derm-sign-up__input"
+              formControlName="confirmPassword"
+              placeholder="••••••••"
+              autocomplete="new-password"
+            />
+            <button
+              type="button"
+              class="derm-sign-up__password-toggle"
+              (click)="toggleConfirmPasswordVisibility()"
+              [attr.aria-label]="'iam.dermSignUp.togglePassword' | translate"
+            >
+              @if (showConfirmPassword()) {
+                <mat-icon>visibility_off</mat-icon>
+              } @else {
+                <mat-icon>visibility</mat-icon>
+              }
+            </button>
+          </div>
+          @if (submitted() && form.get('confirmPassword')?.hasError('required')) {
+            <p class="derm-sign-up__error">{{ 'iam.dermSignUp.errors.confirmPasswordRequired' | translate }}</p>
+          }
+          @if (submitted() && form.hasError('passwordMismatch')) {
+            <p class="derm-sign-up__error">{{ 'iam.dermSignUp.errors.passwordMismatch' | translate }}</p>
+          }
+        </div>
+      </div>
+
+      <p class="derm-sign-up__hint">{{ 'iam.dermSignUp.passwordHint' | translate }}</p>
+
+      @if (iamStore.error()) {
+        <div class="derm-sign-up__banner" role="alert">
+          {{ iamStore.error() }}
+        </div>
+      }
+
+      <div class="derm-sign-up__actions">
+        <button type="submit" class="derm-sign-up__submit" [disabled]="iamStore.loading()">
+          @if (iamStore.loading()) {
+            {{ 'iam.dermSignUp.loadingButton' | translate }}
+          } @else {
+            {{ 'iam.dermSignUp.submitButton' | translate }}
+          }
+        </button>
+      </div>
+
+      <p class="derm-sign-up__login-hint">
+        {{ 'iam.dermSignUp.alreadyHaveAccount' | translate }}
+        <a class="derm-sign-up__login-link" routerLink="/iam/dermatologist-sign-in">
+          {{ 'iam.dermSignUp.loginLink' | translate }}
+        </a>
+      </p>
+
+    </form>
+  </div>
+
+</div>

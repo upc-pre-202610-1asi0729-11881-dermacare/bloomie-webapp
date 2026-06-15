@@ -63,6 +63,7 @@ export class IamStore {
   private readonly currentUserSignal = signal<User | null>(null);
   private readonly loadingSignal = signal<boolean>(false);
   private readonly errorSignal = signal<string | null>(null);
+  private onboardingPending = false;
 
   /**
    * Readonly signal for the currently authenticated user, or null when
@@ -147,6 +148,7 @@ export class IamStore {
   registerYoungAdult(email: string, password: string, name: string, lastName: string): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
+    this.onboardingPending = true;
 
     if (environment.useMockAuthentication) {
       this.registerWithMockResponse(email, name, lastName, UserRole.YoungAdult);
@@ -347,6 +349,11 @@ export class IamStore {
   private navigateToRoleEntryPoint(role: UserRole): void {
     if (role === UserRole.Dermatologist) {
       this.router.navigate(['/derm']).then();
+      return;
+    }
+    if (this.onboardingPending) {
+      this.onboardingPending = false;
+      this.router.navigate(['/iam/lifestyle-form']).then();
       return;
     }
     this.router.navigate(['/dashboard']).then();

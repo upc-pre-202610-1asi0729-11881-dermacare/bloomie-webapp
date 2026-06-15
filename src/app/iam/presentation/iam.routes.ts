@@ -13,6 +13,17 @@ const dermatologistSignIn = () =>
     (module) => module.DermatologistSignIn,
   );
 
+const dermatologistSignUp = () =>
+  import('./views/dermatologist-sign-up/dermatologist-sign-up').then(
+    (module) => module.DermatologistSignUp,
+  );
+
+const signUp = () =>
+  import('./views/sign-up/sign-up').then((module) => module.SignUp);
+
+const lifestyleForm = () =>
+  import('./views/lifestyle-form/lifestyle-form').then((module) => module.LifestyleForm);
+
 const userProfile = () =>
   import('./views/user-profile/user-profile').then((module) => module.UserProfile);
 
@@ -36,7 +47,10 @@ export const profileRoutes: Routes = [
 export const iamRoutes: Routes = [
   { path: 'sign-in-home', loadComponent: signInHome },
   { path: 'sign-in', loadComponent: signIn },
+  { path: 'sign-up', loadComponent: signUp },
+  { path: 'lifestyle-form', loadComponent: lifestyleForm },
   { path: 'dermatologist-sign-in', loadComponent: dermatologistSignIn },
+  { path: 'dermatologist-sign-up', loadComponent: dermatologistSignUp },
   { path: '', redirectTo: 'sign-in-home', pathMatch: 'full' },
 ];
 
