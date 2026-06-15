@@ -57,6 +57,34 @@ export class SkinProfileView implements OnInit {
     'More than 8 hours',
   ];
 
+  readonly skinTypeLabelKeys: Record<string, string> = {
+    'Normal skin': 'iam.skinProfile.skinTypes.normal',
+    'Oily skin': 'iam.skinProfile.skinTypes.oily',
+    'Dry skin': 'iam.skinProfile.skinTypes.dry',
+    'Combination skin': 'iam.skinProfile.skinTypes.combination',
+    'Sensitive skin': 'iam.skinProfile.skinTypes.sensitive',
+  };
+  readonly waterLabelKeys: Record<string, string> = {
+    'Less than 3 glasses': 'iam.skinProfile.waterOptions.lessThan3',
+    '3 - 5 glasses': 'iam.skinProfile.waterOptions.3to5',
+    '5 - 9 glasses': 'iam.skinProfile.waterOptions.5to9',
+    'More than 9 glasses': 'iam.skinProfile.waterOptions.moreThan9',
+  };
+  readonly sunLabelKeys: Record<string, string> = {
+    'Less than 15 minutes': 'iam.skinProfile.sunOptions.lessThan15',
+    '15 - 30 minutes': 'iam.skinProfile.sunOptions.15to30',
+    '30 - 60 minutes': 'iam.skinProfile.sunOptions.30to60',
+    'More than 1 hour': 'iam.skinProfile.sunOptions.moreThan1h',
+  };
+  readonly sleepLabelKeys: Record<string, string> = {
+    'Less than 5 hours': 'iam.skinProfile.sleepOptions.lessThan5',
+    '5 - 6 hours': 'iam.skinProfile.sleepOptions.5to6',
+    '6 hours': 'iam.skinProfile.sleepOptions.6hours',
+    '7 - 8 hours': 'iam.skinProfile.sleepOptions.7to8',
+    '8 hours': 'iam.skinProfile.sleepOptions.8hours',
+    'More than 8 hours': 'iam.skinProfile.sleepOptions.moreThan8',
+  };
+
   /**
    * Loads the existing skin profile from the store when the component initializes.
    * Maps stored enum values to display labels for the dropdowns.

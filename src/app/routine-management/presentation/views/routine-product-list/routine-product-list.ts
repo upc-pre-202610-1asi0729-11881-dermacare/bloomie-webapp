@@ -43,8 +43,26 @@ export class RoutineProductList {
    * Computed signal for the 7-day strip centered on today.
    * Shows 3 days before today and 3 days after.
    */
+  readonly calendarDayKeys = [
+    'routine.productList.dayAbbrev.su',
+    'routine.productList.dayAbbrev.mo',
+    'routine.productList.dayAbbrev.tu',
+    'routine.productList.dayAbbrev.we',
+    'routine.productList.dayAbbrev.th',
+    'routine.productList.dayAbbrev.fr',
+    'routine.productList.dayAbbrev.sa',
+  ];
+
   readonly weekDays = computed((): WeekDay[] => {
-    const dayNames = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+    const dayNames = [
+      'routine.productList.dayAbbrev.su',
+      'routine.productList.dayAbbrev.mo',
+      'routine.productList.dayAbbrev.tu',
+      'routine.productList.dayAbbrev.we',
+      'routine.productList.dayAbbrev.th',
+      'routine.productList.dayAbbrev.fr',
+      'routine.productList.dayAbbrev.sa',
+    ];
     const today = new Date();
     const completedSet = new Set(this.store.completedDays());
     return Array.from({ length: 7 }, (_, index) => {

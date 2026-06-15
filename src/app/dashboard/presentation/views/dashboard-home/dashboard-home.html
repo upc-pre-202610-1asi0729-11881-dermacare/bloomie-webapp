@@ -28,7 +28,7 @@
     <header class="dashboard__header">
       <div class="dashboard__header-left">
         <h1 class="dashboard__greeting">
-          {{ greetingKey() | translate }}, Sofia 👋
+          {{ greetingKey() | translate }}, {{ currentUserName() }} 👋
         </h1>
         <p class="dashboard__date">
           {{ formattedToday() }} · {{ 'dashboard.statusLine' | translate }}
@@ -40,7 +40,7 @@
           <mat-icon>notifications</mat-icon>
           <span class="dashboard__notification-dot"></span>
         </button>
-        <div class="dashboard__avatar" aria-label="User profile">S</div>
+        <div class="dashboard__avatar" aria-label="User profile">{{ currentUserFirstLetter() }}</div>
       </div>
     </header>
 
@@ -54,9 +54,15 @@
               <mat-icon class="stat-card__icon">{{ card.icon }}</mat-icon>
             </div>
           </div>
-          <p class="stat-card__value">{{ card.value }}</p>
-          @if (card.subtitle) {
-            <p class="stat-card__subtitle">{{ card.subtitle }}</p>
+          <p class="stat-card__value">
+            {{ card.value }}@if (card.unitKey) { {{ card.unitKey | translate }} }
+          </p>
+          @if (card.subtitleKey) {
+            <p class="stat-card__subtitle">
+              {{ card.subtitleKey | translate: {value: card.subtitleParam} }}
+            </p>
+          } @else if (card.subtitleRaw) {
+            <p class="stat-card__subtitle">{{ card.subtitleRaw }}</p>
           }
         </div>
       }

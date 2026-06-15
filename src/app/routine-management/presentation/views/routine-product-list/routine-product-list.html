@@ -22,7 +22,7 @@
             (click)="selectWeekDay(weekDay)"
           >
             <span class="routine-product-list__day-number">{{ weekDay.dayNumber }}</span>
-            <span class="routine-product-list__day-name">{{ weekDay.dayName }}</span>
+            <span class="routine-product-list__day-name">{{ weekDay.dayName | translate }}</span>
             @if (weekDay.isCompleted) {
               <mat-icon class="routine-product-list__day-check">check_circle</mat-icon>
             }
@@ -43,8 +43,8 @@
         </div>
 
         <div class="routine-product-list__calendar-day-names">
-          @for (name of ['Su','Mo','Tu','We','Th','Fr','Sa']; track name) {
-            <span class="routine-product-list__calendar-day-name-label">{{ name }}</span>
+          @for (key of calendarDayKeys; track key) {
+            <span class="routine-product-list__calendar-day-name-label">{{ key | translate }}</span>
           }
         </div>
 

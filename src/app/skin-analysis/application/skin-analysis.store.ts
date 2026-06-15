@@ -211,6 +211,7 @@ export class SkinAnalysisStore {
           this.facialScansSignal.update((scans) =>
             scans.map((existing) => (existing.id === updatedScan.id ? updatedScan : existing)),
           );
+          this.currentScanSignal.set(updatedScan);
           this.loadingSignal.set(false);
         },
         error: (err) => {
