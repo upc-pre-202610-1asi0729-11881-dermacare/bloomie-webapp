@@ -30,6 +30,15 @@
       @for (consultation of filteredConsultations(); track consultation.id) {
         <div class="derm-past__card">
 
+          <!-- Patient avatar -->
+          <div class="derm-past__patient-avatar">
+            @if (patientPhotoForConsultation(consultation)) {
+              <img class="derm-past__patient-avatar-img" [src]="patientPhotoForConsultation(consultation)!" alt="Patient photo" />
+            } @else {
+              <mat-icon class="derm-past__patient-avatar-icon">person</mat-icon>
+            }
+          </div>
+
           <!-- Date row -->
           <div class="derm-past__row">
             <mat-icon class="derm-past__row-icon">calendar_today</mat-icon>
