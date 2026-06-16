@@ -27,5 +27,7 @@ export const environment = {
   backendUsersEndpointPath: '/users',
   backendAuthenticationRegisterEndpointPath: '/authentication/register',
   backendAuthenticationRegisterDermatologistEndpointPath: '/authentication/register-dermatologist',
+  backendDermatologistProfilesEndpointPath: '/dermatologist-profiles',
+  backendAvailabilitiesEndpointPath: '/availabilities',
   useMockAuthentication: false,
 };
