@@ -1,0 +1,61 @@
+<div class="photo-upload">
+
+  <!-- Hidden file input -->
+  <input
+    #fileInput
+    type="file"
+    accept="image/*"
+    class="photo-upload__input"
+    (change)="onFileSelected($event, fileInput)"
+  />
+
+  <!-- Clickable avatar -->
+  <div class="photo-upload__avatar-wrapper" (click)="onAvatarClick(fileInput)" role="button" [attr.aria-label]="'photoUpload.changePhoto' | translate">
+    @if (displayUrl) {
+      <img class="photo-upload__img" [src]="displayUrl" alt="Profile photo" />
+    } @else {
+      <div class="photo-upload__placeholder">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="50" cy="38" r="22" fill="#d4b0b1" />
+          <path d="M8 92 Q8 64 50 64 Q92 64 92 92 Z" fill="#d4b0b1" />
+        </svg>
+      </div>
+    }
+    <div class="photo-upload__camera-overlay">
+      <mat-icon class="photo-upload__camera-icon">photo_camera</mat-icon>
+    </div>
+  </div>
+
+  <!-- Confirm / discard actions (visible only when a preview is pending) -->
+  @if (previewUrl()) {
+    <div class="photo-upload__actions">
+      <button
+        class="photo-upload__save-btn"
+        [disabled]="loading()"
+        (click)="onSave()"
+      >
+        @if (loading()) {
+          <mat-icon class="photo-upload__spin">sync</mat-icon>
+        } @else {
+          {{ 'photoUpload.save' | translate }}
+        }
+      </button>
+      <button
+        class="photo-upload__cancel-btn"
+        [disabled]="loading()"
+        (click)="onCancel()"
+      >
+        {{ 'photoUpload.cancel' | translate }}
+      </button>
+    </div>
+  }
+
+  <!-- Feedback messages -->
+  @if (successMessage()) {
+    <p class="photo-upload__success">{{ successMessage()! | translate }}</p>
+  }
+  @if (errorMessage()) {
+    <p class="photo-upload__error">{{ errorMessage()! | translate }}</p>
+  }
+
+</div>
