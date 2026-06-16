@@ -43,9 +43,9 @@ export class IamApiEndpoint extends BaseApiEndpoint<User, UserResource, AuthResp
       `${environment.serverBasePath}${environment.usersEndpointPath}`,
       new UserAssembler()
     );
-    this.loginEndpointUrl                 = `${environment.serverBasePath}${environment.authenticationLoginEndpointPath}`;
-    this.registerYoungAdultEndpointUrl    = `${environment.serverBasePath}${environment.authenticationRegisterYoungAdultEndpointPath}`;
-    this.registerDermatologistEndpointUrl = `${environment.serverBasePath}${environment.authenticationRegisterDermatologistEndpointPath}`;
+    this.loginEndpointUrl                 = `${environment.backendBasePath}${environment.authenticationLoginEndpointPath}`;
+    this.registerYoungAdultEndpointUrl    = `${environment.backendBasePath}${environment.backendAuthenticationRegisterEndpointPath}`;
+    this.registerDermatologistEndpointUrl = `${environment.backendBasePath}${environment.backendAuthenticationRegisterDermatologistEndpointPath}`;
     this.backendUsersUrl                  = `${environment.backendBasePath}${environment.backendUsersEndpointPath}`;
   }
 
@@ -65,10 +65,10 @@ export class IamApiEndpoint extends BaseApiEndpoint<User, UserResource, AuthResp
   /**
    * Registers a new young adult account.
    * @param resource - User resource carrying the registration payload.
-   * @returns Stream emitting the {@link AuthResponse} envelope on success.
+   * @returns Stream emitting the created {@link UserResource}.
    */
-  registerYoungAdult(resource: UserResource): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(this.registerYoungAdultEndpointUrl, resource).pipe(
+  registerYoungAdult(resource: UserResource): Observable<UserResource> {
+    return this.http.post<UserResource>(this.registerYoungAdultEndpointUrl, resource).pipe(
       map(response => response),
       catchError(this.handleError('Failed to register young adult'))
     );
@@ -77,12 +77,22 @@ export class IamApiEndpoint extends BaseApiEndpoint<User, UserResource, AuthResp
   /**
    * Registers a new dermatologist account.
    * @param resource - Dermatologist resource carrying the registration payload.
-   * @returns Stream emitting the {@link AuthResponse} envelope on success.
+   * @returns Stream emitting the created {@link UserResource}.
    */
-  registerDermatologist(resource: DermatologistResource): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(this.registerDermatologistEndpointUrl, resource).pipe(
+  registerDermatologist(resource: DermatologistResource): Observable<UserResource> {
+    return this.http.post<UserResource>(this.registerDermatologistEndpointUrl, resource).pipe(
       map(response => response),
       catchError(this.handleError('Failed to register dermatologist'))
+    );
+  }
+
+  /**
+   * Retrieves all users from the backend.
+   * @returns Stream emitting the full list of {@link UserResource}.
+   */
+  getAllUsers(): Observable<UserResource[]> {
+    return this.http.get<UserResource[]>(this.backendUsersUrl).pipe(
+      catchError(this.handleError('Failed to get users'))
     );
   }
 

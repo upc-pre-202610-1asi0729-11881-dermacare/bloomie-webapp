@@ -44,19 +44,27 @@ export class IamApi extends BaseApi {
   /**
    * Registers a new young adult account.
    * @param resource - User resource carrying the registration payload.
-   * @returns Stream emitting the {@link AuthResponse} envelope on success.
+   * @returns Stream emitting the created {@link UserResource}.
    */
-  registerYoungAdult(resource: UserResource): Observable<AuthResponse> {
+  registerYoungAdult(resource: UserResource): Observable<UserResource> {
     return this.iamEndpoint.registerYoungAdult(resource);
   }
 
   /**
    * Registers a new dermatologist account.
    * @param resource - Dermatologist resource carrying the registration payload.
-   * @returns Stream emitting the {@link AuthResponse} envelope on success.
+   * @returns Stream emitting the created {@link UserResource}.
    */
-  registerDermatologist(resource: DermatologistResource): Observable<AuthResponse> {
+  registerDermatologist(resource: DermatologistResource): Observable<UserResource> {
     return this.iamEndpoint.registerDermatologist(resource);
+  }
+
+  /**
+   * Retrieves all users from the backend.
+   * @returns Stream emitting the full list of {@link UserResource}.
+   */
+  getAllUsers(): Observable<UserResource[]> {
+    return this.iamEndpoint.getAllUsers();
   }
 
   /**
