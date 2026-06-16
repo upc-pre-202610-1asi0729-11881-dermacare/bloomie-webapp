@@ -13,15 +13,10 @@
     <div class="derm-profile__mobile-body">
       <!-- Avatar -->
       <div class="derm-profile__avatar-section">
-        <div class="derm-profile__avatar-wrapper">
-          <div class="derm-profile__avatar">
-            <mat-icon class="derm-profile__avatar-icon">person</mat-icon>
-          </div>
-          <button class="derm-profile__avatar-edit">
-            <mat-icon class="derm-profile__avatar-edit-icon">photo_camera</mat-icon>
-          </button>
-        </div>
-        <button class="derm-profile__change-photo-btn">{{ 'iam.dermProfile.changePhoto' | translate }}</button>
+        <app-photo-upload
+          [userId]="iamStore.currentUser()?.id ?? 0"
+          [currentPhotoUrl]="currentPhotoUrl()"
+        />
       </div>
 
       <!-- Specialty badge -->
@@ -120,21 +115,16 @@
       <!-- Left: User card -->
       <div class="derm-profile__desktop-left">
         <div class="derm-profile__user-card">
-          <div class="derm-profile__avatar-wrapper">
-            <div class="derm-profile__avatar">
-              <mat-icon class="derm-profile__avatar-icon">person</mat-icon>
-            </div>
-            <button class="derm-profile__avatar-edit">
-              <mat-icon class="derm-profile__avatar-edit-icon">photo_camera</mat-icon>
-            </button>
-          </div>
+          <app-photo-upload
+            [userId]="iamStore.currentUser()?.id ?? 0"
+            [currentPhotoUrl]="currentPhotoUrl()"
+          />
           <p class="derm-profile__user-name">{{ name() }}</p>
           <p class="derm-profile__user-email">{{ email() }}</p>
           <div class="derm-profile__user-specialty">
             <mat-icon class="derm-profile__user-specialty-icon">stethoscope</mat-icon>
             <span class="derm-profile__user-specialty-text">{{ specialty() }}</span>
           </div>
-          <button class="derm-profile__change-photo-btn derm-profile__change-photo-btn--full">{{ 'iam.dermProfile.changePhoto' | translate }}</button>
           <div class="derm-profile__user-card-divider"></div>
           <button class="derm-profile__logout-btn derm-profile__logout-btn--center" (click)="onLogout()">
             <mat-icon class="derm-profile__logout-icon">logout</mat-icon>
