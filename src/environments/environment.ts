@@ -23,5 +23,7 @@ export const environment = {
   authenticationLoginEndpointPath: '/authentication/sign-in',
   authenticationRegisterYoungAdultEndpointPath: '/authentication/sign-up/young-adult',
   authenticationRegisterDermatologistEndpointPath: '/authentication/sign-up/dermatologist',
+  backendBasePath: '',
+  backendUsersEndpointPath: '/users',
   useMockAuthentication: true,
 };
