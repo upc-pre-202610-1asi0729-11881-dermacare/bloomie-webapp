@@ -34,6 +34,18 @@
 
   <div class="sidebar__divider"></div>
 
+  <!-- Current user avatar -->
+  <div class="sidebar__user">
+    <div class="sidebar__user-avatar">
+      @if (iamStore.currentUser()?.photoUrl) {
+        <img class="sidebar__user-avatar-img" [src]="iamStore.currentUser()!.photoUrl!" alt="Profile photo" />
+      } @else {
+        <mat-icon class="sidebar__user-avatar-icon">person</mat-icon>
+      }
+    </div>
+    <span class="sidebar__user-name">{{ iamStore.currentUser()?.name }}</span>
+  </div>
+
   <div class="sidebar__section-label">{{ 'nav.mainMenu' | translate }}</div>
 
   <!-- Nav items — closing the drawer on every click ensures smooth UX on mobile -->

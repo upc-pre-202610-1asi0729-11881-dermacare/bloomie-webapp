@@ -1,14 +1,15 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
 import { IamStore } from '../../../../iam/application/iam.store';
+import { PhotoUpload } from '../../../../shared/presentation/components/photo-upload/photo-upload';
 
 @Component({
   selector: 'app-derm-profile',
   standalone: true,
-  imports: [MatIconModule, TranslatePipe, FormsModule],
+  imports: [MatIconModule, TranslatePipe, FormsModule, PhotoUpload],
   templateUrl: './derm-profile.html',
   styleUrl: './derm-profile.css',
 })
@@ -22,6 +23,8 @@ export class DermProfile {
   protected experience = signal<string>('8');
   protected fee = signal<string>('25');
   protected saveSuccess = signal<boolean>(false);
+
+  protected readonly currentPhotoUrl = computed(() => this.iamStore.currentUser()?.photoUrl);
 
   constructor() {
     const user = this.iamStore.currentUser();

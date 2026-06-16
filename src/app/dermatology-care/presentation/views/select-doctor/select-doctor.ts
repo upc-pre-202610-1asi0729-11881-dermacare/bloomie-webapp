@@ -1,12 +1,14 @@
-import {Component, computed, inject, signal} from '@angular/core';
+import {Component, computed, effect, inject, signal, untracked} from '@angular/core';
 import {Router} from '@angular/router';
 import {MatIconModule} from '@angular/material/icon';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {FormsModule} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
+import {take} from 'rxjs';
 import {DermatologyCareStore} from '../../../application/dermatology-care.store';
 import {DermatologistProfile} from '../../../domain/model/dermatologist-profile.entity';
+import {IamStore} from '../../../../iam/application/iam.store';
 
 /** Price range filter option. */
 interface PriceRange {
@@ -26,12 +28,38 @@ interface PriceRange {
   styleUrl:    './select-doctor.css',
 })
 export class SelectDoctor {
-  readonly store    = inject(DermatologyCareStore);
-  protected router  = inject(Router);
+  readonly store         = inject(DermatologyCareStore);
+  private readonly iamStore  = inject(IamStore);
+  protected router       = inject(Router);
 
   searchQuery      = signal<string>('');
   selectedPriceIdx = signal<number>(0);
   showFilterPanel  = signal<boolean>(false);
+
+  /** Maps dermatologist userId → photo URL (null = no photo or loading failed). */
+  protected readonly userPhotoMap = signal<Record<number, string | null>>({});
+
+  constructor() {
+    effect(() => {
+      const profiles = this.store.dermatologistProfiles();
+      const loaded   = untracked(() => this.userPhotoMap());
+      profiles
+        .filter(p => !(p.userId in loaded))
+        .forEach(p => {
+          this.userPhotoMap.update(m => ({...m, [p.userId]: null}));
+          this.iamStore.getUserById(p.userId)
+            .pipe(take(1))
+            .subscribe({
+              next: user => this.userPhotoMap.update(m => ({...m, [p.userId]: user.photoUrl ?? null})),
+              error: () => {},
+            });
+        });
+    }, { allowSignalWrites: true });
+  }
+
+  protected photoForDermatologist(profile: DermatologistProfile): string | null {
+    return this.userPhotoMap()[profile.userId] ?? null;
+  }
 
   /** Available price range filter options. */
   readonly priceRanges: PriceRange[] = [

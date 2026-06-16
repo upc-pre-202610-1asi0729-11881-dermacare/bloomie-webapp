@@ -1,6 +1,7 @@
 export const environment = {
   production: false,
   serverBasePath: 'https://bloomie-frontend-mockapi.azurewebsites.net/api/v1',
+  backendBasePath: 'http://localhost:8080/api/v1',
   usersEndpointPath: '/users',
   sessionsEndpointPath: '/sessions',
   skinProfilesEndpointPath: '/skin_profiles',
@@ -23,5 +24,17 @@ export const environment = {
   authenticationLoginEndpointPath: '/authentication/sign-in',
   authenticationRegisterYoungAdultEndpointPath: '/authentication/sign-up/young-adult',
   authenticationRegisterDermatologistEndpointPath: '/authentication/sign-up/dermatologist',
+
+  backendDermatologistProfilesEndpointPath: '/dermatologist-profiles',
+  backendAvailabilitiesEndpointPath: '/availabilities',
+  backendAppointmentsEndpointPath: '/appointments',
+  backendConsultationsEndpointPath: '/consultations',
+  backendPaymentsEndpointPath: '/payments',
+  backendSubscriptionsEndpointPath: '/subscriptions',
+  backendPlansEndpointPath: '/plans',
+  backendAuthenticationRegisterEndpointPath: '/authentication/register',
+  backendAuthenticationRegisterDermatologistEndpointPath: '/authentication/register-dermatologist',
+  backendUsersEndpointPath: '/users',
+  backendFavoriteProductsEndpointPath: '/favorite-products',
   useMockAuthentication: true,
 };

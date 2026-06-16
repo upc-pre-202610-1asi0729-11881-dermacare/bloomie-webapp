@@ -20,6 +20,15 @@
       @for (consultation of store.consultations(); track consultation.id) {
         <div class="select-consultation__card">
 
+          <!-- Dermatologist avatar -->
+          <div class="select-consultation__derm-avatar">
+            @if (dermPhotoForConsultation(consultation)) {
+              <img class="select-consultation__derm-avatar-img" [src]="dermPhotoForConsultation(consultation)!" alt="Dermatologist photo" />
+            } @else {
+              <mat-icon class="select-consultation__derm-avatar-icon">person</mat-icon>
+            }
+          </div>
+
           <!-- Date row -->
           <div class="select-consultation__row">
             <mat-icon class="select-consultation__row-icon">calendar_today</mat-icon>

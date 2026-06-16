@@ -22,4 +22,6 @@ export interface UserResource extends BaseResource {
   role:          string;
   /** Hashed password value exchanged with the server on registration. */
   password_hash: string;
+  /** URL of the user's profile photo, if set. */
+  photo_url?: string;
 }

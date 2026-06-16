@@ -880,6 +880,14 @@
     "MOISTURIZER": "Hidratante",
     "SUNSCREEN": "Protector solar",
     "SERUM": "Sérum"
+  },
+  "photoUpload": {
+    "changePhoto": "Cambiar foto de perfil",
+    "save": "Guardar foto",
+    "cancel": "Cancelar",
+    "fileTooLarge": "La imagen debe ser menor a 1 MB",
+    "success": "Foto actualizada correctamente",
+    "error": "No se pudo actualizar la foto. Inténtalo de nuevo."
   }
 }
 
