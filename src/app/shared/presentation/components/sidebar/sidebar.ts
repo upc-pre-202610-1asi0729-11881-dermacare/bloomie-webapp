@@ -1,7 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
+import { IamStore } from '../../../../iam/application/iam.store';
 
 interface NavItem {
   path: string;
@@ -22,6 +23,8 @@ interface NavItem {
   styleUrl: './sidebar.css',
 })
 export class Sidebar {
+  protected readonly iamStore = inject(IamStore);
+
   /** Controls whether the mobile drawer is open. */
   readonly isOpen = signal<boolean>(false);
 
