@@ -35,6 +35,7 @@ export class UserAssembler implements BaseAssembler<User, UserResource, AuthResp
       name:     resource.name,
       lastName: resource.last_name,
       role:     resource.role as UserRole,
+      photoUrl: resource.photo_url,
     });
   }
 
