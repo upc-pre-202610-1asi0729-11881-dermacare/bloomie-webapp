@@ -5,50 +5,45 @@ import {DermatologistProfileResource, DermatologistProfilesResponse} from './der
 /**
  * Maps DermatologistProfile entities to and from API resources.
  */
-export class DermatologistProfileAssembler implements BaseAssembler<DermatologistProfile, DermatologistProfileResource, DermatologistProfilesResponse> {
-
-  /**
-   * Converts a DermatologistProfilesResponse to an array of DermatologistProfile entities.
-   * @param response - The API response containing dermatologist profiles.
-   * @returns An array of DermatologistProfile entities.
-   */
+export class DermatologistProfileAssembler implements BaseAssembler<
+  DermatologistProfile,
+  DermatologistProfileResource,
+  DermatologistProfilesResponse
+> {
   toEntitiesFromResponse(response: DermatologistProfilesResponse): DermatologistProfile[] {
-    return response.dermatologist_profiles.map(resource => this.toEntityFromResource(resource));
+    return response.dermatologist_profiles.map((resource) => this.toEntityFromResource(resource));
   }
 
-  /**
-   * Converts a DermatologistProfileResource to a DermatologistProfile entity.
-   * @param resource - The resource to convert.
-   * @returns The converted DermatologistProfile entity.
-   */
   toEntityFromResource(resource: DermatologistProfileResource): DermatologistProfile {
+    const fullName =
+      resource.fullName ?? `${resource.firstName ?? ''} ${resource.lastName ?? ''}`.trim();
+
     return new DermatologistProfile({
-      id:              resource.id,
-      userId:          resource.user_id,
-      specialty:       resource.specialty,
-      consultationFee: resource.consultation_fee,
-      rating:          resource.rating,
-      yearsExperience: resource.years_experience,
-      patientCount:    resource.patient_count,
-      available:       resource.available,
+      id: resource.id,
+      userId: resource.dermatologistId,
+      specialty: resource.specialtyName ?? resource.specialty ?? '',
+      fullName: fullName,
+      licenseNumber: resource.licenseNumber ?? '',
+      contactPhone: resource.contactPhone ?? '',
+      biography: resource.biography ?? '',
+      consultationFee: resource.consultationFee ?? 0,
+      photoUrl: resource.photoUrl ?? null,
     });
   }
 
-  /**
-   * Converts a DermatologistProfile entity to a DermatologistProfileResource.
-   * @param entity - The entity to convert.
-   * @returns The converted DermatologistProfileResource.
-   */
   toResourceFromEntity(entity: DermatologistProfile): DermatologistProfileResource {
+    const nameParts = entity.fullName?.split(' ') ?? [];
     return {
-      id:               entity.id,
-      user_id:          entity.userId,
-      specialty:        entity.specialty,
-      consultation_fee: entity.consultationFee,
-      rating:           entity.rating,
-      years_experience: entity.yearsExperience,
-      patient_count:    entity.patientCount,
-      available:        entity.available,
+      id: entity.id,
+      dermatologistId: entity.userId,
+      firstName: nameParts[0] ?? '',
+      lastName: nameParts.slice(1).join(' ') ?? '',
+      specialty: entity.specialty, // ← "specialty" no "specialtyName" para el PUT
+      licenseNumber: entity.licenseNumber ?? null,
+      phone: entity.contactPhone ?? null, // ← "phone" no "contactPhone" para el PUT
+      biography: entity.biography ?? null,
+      consultationFee: entity.consultationFee,
+      photoUrl: entity.photoUrl ?? null,
     } as DermatologistProfileResource;
   }
 }
