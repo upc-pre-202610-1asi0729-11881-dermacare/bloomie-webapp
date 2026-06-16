@@ -877,5 +877,13 @@
     "MOISTURIZER": "Moisturizer",
     "SUNSCREEN": "Sunscreen",
     "SERUM": "Serum"
+  },
+  "photoUpload": {
+    "changePhoto": "Change profile photo",
+    "save": "Save photo",
+    "cancel": "Cancel",
+    "fileTooLarge": "Image must be smaller than 1 MB",
+    "success": "Photo updated successfully",
+    "error": "Failed to update photo. Please try again."
   }
 }
