@@ -25,6 +25,8 @@ export class DermatologyCareStore {
   private readonly selectedConsultationSignal    = signal<Consultation | null>(null);
   private readonly loadingSignal                 = signal<boolean>(false);
   private readonly errorSignal                   = signal<string | null>(null);
+  private readonly pendingAppointmentDateSignal  = signal<Date | null>(null);
+  private readonly pendingAppointmentTimeSignal  = signal<string>('');
 
   /**
    * Readonly signal for the list of dermatologist profiles.
@@ -70,6 +72,16 @@ export class DermatologyCareStore {
    * Readonly signal for the current error message.
    */
   readonly error = this.errorSignal.asReadonly();
+
+  /**
+   * Readonly signal for the pending appointment date selected by the patient.
+   */
+  readonly pendingAppointmentDate = this.pendingAppointmentDateSignal.asReadonly();
+
+  /**
+   * Readonly signal for the pending appointment time slot selected by the patient.
+   */
+  readonly pendingAppointmentTime = this.pendingAppointmentTimeSignal.asReadonly();
 
   /**
    * Computed signal for the count of available dermatologists.
@@ -156,7 +168,17 @@ export class DermatologyCareStore {
    */
   selectDermatologist(dermatologistProfile: DermatologistProfile): void {
     this.selectedDermatologistSignal.set(dermatologistProfile);
-    this.loadAvailabilities(dermatologistProfile.id);
+    this.loadAvailabilities(dermatologistProfile.userId);
+  }
+
+  /**
+   * Stores the date and time slot chosen by the patient before navigating to payment.
+   * @param date - The calendar date of the appointment.
+   * @param time - The time slot string (e.g. "09:00 - 10:00").
+   */
+  setPendingAppointmentDateTime(date: Date, time: string): void {
+    this.pendingAppointmentDateSignal.set(date);
+    this.pendingAppointmentTimeSignal.set(time);
   }
 
   /**
@@ -303,11 +325,9 @@ export class DermatologyCareStore {
   private loadAvailabilities(dermatologistId: number): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
-    this.dermatologyCareApi.getDermatologistAvailabilities().pipe(take(1)).subscribe({
+    this.dermatologyCareApi.getDermatologistAvailabilities(dermatologistId).pipe(take(1)).subscribe({
       next: availabilities => {
-        this.availabilitiesSignal.set(
-          availabilities.filter(availability => availability.dermatologistId === dermatologistId)
-        );
+        this.availabilitiesSignal.set(availabilities);
         this.loadingSignal.set(false);
         this.errorSignal.set(null);
       },
