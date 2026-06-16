@@ -2,6 +2,7 @@ import { Injectable }   from '@angular/core';
 import { HttpClient }   from '@angular/common/http';
 import { Observable }   from 'rxjs';
 import { BaseApi }      from '../../shared/infrastructure/base-api';
+import { User }         from '../domain/model/user.entity';
 import { UserResource } from './user.response';
 import { DermatologistResource } from './dermatologist.response';
 import { AuthResponse }      from './auth.response';
@@ -56,5 +57,24 @@ export class IamApi extends BaseApi {
    */
   registerDermatologist(resource: DermatologistResource): Observable<AuthResponse> {
     return this.iamEndpoint.registerDermatologist(resource);
+  }
+
+  /**
+   * Updates the profile photo of a user.
+   * @param userId - Identifier of the user.
+   * @param photoUrl - Base64-encoded data URL of the new photo.
+   * @returns Completion stream for the update operation.
+   */
+  updateUserPhoto(userId: number, photoUrl: string): Observable<void> {
+    return this.iamEndpoint.updateUserPhoto(userId, photoUrl);
+  }
+
+  /**
+   * Retrieves a user by identifier from the backend.
+   * @param userId - Identifier of the user to retrieve.
+   * @returns Stream with the matched User entity.
+   */
+  getUserById(userId: number): Observable<User> {
+    return this.iamEndpoint.getUserById(userId);
   }
 }
