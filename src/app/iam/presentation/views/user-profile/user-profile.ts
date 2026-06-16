@@ -1,14 +1,15 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
 import { IamStore } from '../../../application/iam.store';
+import { PhotoUpload } from '../../../../shared/presentation/components/photo-upload/photo-upload';
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
-  imports: [MatIconModule, TranslatePipe, FormsModule],
+  imports: [MatIconModule, TranslatePipe, FormsModule, PhotoUpload],
   templateUrl: './user-profile.html',
   styleUrl: './user-profile.css',
 })
@@ -19,6 +20,8 @@ export class UserProfile {
   protected name = signal<string>('');
   protected email = signal<string>('');
   protected saveSuccess = signal<boolean>(false);
+
+  protected readonly currentPhotoUrl = computed(() => this.iamStore.currentUser()?.photoUrl);
 
   constructor() {
     const user = this.iamStore.currentUser();
