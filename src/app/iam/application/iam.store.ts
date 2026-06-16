@@ -1,6 +1,6 @@
 import { computed, DestroyRef, inject, Injectable, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { of, retry } from 'rxjs';
+import { EMPTY, Observable, of, retry, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { User, UserRole } from '../domain/model/user.entity';
@@ -124,6 +124,59 @@ export class IamStore {
         next: (response) => this.handleAuthenticationSuccess(response),
         error: (err) => this.handleAuthenticationError(err, 'Invalid email or password'),
       });
+  }
+
+  /**
+   * Updates the profile photo of the currently authenticated user.
+   *
+   * @param photoUrl - Base64-encoded data URL of the new photo.
+   * @returns Observable that completes after the state is updated.
+   * @remarks
+   * When mock authentication is active the backend call is skipped and only
+   * the local signal and session storage are updated.
+   */
+  updateUserPhoto(photoUrl: string): Observable<void> {
+    const user = this.currentUserSignal();
+    if (!user) return EMPTY;
+
+    const applyLocally = (): void => {
+      const updated = new User({
+        id:       user.id,
+        email:    user.email,
+        name:     user.name,
+        lastName: user.lastName,
+        role:     user.role,
+        photoUrl,
+      });
+      this.currentUserSignal.set(updated);
+      const stored = sessionStorage.getItem(AUTHENTICATED_USER_STORAGE_KEY);
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored) as UserResource;
+          parsed.photo_url = photoUrl;
+          sessionStorage.setItem(AUTHENTICATED_USER_STORAGE_KEY, JSON.stringify(parsed));
+        } catch { /* ignore */ }
+      }
+    };
+
+    if (environment.useMockAuthentication) {
+      return of(undefined).pipe(tap(applyLocally));
+    }
+
+    return this.iamApi.updateUserPhoto(user.id, photoUrl).pipe(
+      retry(1),
+      tap(applyLocally)
+    );
+  }
+
+  /**
+   * Retrieves any user by identifier from the backend.
+   *
+   * @param userId - Identifier of the user to retrieve.
+   * @returns Observable emitting the User entity.
+   */
+  getUserById(userId: number): Observable<User> {
+    return this.iamApi.getUserById(userId);
   }
 
   /**
