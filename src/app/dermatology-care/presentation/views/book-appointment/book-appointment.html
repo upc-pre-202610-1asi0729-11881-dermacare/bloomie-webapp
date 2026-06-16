@@ -16,9 +16,18 @@
     <div class="book-appointment__profile-section">
       <div class="book-appointment__profile-card">
         <div class="book-appointment__profile-avatar">
-          <mat-icon>person</mat-icon>
+          @if (doctorPhotoUrl()) {
+            <img [src]="doctorPhotoUrl()!"
+                 alt="Doctor photo"
+                 class="book-appointment__profile-img" />
+          } @else {
+            <mat-icon>person</mat-icon>
+          }
         </div>
         <div class="book-appointment__profile-info">
+          <p class="book-appointment__profile-name">
+            {{ store.selectedDermatologist()?.fullName }}
+          </p>
           <p class="book-appointment__profile-specialty">
             {{ store.selectedDermatologist()?.specialty }}
           </p>
@@ -28,19 +37,15 @@
         </div>
       </div>
 
-      <!-- Stats -->
+      <!-- Info -->
       <div class="book-appointment__stats">
         <div class="book-appointment__stat">
-          <span class="book-appointment__stat-value">{{ store.selectedDermatologist()?.patientCount }}</span>
-          <span class="book-appointment__stat-label">{{ 'dermatology.bookAppointment.patients' | translate }}</span>
+          <span class="book-appointment__stat-value">{{ store.selectedDermatologist()?.licenseNumber }}</span>
+          <span class="book-appointment__stat-label">{{ 'dermatology.bookAppointment.license' | translate }}</span>
         </div>
         <div class="book-appointment__stat">
-          <span class="book-appointment__stat-value">{{ store.selectedDermatologist()?.yearsExperience }}</span>
-          <span class="book-appointment__stat-label">{{ 'dermatology.bookAppointment.yearsExp' | translate }}</span>
-        </div>
-        <div class="book-appointment__stat">
-          <span class="book-appointment__stat-value">{{ store.selectedDermatologist()?.rating }}</span>
-          <span class="book-appointment__stat-label">{{ 'dermatology.bookAppointment.rating' | translate }}</span>
+          <span class="book-appointment__stat-value">{{ store.selectedDermatologist()?.contactPhone }}</span>
+          <span class="book-appointment__stat-label">{{ 'dermatology.bookAppointment.phone' | translate }}</span>
         </div>
       </div>
 
@@ -48,14 +53,14 @@
       <div class="book-appointment__about-card">
         <p class="book-appointment__section-label">{{ 'dermatology.bookAppointment.aboutDoctor' | translate }}</p>
         <p class="book-appointment__about-text">
-          {{ 'dermatology.bookAppointment.aboutText' | translate }}
+          {{ store.selectedDermatologist()?.biography }}
         </p>
         <p class="book-appointment__section-label book-appointment__section-label--mt">
           {{ 'dermatology.bookAppointment.workingTime' | translate }}
         </p>
-        <p class="book-appointment__working-time">
-          {{ 'dermatology.bookAppointment.workingTimeValue' | translate }}
-        </p>
+        @if (workingTimeText() !== '-') {
+          <p class="book-appointment__working-time">{{ workingTimeText() }}</p>
+        }
       </div>
     </div>
 
