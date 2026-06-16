@@ -4,6 +4,8 @@ import {MatIconModule} from '@angular/material/icon';
 import {FormsModule} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
 import {DermatologyCareStore} from '../../../application/dermatology-care.store';
+import {IamStore} from '../../../../iam/application/iam.store';
+import {Appointment, AppointmentStatus} from '../../../domain/model/appointment.entity';
 
 export type PaymentStep = 'select' | 'add-card' | 'confirmed';
 export type PaymentOption = 'credit-card' | 'debit-card' | 'google-pay' | 'yape' | null;
@@ -24,8 +26,9 @@ interface PaymentMethodOption {
   styleUrl:    './payment-method.css',
 })
 export class PaymentMethod {
-  readonly store    = inject(DermatologyCareStore);
-  protected router  = inject(Router);
+  readonly store            = inject(DermatologyCareStore);
+  private readonly iamStore = inject(IamStore);
+  protected router          = inject(Router);
 
   step            = signal<PaymentStep>('select');
   selectedPayment = signal<PaymentOption>(null);
@@ -71,7 +74,7 @@ export class PaymentMethod {
   }
 
   /**
-   * Validates card fields and shows confirmation screen on success.
+   * Validates card fields, creates the appointment in the backend, then shows confirmation.
    */
   payNow(): void {
     if (!this.cardHolderName || !this.cardNumber || !this.expirationDate || !this.cvv) {
@@ -79,6 +82,30 @@ export class PaymentMethod {
       return;
     }
     this.showError.set(false);
+
+    const currentUser = this.iamStore.currentUser();
+    const derm        = this.store.selectedDermatologist();
+    const date        = this.store.pendingAppointmentDate();
+    const time        = this.store.pendingAppointmentTime();
+
+    if (currentUser && derm && date && time) {
+      const [startHour]  = time.split(':').map(Number);
+      const pad          = (n: number) => String(n).padStart(2, '0');
+      const scheduledAt  = `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(startHour)}:00:00`;
+
+      const appointment = new Appointment({
+        id:                 0,
+        patientId:          currentUser.id,
+        dermatologistId:    derm.userId,
+        paymentId:          0,
+        scheduledAt,
+        status:             AppointmentStatus.Scheduled,
+        cancellationReason: '',
+      });
+
+      this.store.addAppointment(appointment);
+    }
+
     this.step.set('confirmed');
   }
 
