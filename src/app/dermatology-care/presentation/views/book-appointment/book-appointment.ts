@@ -1,8 +1,10 @@
-import {Component, computed, HostListener, inject, signal} from '@angular/core';
+import {Component, computed, HostListener, inject, OnInit, signal} from '@angular/core';
 import {Router} from '@angular/router';
 import {MatIconModule} from '@angular/material/icon';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
+import {take} from 'rxjs';
 import {DermatologyCareStore} from '../../../application/dermatology-care.store';
+import {IamStore} from '../../../../iam/application/iam.store';
 
 /** View model for a selectable day in the booking calendar. */
 interface CalendarDay {
@@ -24,15 +26,17 @@ const DESKTOP_BREAKPOINT = 768;
   templateUrl: './book-appointment.html',
   styleUrl:    './book-appointment.css',
 })
-export class BookAppointment {
-  readonly store       = inject(DermatologyCareStore);
-  protected router     = inject(Router);
-  private translateSvc = inject(TranslateService);
+export class BookAppointment implements OnInit {
+  readonly store            = inject(DermatologyCareStore);
+  private readonly iamStore = inject(IamStore);
+  protected router          = inject(Router);
+  private translateSvc      = inject(TranslateService);
 
-  selectedDay  = signal<number>(0);
-  selectedTime = signal<string>('');
-  pageOffset   = signal<number>(0);
-  pageSize     = signal<number>(this.getPageSize());
+  selectedDay    = signal<number>(0);
+  selectedTime   = signal<string>('');
+  pageOffset     = signal<number>(0);
+  pageSize       = signal<number>(this.getPageSize());
+  doctorPhotoUrl = signal<string | null>(null);
 
   private touchStartX = 0;
 
@@ -51,6 +55,21 @@ export class BookAppointment {
     return window.innerWidth < DESKTOP_BREAKPOINT ? 3 : 5;
   }
 
+  ngOnInit(): void {
+    const derm = this.store.selectedDermatologist();
+    if (derm) {
+      this.store.selectDermatologist(derm);
+    }
+    if (derm) {
+      this.iamStore.getUserById(derm.userId)
+        .pipe(take(1))
+        .subscribe({
+          next:  user => this.doctorPhotoUrl.set(user.photoUrl ?? null),
+          error: ()   => {},
+        });
+    }
+  }
+
   /** Calendar days for the current page, mapped from the store's upcoming available dates. */
   readonly calendarDays = computed((): CalendarDay[] =>
     this.store.upcomingAvailableDates()
@@ -64,10 +83,26 @@ export class BookAppointment {
 
   readonly hasPrevPage = computed(() => this.pageOffset() > 0);
 
+  /** Formatted working time string built from loaded availability slots. */
+  readonly workingTimeText = computed((): string => {
+    const toTitle = (s: string) => s.charAt(0) + s.slice(1).toLowerCase();
+    const active  = this.store.availabilities().filter(a => a.active);
+    if (active.length === 0) return '-';
+    const groups  = new Map<string, string[]>();
+    for (const a of active) {
+      const key = `${a.startTime} – ${a.endTime}`;
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key)!.push(toTitle(a.dayOfWeek));
+    }
+    return Array.from(groups.entries())
+      .map(([time, days]) => `${days.join(', ')} · ${time}`)
+      .join(' | ');
+  });
+
   /** Month label derived from the first visible calendar day. */
   readonly calendarMonth = computed((): string => {
     const days   = this.calendarDays();
-    const lang   = this.translateSvc.currentLang === 'es' ? 'es-ES' : 'en-US'; // eslint-disable-line
+    const lang   = this.translateSvc.currentLang === 'es' ? 'es-ES' : 'en-US';
     const date   = days.length > 0 ? days[0].date : new Date();
     return date.toLocaleDateString(lang, { month: 'long', year: 'numeric' });
   });
@@ -119,8 +154,13 @@ export class BookAppointment {
     this.selectedTime.set(slot);
   }
 
-  /** Navigates to the payment method screen. */
+  /** Saves the selected date and time, then navigates to payment. */
   confirmBooking(): void {
+    const selectedDate = this.calendarDays()[this.selectedDay()]?.date;
+    const selectedTime = this.selectedTime();
+    if (selectedDate && selectedTime) {
+      this.store.setPendingAppointmentDateTime(selectedDate, selectedTime);
+    }
     this.router.navigate(['/dermatology/payment-method']);
   }
 

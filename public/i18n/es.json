@@ -156,9 +156,8 @@
     "bookAppointment": {
       "title": "Reservar cita",
       "perSession": "por sesión",
-      "patients": "Pacientes",
-      "yearsExp": "Años Exp",
-      "rating": "Calificación",
+      "license": "Nº Licencia",
+      "phone": "Teléfono",
       "aboutDoctor": "Sobre el Doctor",
       "aboutText": "Dermatólogo certificado especializado en tratamientos personalizados de cuidado de la piel.",
       "workingTime": "Horario de Atención",

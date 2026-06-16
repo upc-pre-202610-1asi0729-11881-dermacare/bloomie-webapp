@@ -7,44 +7,29 @@ import {DermatologistAvailabilityResource, DermatologistAvailabilitiesResponse} 
  */
 export class DermatologistAvailabilityAssembler implements BaseAssembler<DermatologistAvailability, DermatologistAvailabilityResource, DermatologistAvailabilitiesResponse> {
 
-  /**
-   * Converts a DermatologistAvailabilitiesResponse to an array of DermatologistAvailability entities.
-   * @param response - The API response containing availability slots.
-   * @returns An array of DermatologistAvailability entities.
-   */
   toEntitiesFromResponse(response: DermatologistAvailabilitiesResponse): DermatologistAvailability[] {
     return response.dermatologist_availabilities.map(resource => this.toEntityFromResource(resource));
   }
 
-  /**
-   * Converts a DermatologistAvailabilityResource to a DermatologistAvailability entity.
-   * @param resource - The resource to convert.
-   * @returns The converted DermatologistAvailability entity.
-   */
   toEntityFromResource(resource: DermatologistAvailabilityResource): DermatologistAvailability {
     return new DermatologistAvailability({
       id:              resource.id,
-      dermatologistId: resource.dermatologist_id,
-      dayOfWeek:       resource.day_of_week,
-      startTime:       resource.start_time,
-      endTime:         resource.end_time,
-      slotDuration:    resource.slot_duration,
+      dermatologistId: resource.dermatologistId,
+      dayOfWeek:       resource.day,
+      startTime:       resource.startTime,
+      endTime:         resource.endTime,
+      active:          resource.active,
     });
   }
 
-  /**
-   * Converts a DermatologistAvailability entity to a DermatologistAvailabilityResource.
-   * @param entity - The entity to convert.
-   * @returns The converted DermatologistAvailabilityResource.
-   */
   toResourceFromEntity(entity: DermatologistAvailability): DermatologistAvailabilityResource {
     return {
-      id:               entity.id,
-      dermatologist_id: entity.dermatologistId,
-      day_of_week:      entity.dayOfWeek,
-      start_time:       entity.startTime,
-      end_time:         entity.endTime,
-      slot_duration:    entity.slotDuration,
+      id:              entity.id,
+      dermatologistId: entity.dermatologistId,
+      day:             entity.dayOfWeek,
+      startTime:       entity.startTime,
+      endTime:         entity.endTime,
+      active:          entity.active,
     } as DermatologistAvailabilityResource;
   }
 }

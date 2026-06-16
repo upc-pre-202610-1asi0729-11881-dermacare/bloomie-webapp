@@ -11,19 +11,21 @@ export class DermatologistAvailability implements BaseEntity {
    * @param props - Initialization values for the availability slot.
    */
   constructor(props: {
-    id:              number;
-    dermatologistId: number;
-    dayOfWeek:       string;
-    startTime:       string;
-    endTime:         string;
-    slotDuration:    number;
+    id:               number;
+    dermatologistId:  number;
+    dayOfWeek:        string;
+    startTime:        string;
+    endTime:          string;
+    slotDuration?:    number;
+    active?:          boolean;
   }) {
     this._id              = props.id;
     this._dermatologistId = props.dermatologistId;
     this._dayOfWeek       = props.dayOfWeek;
     this._startTime       = props.startTime;
     this._endTime         = props.endTime;
-    this._slotDuration    = props.slotDuration;
+    this._slotDuration    = props.slotDuration ?? 60;
+    this._active          = props.active ?? true;
   }
 
   /** Unique identifier for the availability slot. */
@@ -55,14 +57,15 @@ export class DermatologistAvailability implements BaseEntity {
   get endTime(): string { return this._endTime; }
   set endTime(value: string) { this._endTime = value; }
 
-  /**
-   * Duration of each appointment slot in minutes.
-   * Must be a positive integer.
-   */
+  /** Duration of each appointment slot in minutes (defaults to 60 when not provided by backend). */
   private _slotDuration: number;
 
   get slotDuration(): number { return this._slotDuration; }
   set slotDuration(value: number) { this._slotDuration = value; }
+
+  private _active: boolean;
+  get active(): boolean { return this._active; }
+  set active(value: boolean) { this._active = value; }
 
   private static readonly DAY_INDEX: Record<string, number> = {
     SUNDAY: 0, MONDAY: 1, TUESDAY: 2, WEDNESDAY: 3,
