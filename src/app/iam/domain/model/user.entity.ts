@@ -35,17 +35,19 @@ export class User implements BaseEntity {
    * @param props - Initialization values for the user.
    */
   constructor(props: {
-    id:       number;
-    email:    string;
-    name:     string;
-    lastName: string;
-    role:     UserRole;
+    id:        number;
+    email:     string;
+    name:      string;
+    lastName:  string;
+    role:      UserRole;
+    photoUrl?: string;
   }) {
     this._id       = props.id;
     this._email    = props.email;
     this._name     = props.name;
     this._lastName = props.lastName;
     this._role     = props.role;
+    this._photoUrl = props.photoUrl;
   }
 
   /** Unique identifier for the user. */
@@ -81,4 +83,10 @@ export class User implements BaseEntity {
   private _role: UserRole;
 
   get role(): UserRole { return this._role; }
+
+  /** URL of the user's profile photo (Base64 data URL or remote URL). */
+  private _photoUrl?: string;
+
+  get photoUrl(): string | undefined { return this._photoUrl; }
+  set photoUrl(value: string | undefined) { this._photoUrl = value; }
 }
