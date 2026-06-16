@@ -11,23 +11,33 @@ export class DermatologistProfile implements BaseEntity {
    * @param props - Initialization values for the profile.
    */
   constructor(props: {
-    id:              number;
-    userId:          number;
-    specialty:       string;
-    consultationFee: number;
-    rating:          number;
-    yearsExperience: number;
-    patientCount:    number;
-    available:       boolean;
+    id:               number;
+    userId:           number;
+    specialty:        string;
+    fullName?:        string;
+    licenseNumber?:   string;
+    contactPhone?:    string;
+    biography?:       string;
+    photoUrl?:        string | null;
+    consultationFee?: number;
+    rating?:          number;
+    yearsExperience?: number;
+    patientCount?:    number;
+    available?:       boolean;
   }) {
     this._id              = props.id;
     this._userId          = props.userId;
     this._specialty       = props.specialty;
-    this._consultationFee = props.consultationFee;
-    this._rating          = props.rating;
-    this._yearsExperience = props.yearsExperience;
-    this._patientCount    = props.patientCount;
-    this._available       = props.available;
+    this._fullName        = props.fullName ?? '';
+    this._licenseNumber   = props.licenseNumber ?? '';
+    this._contactPhone    = props.contactPhone ?? '';
+    this._biography       = props.biography ?? '';
+    this._photoUrl        = props.photoUrl ?? null;
+    this._consultationFee = props.consultationFee ?? 0;
+    this._rating          = props.rating ?? 0;
+    this._yearsExperience = props.yearsExperience ?? 0;
+    this._patientCount    = props.patientCount ?? 0;
+    this._available       = props.available ?? true;
   }
 
   /** Unique identifier for the profile. */
@@ -36,7 +46,7 @@ export class DermatologistProfile implements BaseEntity {
   get id(): number { return this._id; }
   set id(value: number) { this._id = value; }
 
-  /** Identifier of the user account linked to this profile. */
+  /** Identifier of the user account linked to this profile (maps to backend dermatologistId). */
   private _userId: number;
 
   get userId(): number { return this._userId; }
@@ -47,10 +57,26 @@ export class DermatologistProfile implements BaseEntity {
   get specialty(): string { return this._specialty; }
   set specialty(value: string) { this._specialty = value; }
 
-  /**
-   * Fee charged per consultation in USD.
-   * Must be greater than zero.
-   */
+  private _fullName: string;
+  get fullName(): string { return this._fullName; }
+  set fullName(value: string) { this._fullName = value; }
+
+  private _licenseNumber: string;
+  get licenseNumber(): string { return this._licenseNumber; }
+  set licenseNumber(value: string) { this._licenseNumber = value; }
+
+  private _contactPhone: string;
+  get contactPhone(): string { return this._contactPhone; }
+  set contactPhone(value: string) { this._contactPhone = value; }
+
+  private _biography: string;
+  get biography(): string { return this._biography; }
+  set biography(value: string) { this._biography = value; }
+
+  private _photoUrl: string | null;
+  get photoUrl(): string | null { return this._photoUrl; }
+  set photoUrl(value: string | null) { this._photoUrl = value; }
+
   private _consultationFee: number;
 
   get consultationFee(): number { return this._consultationFee; }
