@@ -5,6 +5,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {FormsModule} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
 import {DermatologyCareStore} from '../../../application/dermatology-care.store';
+import {IamStore} from '../../../../iam/application/iam.store';
 import {DermatologistAvailability} from '../../../domain/model/dermatologist-availability.entity';
 
 /** Represents a day option in the availability form. */
@@ -25,14 +26,21 @@ interface DayOption {
   styleUrl:    './derm-availability.css',
 })
 export class DermAvailability {
-  readonly store    = inject(DermatologyCareStore);
-  protected router  = inject(Router);
+  readonly store           = inject(DermatologyCareStore);
+  private readonly iamStore = inject(IamStore);
+  protected router         = inject(Router);
 
   saveSuccess  = signal<boolean>(false);
   startTime    = signal<string>('09:00 AM');
   endTime      = signal<string>('05:00 PM');
   slotDuration = signal<string>('30');
   activeDays   = signal<Set<string>>(new Set(['mon', 'tue', 'wed', 'thu', 'fri']));
+
+  /** Maps short day IDs to the full uppercase day names the backend expects. */
+  private readonly DAY_MAP: Record<string, string> = {
+    mon: 'MONDAY', tue: 'TUESDAY', wed: 'WEDNESDAY',
+    thu: 'THURSDAY', fri: 'FRIDAY', sat: 'SATURDAY', sun: 'SUNDAY',
+  };
 
   /** Available weekday options. */
   readonly days: DayOption[] = [
@@ -73,19 +81,34 @@ export class DermAvailability {
   }
 
   /**
+   * Converts a 12-hour time string (e.g. "09:00 AM") to 24-hour HH:mm format ("09:00").
+   */
+  private to24h(time12: string): string {
+    const [timePart, period] = time12.split(' ');
+    const [hours, minutes]   = timePart.split(':').map(Number);
+    let h = hours;
+    if (period === 'AM' && h === 12) h = 0;
+    if (period === 'PM' && h !== 12) h += 12;
+    return `${String(h).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+  }
+
+  /**
    * Saves the availability configuration by creating availability entries
    * for each active day in the store.
    */
   saveAvailability(): void {
-    const dermatologist = this.store.selectedDermatologist();
-    if (!dermatologist) return;
+    const user = this.iamStore.currentUser();
+    if (!user) return;
+    const profile = this.store.dermatologistProfiles()
+      .find(p => p.userId === user.id);
+    if (!profile) return;
     this.activeDays().forEach(dayId => {
       const availability = new DermatologistAvailability({
         id:              0,
-        dermatologistId: dermatologist.id,
-        dayOfWeek:       dayId.toUpperCase(),
-        startTime:       this.startTime(),
-        endTime:         this.endTime(),
+        dermatologistId: profile.userId,
+        dayOfWeek:       this.DAY_MAP[dayId],
+        startTime:       this.to24h(this.startTime()),
+        endTime:         this.to24h(this.endTime()),
         slotDuration:    Number(this.slotDuration()),
       });
       this.store.addAvailability(availability);
