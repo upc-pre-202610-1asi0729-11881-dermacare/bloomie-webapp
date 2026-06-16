@@ -156,9 +156,8 @@
     "bookAppointment": {
       "title": "Book appointment",
       "perSession": "per session",
-      "patients": "Patients",
-      "yearsExp": "Years Exp",
-      "rating": "Rating",
+      "license": "License No.",
+      "phone": "Phone",
       "aboutDoctor": "About Doctor",
       "aboutText": "A board-certified dermatologist specialized in personalized skin care treatments.",
       "workingTime": "Working Time",
