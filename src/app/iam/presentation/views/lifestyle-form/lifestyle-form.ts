@@ -3,24 +3,28 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatIcon } from '@angular/material/icon';
+import { IamStore } from '../../../application/iam.store';
+import { SkinAnalysisApi } from '../../../../skin-analysis/infrastructure/skin-analysis-api';
 
 @Component({
-  selector: 'app-lifestyle-form',
-  standalone: true,
-  imports: [FormsModule, TranslatePipe, MatIcon],
+  selector:    'app-lifestyle-form',
+  standalone:  true,
+  imports:     [FormsModule, TranslatePipe, MatIcon],
   templateUrl: './lifestyle-form.html',
-  styleUrl: './lifestyle-form.css',
+  styleUrl:    './lifestyle-form.css',
 })
 export class LifestyleForm {
-  private readonly router = inject(Router);
+  private readonly router         = inject(Router);
+  private readonly iamStore       = inject(IamStore);
+  private readonly skinAnalysisApi = inject(SkinAnalysisApi);
 
-  protected readonly skinType = signal<string>('');
+  protected readonly skinType   = signal<string>('');
   protected readonly waterIntake = signal<string>('');
   protected readonly sunExposure = signal<string>('');
   protected readonly sleepHabits = signal<string>('');
-  protected readonly guideOpen = signal<boolean>(false);
+  protected readonly guideOpen   = signal<boolean>(false);
 
-  protected readonly step = 0;
+  protected readonly step       = 0;
   protected readonly totalSteps = 4;
 
   readonly skinTypeOptions = ['Normal', 'Dry', 'Oily', 'Combination Skin'];
@@ -46,19 +50,41 @@ export class LifestyleForm {
     'More than 8 hours',
   ];
 
-  openGuide(): void {
-    this.guideOpen.set(true);
-  }
+  private readonly skinTypeMap: Record<string, string> = {
+    'Normal':           'NORMAL',
+    'Dry':              'DRY',
+    'Oily':             'OILY',
+    'Combination Skin': 'COMBINATION',
+  };
 
-  closeGuide(): void {
-    this.guideOpen.set(false);
+  private deriveSensitivity(): string {
+    const highRisk = this.sunExposure() === 'More than 2 hours'
+      || this.sleepHabits() === 'Less than 6 hours';
+    const mediumRisk = this.sunExposure() === '1-2 hours'
+      || this.sleepHabits() === '6-7 hours';
+    if (highRisk)   return 'HIGH';
+    if (mediumRisk) return 'MEDIUM';
+    return 'LOW';
   }
 
   onNext(): void {
-    this.router.navigate(['/dashboard']).then();
+    const user = this.iamStore.currentUser();
+    if (!user) return;
+
+    this.skinAnalysisApi.createSkinProfile({
+      patientId:   user.id,
+      skinType:    this.skinTypeMap[this.skinType()] ?? 'NORMAL',
+      sensitivity: this.deriveSensitivity(),
+      waterIntake: this.waterIntake(),
+      sunExposure: this.sunExposure(),
+      sleepHours:  this.sleepHabits(),
+    }).subscribe({
+      next:  () => this.router.navigate(['/dashboard']),
+      error: () => this.router.navigate(['/dashboard']),
+    });
   }
 
-  onBack(): void {
-    this.router.navigate(['/iam/sign-up']).then();
-  }
+  openGuide(): void { this.guideOpen.set(true); }
+  closeGuide(): void { this.guideOpen.set(false); }
+  onBack(): void { this.router.navigate(['/iam/sign-up']).then(); }
 }

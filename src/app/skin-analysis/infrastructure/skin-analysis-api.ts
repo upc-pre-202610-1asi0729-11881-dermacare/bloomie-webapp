@@ -30,6 +30,17 @@ export class SkinAnalysisApi extends BaseApi {
     return this.facialScansEndpoint.submitFacialScan(facialScanId, photoUrl);
   }
 
+  createSkinProfile(data: {
+    patientId:   number;
+    skinType:    string;
+    sensitivity: string;
+    waterIntake: string;
+    sunExposure: string;
+    sleepHours:  string;
+  }): Observable<SkinProfile> {
+    return this.skinProfilesEndpoint.createFromLifestyleForm(data);
+  }
+
   getFacialScansByPatientId(patientId: number): Observable<FacialScan[]> {
     return this.facialScansEndpoint.getByPatientId(patientId);
   }
