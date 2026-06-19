@@ -25,13 +25,18 @@ export class ReplaceConfirmation {
     return paramValue ? Number(paramValue) : null;
   });
 
-  /** The new product ID received via query params. */
-  readonly newProductId = computed(() => {
-    const paramValue = this.route.snapshot.queryParamMap.get('newProductId');
-    return paramValue ? Number(paramValue) : null;
+  /** The new product name received via query params. */
+  readonly newProductName = computed(() =>
+    this.route.snapshot.queryParamMap.get('newProductName') ?? null,
+  );
+
+  /** The product index received via query params, used to compute the simulated score. */
+  private readonly productIndex = computed(() => {
+    const paramValue = this.route.snapshot.queryParamMap.get('productIndex');
+    return paramValue ? Number(paramValue) : 0;
   });
 
-  /** The routine item being replaced, looked up from the store. */
+  /** The routine item being replaced, looked up from the active routine items. */
   readonly routineItem = computed(() => {
     const itemId = this.routineItemId();
     if (!itemId) return undefined;
@@ -39,14 +44,11 @@ export class ReplaceConfirmation {
   });
 
   /**
-   * The simulated compatibility score for the new product.
-   * In production this value would come from the product-discovery bounded context.
-   * Score is computed as 95 minus 3 points per product index offset.
+   * Simulated compatibility score for the selected replacement product.
+   * Based on the option's position in the recommendations list (index 0 = best match).
    */
   readonly compatibilityScore = computed(() => {
-    const productId = this.newProductId();
-    if (!productId) return 0;
-    return Math.max(85, 95 - (productId - 1) * 3);
+    return Math.max(85, 95 - this.productIndex() * 3);
   });
 
   /**
@@ -62,7 +64,6 @@ export class ReplaceConfirmation {
 
   /**
    * Returns the compatibility level key for translation.
-   * Used to display the compatibility label via i18n.
    */
   readonly compatibilityLevelKey = computed(() => {
     const score = this.compatibilityScore();
@@ -77,9 +78,9 @@ export class ReplaceConfirmation {
    */
   confirmReplacement(): void {
     const itemId = this.routineItemId();
-    const productId = this.newProductId();
-    if (!itemId || !productId) return;
-    this.store.replaceProduct(itemId, productId);
+    const productName = this.newProductName();
+    if (!itemId || !productName) return;
+    this.store.replaceProduct(itemId, productName);
     this.router.navigate(['/routine']);
   }
 

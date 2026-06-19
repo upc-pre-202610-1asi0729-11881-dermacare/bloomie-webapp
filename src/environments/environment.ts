@@ -30,4 +30,13 @@ export const environment = {
   backendDermatologistProfilesEndpointPath: '/dermatologist-profiles',
   backendAvailabilitiesEndpointPath: '/availabilities',
   useMockAuthentication: false,
+
+  // Skin Analysis
+  backendSkinProfilesEndpointPath: '/skin-profiles',
+  backendFacialScansEndpointPath: '/facial-scans',
+  backendSkinAnalysesEndpointPath: '/skin-analyses',
+
+  // Routine Management
+  backendRoutinesEndpointPath: '/routines',
+  backendDailyTrackingsEndpointPath: '/daily-trackings',
 };

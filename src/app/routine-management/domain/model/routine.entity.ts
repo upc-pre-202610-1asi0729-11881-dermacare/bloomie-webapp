@@ -11,7 +11,7 @@ export enum RoutineStatus {
 }
 
 /**
- * Represents a personalized skincare routine assigned to a user.
+ * Represents a personalized skincare routine assigned to a patient.
  */
 export class Routine implements BaseEntity {
 
@@ -20,20 +20,18 @@ export class Routine implements BaseEntity {
    * @param props - Initialization values for the routine.
    */
   constructor(props: {
-    id:           number;
-    userId:       number;
-    skinProfileId: number;
-    facialScanId: number;
-    status:       RoutineStatus;
-    createdAt:    string;
+    id:            number;
+    patientId:     number;
+    skinAnalysisId: number;
+    status:        RoutineStatus;
+    createdAt:     string;
   }) {
-    this._id            = props.id;
-    this._userId        = props.userId;
-    this._skinProfileId = props.skinProfileId;
-    this._facialScanId  = props.facialScanId;
-    this._status        = props.status;
-    this._createdAt     = props.createdAt;
-    this._items         = [];
+    this._id             = props.id;
+    this._patientId      = props.patientId;
+    this._skinAnalysisId = props.skinAnalysisId;
+    this._status         = props.status;
+    this._createdAt      = props.createdAt;
+    this._items          = [];
   }
 
   /** Unique identifier for the routine. */
@@ -42,20 +40,15 @@ export class Routine implements BaseEntity {
   get id(): number { return this._id; }
   set id(value: number) { this._id = value; }
 
-  /** Identifier of the user who owns this routine. */
-  private _userId: number;
+  /** Identifier of the patient who owns this routine. */
+  private _patientId: number;
 
-  get userId(): number { return this._userId; }
+  get patientId(): number { return this._patientId; }
 
-  /** Identifier of the skin profile associated with this routine. */
-  private _skinProfileId: number;
+  /** Identifier of the skin analysis that generated this routine. */
+  private _skinAnalysisId: number;
 
-  get skinProfileId(): number { return this._skinProfileId; }
-
-  /** Identifier of the facial scan that generated this routine. */
-  private _facialScanId: number;
-
-  get facialScanId(): number { return this._facialScanId; }
+  get skinAnalysisId(): number { return this._skinAnalysisId; }
 
   /** Current lifecycle status of the routine. */
   private _status: RoutineStatus;

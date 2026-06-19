@@ -1,5 +1,5 @@
-import {BaseAssembler} from '../../shared/infrastructure/base-assembler';
-import { DailyTracking, TrackingStatus } from '../domain/model/daily-tracking.entity';
+import { BaseAssembler } from '../../shared/infrastructure/base-assembler';
+import { DailyTracking } from '../domain/model/daily-tracking.entity';
 import { DailyTrackingResource, DailyTrackingsResponse } from './daily-tracking.response';
 
 /**
@@ -7,42 +7,29 @@ import { DailyTrackingResource, DailyTrackingsResponse } from './daily-tracking.
  */
 export class DailyTrackingAssembler implements BaseAssembler<DailyTracking, DailyTrackingResource, DailyTrackingsResponse> {
 
-  /**
-   * Converts a DailyTrackingsResponse to an array of DailyTracking entities.
-   * @param response - The API response containing daily tracking records.
-   * @returns An array of DailyTracking entities.
-   */
   toEntitiesFromResponse(response: DailyTrackingsResponse): DailyTracking[] {
     return response.daily_trackings.map(resource => this.toEntityFromResource(resource));
   }
 
-  /**
-   * Converts a DailyTrackingResource to a DailyTracking entity.
-   * @param resource - The resource to convert.
-   * @returns The converted DailyTracking entity.
-   */
   toEntityFromResource(resource: DailyTrackingResource): DailyTracking {
     return new DailyTracking({
-      id:        resource.id,
-      routineId: resource.routine_id,
-      userId:    resource.user_id,
-      date:      resource.date,
-      status:    resource.status as TrackingStatus,
+      id:          resource.id,
+      patientId:   resource.patientId,
+      routineId:   resource.routineId,
+      date:        resource.date,
+      isCompleted: resource.isCompleted,
+      completedAt: resource.completedAt ?? '',
     });
   }
 
-  /**
-   * Converts a DailyTracking entity to a DailyTrackingResource.
-   * @param entity - The entity to convert.
-   * @returns The converted DailyTrackingResource.
-   */
   toResourceFromEntity(entity: DailyTracking): DailyTrackingResource {
     return {
-      id:         entity.id,
-      routine_id: entity.routineId,
-      user_id:    entity.userId,
-      date:       entity.date,
-      status:     entity.status,
+      id:          entity.id,
+      patientId:   entity.patientId,
+      routineId:   entity.routineId,
+      date:        entity.date,
+      isCompleted: entity.isCompleted,
+      completedAt: entity.completedAt,
     } as DailyTrackingResource;
   }
 }

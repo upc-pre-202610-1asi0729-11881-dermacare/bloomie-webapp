@@ -28,7 +28,7 @@
             </div>
             <div>
               <p class="product-replacement__current-step">{{ routineItem()!.stepLabel }}</p>
-              <p class="product-replacement__current-product">{{ 'routine.productReplacement.productLabel' | translate }} #{{ routineItem()!.productId }}</p>
+              <p class="product-replacement__current-product">{{ routineItem()!.productRecommendation }}</p>
             </div>
           </div>
         </div>
@@ -40,18 +40,18 @@
         <p class="product-replacement__alternatives-subtitle">{{ 'routine.productReplacement.alternativesSubtitle' | translate }}</p>
       </div>
 
-      <!-- Placeholder alternatives (in production these come from product-discovery) -->
+      <!-- Replacement options from backend -->
       <div class="product-replacement__alternatives-grid">
-        @for (compatibilityScore of [95, 92, 88, 85]; track compatibilityScore; let productIndex = $index) {
+        @for (option of store.replacementOptions(); track option; let i = $index) {
           <button
             class="product-replacement__alternative-card"
-            [class.product-replacement__alternative-card--selected]="selectedProductId() === productIndex + 1"
-            (click)="selectProduct(productIndex + 1)"
+            [class.product-replacement__alternative-card--selected]="selectedProductName() === option"
+            (click)="selectProduct(option)"
           >
-            @if (productIndex === 0) {
+            @if (i === 0) {
               <span class="product-replacement__best-match-tag">{{ 'routine.productReplacement.bestMatch' | translate }}</span>
             }
-            @if (selectedProductId() === productIndex + 1) {
+            @if (selectedProductName() === option) {
               <div class="product-replacement__selected-check">
                 <mat-icon>check</mat-icon>
               </div>
@@ -59,20 +59,20 @@
             <div class="product-replacement__alternative-image-placeholder">
               <mat-icon>inventory_2</mat-icon>
             </div>
-            <p class="product-replacement__alternative-name">{{ 'routine.productReplacement.alternativeProduct' | translate }} {{ productIndex + 1 }}</p>
+            <p class="product-replacement__alternative-name">{{ option }}</p>
             <div class="product-replacement__compatibility-bar-row">
               <div class="product-replacement__compatibility-bar">
                 <div
                   class="product-replacement__compatibility-fill"
-                  [style.width.%]="compatibilityScore"
-                  [style.backgroundColor]="getCompatibilityColor(compatibilityScore)"
+                  [style.width.%]="getScoreForIndex(i)"
+                  [style.backgroundColor]="getCompatibilityColor(getScoreForIndex(i))"
                 ></div>
               </div>
               <span
                 class="product-replacement__compatibility-score"
-                [style.color]="getCompatibilityColor(compatibilityScore)"
+                [style.color]="getCompatibilityColor(getScoreForIndex(i))"
               >
-                {{ compatibilityScore }}% · {{ 'routine.productReplacement.compatibility.' + getCompatibilityLabel(compatibilityScore) | translate }}
+                {{ getScoreForIndex(i) }}% · {{ 'routine.productReplacement.compatibility.' + getCompatibilityLabel(getScoreForIndex(i)) | translate }}
               </span>
             </div>
           </button>
@@ -81,8 +81,8 @@
 
       <button
         class="product-replacement__continue-btn"
-        [disabled]="!selectedProductId()"
-        [class.product-replacement__continue-btn--disabled]="!selectedProductId()"
+        [disabled]="!selectedProductName()"
+        [class.product-replacement__continue-btn--disabled]="!selectedProductName()"
         (click)="continueWithSelection()"
       >
         {{ 'routine.productReplacement.continueBtn' | translate }}

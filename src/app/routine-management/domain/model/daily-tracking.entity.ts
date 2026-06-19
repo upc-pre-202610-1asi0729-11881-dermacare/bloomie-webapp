@@ -1,15 +1,7 @@
 import {BaseEntity} from '../../../shared/infrastructure/base-entity';
 
 /**
- * Represents the completion state of a daily tracking entry.
- */
-export enum TrackingStatus {
-  Completed    = 'COMPLETED',
-  NotCompleted = 'NOT_COMPLETED',
-}
-
-/**
- * Represents the daily tracking record for a single routine item.
+ * Represents the daily tracking record for a patient's skincare routine completion.
  */
 export class DailyTracking implements BaseEntity {
 
@@ -18,17 +10,19 @@ export class DailyTracking implements BaseEntity {
    * @param props - Initialization values for the daily tracking entry.
    */
   constructor(props: {
-    id:        number;
-    routineId: number;
-    userId:    number;
-    date:      string;
-    status:    TrackingStatus;
+    id:          number;
+    patientId:   number;
+    routineId:   number;
+    date:        string;
+    isCompleted: boolean;
+    completedAt: string;
   }) {
-    this._id        = props.id;
-    this._routineId = props.routineId;
-    this._userId    = props.userId;
-    this._date      = props.date;
-    this._status    = props.status;
+    this._id          = props.id;
+    this._patientId   = props.patientId;
+    this._routineId   = props.routineId;
+    this._date        = props.date;
+    this._isCompleted = props.isCompleted;
+    this._completedAt = props.completedAt;
   }
 
   /** Unique identifier for the daily tracking record. */
@@ -37,33 +31,30 @@ export class DailyTracking implements BaseEntity {
   get id(): number { return this._id; }
   set id(value: number) { this._id = value; }
 
-  /** Identifier of the routine being tracked. */
+  /** Identifier of the patient who owns this tracking record. */
+  private _patientId: number;
+
+  get patientId(): number { return this._patientId; }
+
+  /** Identifier of the routine that was tracked. */
   private _routineId: number;
 
   get routineId(): number { return this._routineId; }
 
-  /** Identifier of the user who owns this tracking record. */
-  private _userId: number;
-
-  get userId(): number { return this._userId; }
-
-  /** ISO 8601 date string for this tracking entry (e.g. '2026-05-11'). */
+  /** ISO 8601 date string for this tracking entry (e.g. '2026-06-19'). */
   private _date: string;
 
   get date(): string { return this._date; }
 
-  /** Completion status of the routine on this day. */
-  private _status: TrackingStatus;
+  /** Whether the routine was completed on this day. */
+  private _isCompleted: boolean;
 
-  get status(): TrackingStatus { return this._status; }
-  set status(value: TrackingStatus) { this._status = value; }
+  get isCompleted(): boolean { return this._isCompleted; }
 
-  /**
-   * Returns true if the routine was completed on this tracking day.
-   */
-  get isCompleted(): boolean {
-    return this._status === TrackingStatus.Completed;
-  }
+  /** ISO 8601 date-time string when the completion was recorded. */
+  private _completedAt: string;
+
+  get completedAt(): string { return this._completedAt; }
 
   /**
    * Returns a display-friendly formatted date string for this tracking entry.

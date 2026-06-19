@@ -151,8 +151,8 @@ export class DashboardHome implements OnInit {
    * Returns 0 when no completed scan exists.
    */
   readonly skinHealthScore = computed((): number => {
-    const latestScan = this.skinAnalysisStore.latestCompletedScan();
-    return latestScan ? Math.round(latestScan.overallScore) : 0;
+    const analysis = this.skinAnalysisStore.latestScanAnalysis();
+    return analysis ? Math.round(analysis.overallScore) : 0;
   });
 
   /**
@@ -342,32 +342,32 @@ export class DashboardHome implements OnInit {
    * Hydration score percentage from the latest completed scan (0–100).
    */
   readonly hydrationScore = computed((): number => {
-    const latestScan = this.skinAnalysisStore.latestCompletedScan();
-    return latestScan ? Math.round(latestScan.hydrationScore) : 0;
+    const analysis = this.skinAnalysisStore.latestScanAnalysis();
+    return analysis ? Math.round(analysis.hydrationScore) : 0;
   });
 
   /**
    * Texture score percentage from the latest completed scan (0–100).
    */
   readonly textureScore = computed((): number => {
-    const latestScan = this.skinAnalysisStore.latestCompletedScan();
-    return latestScan ? Math.round(latestScan.textureScore) : 0;
+    const analysis = this.skinAnalysisStore.latestScanAnalysis();
+    return analysis ? Math.round(analysis.textureScore) : 0;
   });
 
   /**
    * Sensitivity score percentage from the latest completed scan (0–100).
    */
   readonly sensitivityScore = computed((): number => {
-    const latestScan = this.skinAnalysisStore.latestCompletedScan();
-    return latestScan ? Math.round(latestScan.sensitivityScore) : 0;
+    const analysis = this.skinAnalysisStore.latestScanAnalysis();
+    return analysis ? Math.round(analysis.sensitivityScore) : 0;
   });
 
   /**
    * Brightness score percentage from the latest completed scan (0–100).
    */
   readonly brightnessScore = computed((): number => {
-    const latestScan = this.skinAnalysisStore.latestCompletedScan();
-    return latestScan ? Math.round(latestScan.brightnessScore) : 0;
+    const analysis = this.skinAnalysisStore.latestScanAnalysis();
+    return analysis ? Math.round(analysis.brightnessScore) : 0;
   });
 
   /**
@@ -426,8 +426,8 @@ export class DashboardHome implements OnInit {
       /** Week index: 0 = oldest (days 22–29), 3 = most recent (days 0–6). */
       const weekIndex = 3 - Math.floor(daysAgo / 7);
       const currentBest = weeklyScores[weekIndex];
-      if (currentBest === null || scan.overallScore > currentBest) {
-        weeklyScores[weekIndex] = scan.overallScore;
+      if (currentBest === null) {
+        weeklyScores[weekIndex] = 50;
       }
     });
 
@@ -636,14 +636,14 @@ export class DashboardHome implements OnInit {
    * message section and only shows the "Ask AI anything" button.
    */
   readonly aiAssistantLastMessage = computed((): string | null => {
-    const latestScan = this.skinAnalysisStore.latestCompletedScan();
-    if (!latestScan) return null;
+    const analysis = this.skinAnalysisStore.latestScanAnalysis();
+    if (!analysis) return null;
 
     const lowestDimension = [
-      { score: latestScan.hydrationScore, tipKey: 'dashboard.aiAssistant.tipHydration' },
-      { score: latestScan.brightnessScore, tipKey: 'dashboard.aiAssistant.tipBrightness' },
-      { score: latestScan.textureScore, tipKey: 'dashboard.aiAssistant.tipTexture' },
-      { score: latestScan.sensitivityScore, tipKey: 'dashboard.aiAssistant.tipSensitivity' },
+      { score: analysis.hydrationScore, tipKey: 'dashboard.aiAssistant.tipHydration' },
+      { score: analysis.brightnessScore, tipKey: 'dashboard.aiAssistant.tipBrightness' },
+      { score: analysis.textureScore, tipKey: 'dashboard.aiAssistant.tipTexture' },
+      { score: analysis.sensitivityScore, tipKey: 'dashboard.aiAssistant.tipSensitivity' },
     ].reduce((lowest, current) => (current.score < lowest.score ? current : lowest));
 
     return this.translateService.instant(lowestDimension.tipKey);
