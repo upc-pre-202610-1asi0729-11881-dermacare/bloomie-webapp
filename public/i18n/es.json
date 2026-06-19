@@ -498,6 +498,7 @@
     },
     "scanResult": {
       "title": "Tu Análisis de Piel",
+      "analyzing": "Analizando tus resultados...",
       "overallScore": "Puntaje General",
       "hydration": "Hidratación",
       "texture": "Textura",

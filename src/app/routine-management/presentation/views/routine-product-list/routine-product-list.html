@@ -86,7 +86,7 @@
               </div>
               <div class="routine-product-list__item-info">
                 <p class="routine-product-list__item-step">{{ item.stepLabel }}</p>
-                <p class="routine-product-list__item-product-id">{{ 'routine.productList.productLabel' | translate }} #{{ item.productId }}</p>
+                <p class="routine-product-list__item-product-id">{{ item.productRecommendation }}</p>
               </div>
               <mat-icon class="routine-product-list__item-chevron">
                 {{ expandedProductId() === item.id ? 'expand_less' : 'expand_more' }}

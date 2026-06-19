@@ -45,7 +45,7 @@
       <div class="skin-progress__metric-card">
         <mat-icon class="skin-progress__metric-icon">favorite</mat-icon>
         <div class="skin-progress__metric-body">
-          <p class="skin-progress__metric-value">{{ store.latestCompletedScan()?.overallScore ?? 0 }}</p>
+          <p class="skin-progress__metric-value">{{ store.currentScanAnalysis()?.overallScore ?? 0 }}</p>
           <p class="skin-progress__metric-label">{{ 'skinAnalysis.skinProgress.scoreLabel' | translate }}</p>
           <p class="skin-progress__metric-sublabel">{{ 'skinAnalysis.skinProgress.scoreSubtitle' | translate }}</p>
         </div>

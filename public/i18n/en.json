@@ -498,6 +498,7 @@
     },
     "scanResult": {
       "title": "Your Skin Analysis",
+      "analyzing": "Analyzing your results...",
       "overallScore": "Overall Score",
       "hydration": "Hydration",
       "texture": "Texture",

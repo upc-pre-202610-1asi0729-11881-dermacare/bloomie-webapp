@@ -1,50 +1,42 @@
-import {BaseAssembler} from '../../shared/infrastructure/base-assembler';
+import { BaseAssembler } from '../../shared/infrastructure/base-assembler';
 import { Routine, RoutineStatus } from '../domain/model/routine.entity';
 import { RoutineResource, RoutinesResponse } from './routine.response';
+import { RoutineItemAssembler } from './routine-item.assembler';
 
 /**
  * Maps Routine entities to and from API resources.
+ * Handles embedded RoutineItem assembly via RoutineItemAssembler.
  */
 export class RoutineAssembler implements BaseAssembler<Routine, RoutineResource, RoutinesResponse> {
 
-  /**
-   * Converts a RoutinesResponse to an array of Routine entities.
-   * @param response - The API response containing routines.
-   * @returns An array of Routine entities.
-   */
+  private readonly itemAssembler = new RoutineItemAssembler();
+
   toEntitiesFromResponse(response: RoutinesResponse): Routine[] {
     return response.routines.map(resource => this.toEntityFromResource(resource));
   }
 
-  /**
-   * Converts a RoutineResource to a Routine entity.
-   * @param resource - The resource to convert.
-   * @returns The converted Routine entity.
-   */
   toEntityFromResource(resource: RoutineResource): Routine {
-    return new Routine({
-      id:            resource.id,
-      userId:        resource.user_id,
-      skinProfileId: resource.skin_profile_id,
-      facialScanId:  resource.facial_scan_id,
-      status:        resource.status as RoutineStatus,
-      createdAt:     resource.created_at,
+    const routine = new Routine({
+      id:             resource.id,
+      patientId:      resource.patientId,
+      skinAnalysisId: resource.skinAnalysisId,
+      status:         resource.status as RoutineStatus,
+      createdAt:      resource.createdAt,
     });
+    if (resource.items) {
+      routine.items = resource.items.map(item => this.itemAssembler.toEntityFromResource(item));
+    }
+    return routine;
   }
 
-  /**
-   * Converts a Routine entity to a RoutineResource.
-   * @param entity - The entity to convert.
-   * @returns The converted RoutineResource.
-   */
   toResourceFromEntity(entity: Routine): RoutineResource {
     return {
-      id:              entity.id,
-      user_id:         entity.userId,
-      skin_profile_id: entity.skinProfileId,
-      facial_scan_id:  entity.facialScanId,
-      status:          entity.status,
-      created_at:      entity.createdAt,
+      id:             entity.id,
+      patientId:      entity.patientId,
+      skinAnalysisId: entity.skinAnalysisId,
+      status:         entity.status,
+      createdAt:      entity.createdAt,
+      items:          [],
     } as RoutineResource;
   }
 }

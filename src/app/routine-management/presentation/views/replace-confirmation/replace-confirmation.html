@@ -46,7 +46,7 @@
             <p class="replace-confirmation__removing-label">{{ 'routine.replaceConfirmation.removing' | translate }}</p>
             @if (routineItem()) {
               <p class="replace-confirmation__removing-name">
-                {{ routineItem()!.stepLabel }} · {{ 'routine.replaceConfirmation.product' | translate }} #{{ routineItem()!.productId }}
+                {{ routineItem()!.stepLabel }} · {{ routineItem()!.productRecommendation }}
               </p>
             }
           </div>
@@ -68,9 +68,7 @@
           </div>
           <div class="replace-confirmation__product-details">
             <p class="replace-confirmation__adding-label">{{ 'routine.replaceConfirmation.adding' | translate }}</p>
-            <p class="replace-confirmation__adding-name">
-              {{ 'routine.replaceConfirmation.product' | translate }} #{{ newProductId() }}
-            </p>
+            <p class="replace-confirmation__adding-name">{{ newProductName() }}</p>
           </div>
         </div>
       </div>
