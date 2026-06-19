@@ -29,4 +29,18 @@ export class SkinProfilesApiEndpoint extends BaseApiEndpoint<
         catchError(this.handleError('Failed to fetch skin profile by patient')),
       );
   }
+
+  createFromLifestyleForm(data: {
+    patientId:   number;
+    skinType:    string;
+    sensitivity: string;
+    waterIntake: string;
+    sunExposure: string;
+    sleepHours:  string;
+  }): Observable<SkinProfile> {
+    return this.http.post<SkinProfileResource>(this.endpointUrl, data).pipe(
+      map(resource => this.assembler.toEntityFromResource(resource)),
+      catchError(this.handleError('Failed to create skin profile'))
+    );
+  }
 }
