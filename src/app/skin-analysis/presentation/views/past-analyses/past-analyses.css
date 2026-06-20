@@ -156,3 +156,32 @@
   margin: 0;
   max-width: 360px;
 }
+
+@media (max-width: 1023px) {
+  .past-analyses {
+    padding: 1rem 1rem 1.5rem;
+  }
+
+  .past-analyses__title {
+    font-size: 22px;
+  }
+
+  .past-analyses__list {
+    max-width: 100%;
+  }
+
+  .past-analyses__card {
+    padding: 14px 16px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .past-analyses__view-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .past-analyses__empty {
+    padding: 40px 16px;
+  }
+}

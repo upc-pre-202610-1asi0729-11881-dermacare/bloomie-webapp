@@ -20,31 +20,6 @@
 .routine-product-list__content { display: flex; gap: 2rem; align-items: flex-start; }
 .routine-product-list__main { flex: 1; min-width: 0; }
 
-/* ── Day strip ── */
-.routine-product-list__day-strip {
-  display: flex; gap: 0.5rem; margin-bottom: 1.5rem;
-  overflow-x: auto; padding-bottom: 0.25rem;
-}
-
-.routine-product-list__day-btn {
-  flex-shrink: 0; width: 64px; height: 86px; border-radius: 20px;
-  border: none; cursor: pointer; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; gap: 0.25rem;
-  background-color: rgba(162, 103, 105, 0.15); transition: all 0.2s;
-}
-
-.routine-product-list__day-btn--selected {
-  background-color: #a26769; box-shadow: 0 4px 8px rgba(162, 103, 105, 0.4);
-}
-
-.routine-product-list__day-btn--today { background-color: rgba(162, 103, 105, 0.35); }
-
-.routine-product-list__day-number { font-size: 1.5rem; font-weight: 700; color: #a26769; line-height: 1; }
-.routine-product-list__day-btn--selected .routine-product-list__day-number { color: white; }
-.routine-product-list__day-name { font-size: 0.75rem; font-weight: 600; color: rgba(162, 103, 105, 0.8); }
-.routine-product-list__day-btn--selected .routine-product-list__day-name { color: rgba(255, 255, 255, 0.9); }
-.routine-product-list__day-check { font-size: 1rem; color: #7aaf7a; }
-
 /* ── Calendar ── */
 .routine-product-list__calendar-card {
   background: white; border-radius: 20px;
@@ -186,33 +161,41 @@
 
 /* ── RESPONSIVE: Mobile ── */
 @media (max-width: 1023px) {
-  .routine-product-list { padding: 1rem 1rem 1.5rem; }
-  .routine-product-list__title { font-size: 1.4rem; }
-
-  /* Stack main + panel vertically on mobile */
-  .routine-product-list__content { flex-direction: column; gap: 1.25rem; }
-
-  /* Panel stats move to a horizontal row on mobile */
-  .routine-product-list__panel {
-    width: 100%;
-    flex-direction: row;
-    gap: 0.75rem;
+  .routine-product-list {
+    padding: 1rem 1rem 1.5rem;
+    overflow-x: hidden;
   }
 
-  .routine-product-list__streak-card { flex: 1; }
-  .routine-product-list__completion-card { flex: 1; }
+  .routine-product-list__title { font-size: 1.4rem; }
 
-  /* Compact streak card on mobile */
+  /* Stack main + panel vertically, both fully constrained */
+  .routine-product-list__content { flex-direction: column; gap: 1.25rem; overflow-x: hidden; }
+
+  .routine-product-list__main { width: 100%; min-width: 0; overflow-x: hidden; }
+
+  /* Panel stats: horizontal row on mobile */
+  .routine-product-list__panel { width: 100%; flex-direction: row; gap: 0.75rem; }
+  .routine-product-list__streak-card { flex: 1; min-width: 0; }
+  .routine-product-list__completion-card { flex: 1; min-width: 0; }
+
+  /* Compact stats text */
   .routine-product-list__streak-count { font-size: 1.75rem; }
   .routine-product-list__completion-value { font-size: 1.5rem; }
 
-  /* Smaller day buttons */
-  .routine-product-list__day-btn { width: 52px; height: 72px; border-radius: 16px; }
-  .routine-product-list__day-number { font-size: 1.25rem; }
-  .routine-product-list__day-name { font-size: 0.65rem; }
+  /* Calendar card: reduce padding so the grid fits narrow screens */
+  .routine-product-list__calendar-card { padding: 1rem; }
 
-  /* Smaller calendar days */
-  .routine-product-list__calendar-day { width: 1.875rem; height: 1.875rem; font-size: 0.8rem; }
+  /* Calendar day cells: fluid width driven by the 7-column grid,
+     capped with max-width so they don't grow too large */
+  .routine-product-list__calendar-day {
+    width: 100%;
+    max-width: 2.25rem;
+    height: 2rem;
+    font-size: 0.8rem;
+  }
+
+  /* Day name labels follow the same fluid approach */
+  .routine-product-list__calendar-day-name-label { font-size: 0.65rem; letter-spacing: 0; }
 
   /* Compact item rows */
   .routine-product-list__item-row { padding: 1rem; gap: 0.75rem; }
@@ -221,7 +204,7 @@
 }
 
 @media (max-width: 480px) {
-  /* Very small: hide time on items, stack day actions */
+  /* Very small screens: stack day actions and panel vertically */
   .routine-product-list__day-actions { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
   .routine-product-list__mark-btn { width: 100%; justify-content: center; }
   .routine-product-list__panel { flex-direction: column; }

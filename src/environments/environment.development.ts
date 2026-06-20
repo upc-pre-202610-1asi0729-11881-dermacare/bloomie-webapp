@@ -1,6 +1,7 @@
 export const environment = {
   production: false,
-  serverBasePath: 'https://bloomie-mock-api.azurewebsites.net/api/v1',
+  serverBasePath: 'https://bloomie-frontend-mockapi.azurewebsites.net/api/v1',
+  backendBasePath: 'https://bloomie-platform-awb7d0fyajc6fgby.eastus-01.azurewebsites.net/api/v1',
   usersEndpointPath: '/users',
   sessionsEndpointPath: '/sessions',
   skinProfilesEndpointPath: '/skin_profiles',
@@ -23,5 +24,26 @@ export const environment = {
   authenticationLoginEndpointPath: '/authentication/sign-in',
   authenticationRegisterYoungAdultEndpointPath: '/authentication/sign-up/young-adult',
   authenticationRegisterDermatologistEndpointPath: '/authentication/sign-up/dermatologist',
-  useMockAuthentication: true,
+
+  backendDermatologistProfilesEndpointPath: '/dermatologist-profiles',
+  backendAvailabilitiesEndpointPath: '/availabilities',
+  backendAppointmentsEndpointPath: '/appointments',
+  backendConsultationsEndpointPath: '/consultations',
+  backendPaymentsEndpointPath: '/payments',
+  backendSubscriptionsEndpointPath: '/subscriptions',
+  backendPlansEndpointPath: '/plans',
+  backendAuthenticationRegisterEndpointPath: '/authentication/register',
+  backendAuthenticationRegisterDermatologistEndpointPath: '/authentication/register-dermatologist',
+  backendUsersEndpointPath: '/users',
+  backendFavoriteProductsEndpointPath: '/favorite-products',
+  useMockAuthentication: false,
+
+  // Skin Analysis
+  backendSkinProfilesEndpointPath: '/skin-profiles',
+  backendFacialScansEndpointPath: '/facial-scans',
+  backendSkinAnalysesEndpointPath: '/skin-analyses',
+
+  // Routine Management
+  backendRoutinesEndpointPath: '/routines',
+  backendDailyTrackingsEndpointPath: '/daily-trackings',
 };

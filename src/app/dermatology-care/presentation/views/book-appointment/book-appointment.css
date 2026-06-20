@@ -79,6 +79,13 @@
 
 .book-appointment__profile-avatar mat-icon { font-size: 40px; color: #a26769; }
 
+.book-appointment__profile-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  object-fit: cover;
+}
+
 .book-appointment__profile-specialty {
   font-family: 'Montserrat', sans-serif;
   font-weight: 600;
@@ -97,7 +104,7 @@
 
 .book-appointment__stats {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 12px;
 }
 
@@ -114,9 +121,11 @@
 .book-appointment__stat-value {
   font-family: 'Montserrat', sans-serif;
   font-weight: 600;
-  font-size: 20px;
+  font-size: 14px;
   color: #49454f;
-  line-height: 1.2;
+  line-height: 1.3;
+  word-break: break-all;
+  text-align: center;
 }
 
 .book-appointment__stat-label {
@@ -174,11 +183,27 @@
 .book-appointment__day-header {
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: space-between;
   margin-bottom: 12px;
 }
 
-.book-appointment__chevron { color: #999; cursor: pointer; }
+.book-appointment__nav-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #49454f;
+  transition: background 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+
+.book-appointment__nav-btn:hover:not(:disabled) { background: #f0ece8; }
+.book-appointment__nav-btn:disabled { opacity: 0.25; cursor: not-allowed; }
 
 .book-appointment__month-label {
   font-family: 'Montserrat', sans-serif;
@@ -186,14 +211,17 @@
   font-size: 16px;
   color: #999;
   margin: 0;
+  flex: 1;
+  text-align: center;
+  text-transform: capitalize;
 }
 
 .book-appointment__days {
   display: flex;
   gap: 12px;
   margin-bottom: 24px;
-  overflow-x: auto;
-  padding-bottom: 4px;
+  overflow: hidden;
+  touch-action: pan-y;
 }
 
 .book-appointment__day-btn {
@@ -284,6 +312,7 @@
   .book-appointment__profile-card { padding: 18px; gap: 14px; }
   .book-appointment__profile-avatar { width: 60px; height: 60px; }
   .book-appointment__profile-avatar mat-icon { font-size: 30px; }
+  .book-appointment__profile-img { border-radius: 10px; }
   .book-appointment__profile-specialty { font-size: 15px; }
   .book-appointment__profile-fee { font-size: 13px; }
 

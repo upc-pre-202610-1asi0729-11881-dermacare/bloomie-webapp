@@ -1,59 +1,19 @@
 import { computed, DestroyRef, inject, Injectable, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { of, retry } from 'rxjs';
+import { EMPTY, Observable, retry, tap } from 'rxjs';
 import { Router } from '@angular/router';
-import { environment } from '../../../environments/environment';
 import { User, UserRole } from '../domain/model/user.entity';
 import { IamApi } from '../infrastructure/iam-api';
 import { UserAssembler } from '../infrastructure/user.assembler';
 import { UserResource } from '../infrastructure/user.response';
 import { DermatologistResource } from '../infrastructure/dermatologist.response';
-import { AuthResponse } from '../infrastructure/auth.response';
 
-/**
- * Mock credentials for local development
- */
-const MOCK_CREDENTIALS = [
-  {
-    email: 'user@gmail.com',
-    password: '12345678',
-    id: 1,
-    name: 'Juan',
-    lastName: 'Pérez',
-    role: UserRole.YoungAdult,
-  },
-  {
-    email: 'derma@gmail.com',
-    password: '12345678',
-    id: 2,
-    name: 'Laura',
-    lastName: 'Morales',
-    role: UserRole.Dermatologist,
-  },
-];
-const MOCK_AUTHENTICATION_TOKEN = 'mock-auth-token';
-
-/**
- * Key used to persist the authentication token in the browser session storage.
- */
-const AUTHENTICATION_TOKEN_STORAGE_KEY = 'bloomie.authentication.token';
-
-/**
- * Key used to persist the authenticated user payload in the browser session storage.
- */
-const AUTHENTICATED_USER_STORAGE_KEY = 'bloomie.authentication.user';
+// Temporary: stores the authenticated user in localStorage until JWT is implemented.
+const CURRENT_USER_STORAGE_KEY = 'currentUser';
 
 /**
  * Holds IAM application state and coordinates authentication
  * and registration behavior across the bounded context.
- *
- * @remarks
- * The store exposes the currently authenticated user as a readonly signal
- * and offers use-case oriented methods that map directly to the actions
- * available in the presentation layer (login, logout, registration). When
- * the `useMockAuthentication` environment flag is enabled, the store
- * resolves authentication against an in-memory credential list instead of
- * calling the backend.
  */
 @Injectable({ providedIn: 'root' })
 export class IamStore {
@@ -64,6 +24,7 @@ export class IamStore {
   private readonly currentUserSignal = signal<User | null>(null);
   private readonly loadingSignal = signal<boolean>(false);
   private readonly errorSignal = signal<string | null>(null);
+  private onboardingPending = false;
 
   /**
    * Readonly signal for the currently authenticated user, or null when
@@ -84,7 +45,9 @@ export class IamStore {
   readonly error = this.errorSignal.asReadonly();
 
   /**
-   * Computed signal that resolves to true when a user session is active.
+   * A highly reactive,
+   * computed signal that dynamically evaluates the presence of a valid user session,
+   * resolving to a boolean true once the authentication handshake is confirmed and an active lifecycle is established within the application context.
    */
   readonly isAuthenticated = computed(() => this.currentUserSignal() !== null);
 
@@ -96,32 +59,66 @@ export class IamStore {
     this.restorePersistedSession();
   }
 
-  /**
-   * Authenticates a user with email and password credentials.
-   *
-   * @param email - Email address provided by the user.
-   * @param password - Plain text password provided by the user.
-   * @remarks
-   * Delegates to the mock authentication flow when the environment flag is
-   * enabled, otherwise calls the backend through {@link IamApi}. On success,
-   * the user is navigated to the landing route that corresponds to their role.
-   */
-  login(email: string, password: string): void {
+  login(email: string, _password: string): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
 
-    if (environment.useMockAuthentication) {
-      this.loginWithMockCredentials(email, password);
-      return;
-    }
+    const normalized = email.trim().toLowerCase();
 
     this.iamApi
-      .login(email, password)
+      .getAllUsers()
       .pipe(retry(1), takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (response) => this.handleAuthenticationSuccess(response),
+        next: (users) => {
+          const found = users.find(u => u.email.toLowerCase() === normalized);
+          if (!found) {
+            this.handleAuthenticationError(new Error('User not found'), 'User not found');
+            return;
+          }
+          this.handleAuthenticationSuccess(found);
+        },
         error: (err) => this.handleAuthenticationError(err, 'Invalid email or password'),
       });
+  }
+
+  updateUserPhoto(photoUrl: string): Observable<void> {
+    const user = this.currentUserSignal();
+    if (!user) return EMPTY;
+
+    const applyLocally = (): void => {
+      const updated = new User({
+        id:       user.id,
+        email:    user.email,
+        name:     user.name,
+        lastName: user.lastName,
+        role:     user.role,
+        photoUrl,
+      });
+      this.currentUserSignal.set(updated);
+      const stored = localStorage.getItem(CURRENT_USER_STORAGE_KEY);
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored) as UserResource;
+          parsed.photoUrl = photoUrl;
+          localStorage.setItem(CURRENT_USER_STORAGE_KEY, JSON.stringify(parsed));
+        } catch { /* ignore */ }
+      }
+    };
+
+    return this.iamApi.updateUserPhoto(user.id, photoUrl).pipe(
+      retry(1),
+      tap(applyLocally)
+    );
+  }
+
+  /**
+   * Retrieves any user by identifier from the backend.
+   *
+   * @param userId - Identifier of the user to retrieve.
+   * @returns Observable emitting the User entity.
+   */
+  getUserById(userId: number): Observable<User> {
+    return this.iamApi.getUserById(userId);
   }
 
   /**
@@ -130,175 +127,60 @@ export class IamStore {
   logout(): void {
     this.currentUserSignal.set(null);
     this.errorSignal.set(null);
-    sessionStorage.removeItem(AUTHENTICATION_TOKEN_STORAGE_KEY);
-    sessionStorage.removeItem(AUTHENTICATED_USER_STORAGE_KEY);
+    localStorage.removeItem(CURRENT_USER_STORAGE_KEY);
     this.router.navigate(['/iam/sign-in-home']).then();
   }
 
-  /**
-   * Registers a new young adult patient account.
-   *
-   * @param email - Email address chosen for the new account.
-   * @param password - Plain text password chosen by the user.
-   * @param name - Given name of the user.
-   * @param lastName - Family name of the user.
-   */
   registerYoungAdult(email: string, password: string, name: string, lastName: string): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
+    this.onboardingPending = true;
 
-    if (environment.useMockAuthentication) {
-      this.registerWithMockResponse(email, name, lastName, UserRole.YoungAdult);
-      return;
-    }
-
-    const resource: UserResource = {
-      id: 0,
-      email: email,
-      name: name,
-      last_name: lastName,
-      role: UserRole.YoungAdult,
-      password_hash: password,
+    const requestBody = {
+      firstName: name,
+      lastName:  lastName,
+      email:     email,
+      password:  password,
     };
 
     this.iamApi
-      .registerYoungAdult(resource)
+      .registerYoungAdult(requestBody as any)
       .pipe(retry(1), takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (response) => this.handleAuthenticationSuccess(response),
+        next: (user) => this.handleAuthenticationSuccess(user),
         error: (err) =>
           this.handleAuthenticationError(err, 'Failed to register young adult account'),
       });
   }
 
-  /**
-   * Registers a new certified dermatologist account.
-   *
-   * @param email - Email address chosen for the new account.
-   * @param password - Plain text password chosen by the user.
-   * @param name - Given name of the dermatologist.
-   * @param lastName - Family name of the dermatologist.
-   * @param specialty - Medical specialty selected by the dermatologist.
-   */
-  registerDermatologist(
-    email: string,
-    password: string,
-    name: string,
-    lastName: string,
-    specialty: string,
-  ): void {
+  registerDermatologist(email: string, password: string, name: string, lastName: string, specialty: string): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
 
-    if (environment.useMockAuthentication) {
-      this.registerWithMockResponse(email, name, lastName, UserRole.Dermatologist);
-      return;
-    }
-
-    const resource: DermatologistResource = {
-      id: 0,
-      email: email,
-      name: name,
-      last_name: lastName,
-      role: UserRole.Dermatologist,
-      password_hash: password,
-      specialty: specialty,
+    const requestBody = {
+      firstName: name,
+      lastName:  lastName,
+      email:     email,
+      password:  password,
     };
 
     this.iamApi
-      .registerDermatologist(resource)
+      .registerDermatologist(requestBody as any)
       .pipe(retry(1), takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (response) => this.handleAuthenticationSuccess(response),
+        next: (user) => this.handleAuthenticationSuccess(user),
         error: (err) =>
           this.handleAuthenticationError(err, 'Failed to register dermatologist account'),
       });
   }
 
-  /**
-   * Resolves an authentication attempt against the in-memory mock credentials.
-   *
-   * @param email - Email address typed by the user.
-   * @param password - Password typed by the user.
-   */
-  private loginWithMockCredentials(email: string, password: string): void {
-    const normalizedEmail = email.trim().toLowerCase();
-    const match = MOCK_CREDENTIALS.find(
-      (credential) =>
-        credential.email.toLowerCase() === normalizedEmail && credential.password === password,
-    );
-
-    if (!match) {
-      this.handleAuthenticationError(new Error('Invalid credentials'), 'Invalid email or password');
-      return;
-    }
-
-    const response: AuthResponse = {
-      token: MOCK_AUTHENTICATION_TOKEN,
-      user: {
-        id: match.id,
-        email: match.email,
-        name: match.name,
-        last_name: match.lastName,
-        role: match.role,
-        password_hash: '',
-      },
-    };
-
-    of(response)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (authResponse) => this.handleAuthenticationSuccess(authResponse),
-      });
-  }
-
-  /**
-   * Builds a synthetic authentication response for a successful mock registration.
-   *
-   * @param email - Email registered by the user.
-   * @param name - Given name registered by the user.
-   * @param lastName - Family name registered by the user.
-   * @param role - Role assigned to the new account.
-   */
-  private registerWithMockResponse(
-    email: string,
-    name: string,
-    lastName: string,
-    role: UserRole,
-  ): void {
-    const response: AuthResponse = {
-      token: MOCK_AUTHENTICATION_TOKEN,
-      user: {
-        id: Date.now(),
-        email: email,
-        name: name,
-        last_name: lastName,
-        role: role,
-        password_hash: '',
-      },
-    };
-
-    of(response)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (authResponse) => this.handleAuthenticationSuccess(authResponse),
-      });
-  }
-
-  /**
-   * Applies a successful authentication response to the store and navigates
-   * the user to the entry point that corresponds to their role.
-   *
-   * @param response - Authentication envelope returned by the API or mock layer.
-   */
-  private handleAuthenticationSuccess(response: AuthResponse): void {
-    const user = this.userAssembler.toEntityFromResource(response.user);
+  private handleAuthenticationSuccess(resource: UserResource): void {
+    const user = this.userAssembler.toEntityFromResource(resource);
     this.currentUserSignal.set(user);
     this.loadingSignal.set(false);
     this.errorSignal.set(null);
 
-    sessionStorage.setItem(AUTHENTICATION_TOKEN_STORAGE_KEY, response.token);
-    sessionStorage.setItem(AUTHENTICATED_USER_STORAGE_KEY, JSON.stringify(response.user));
+    localStorage.setItem(CURRENT_USER_STORAGE_KEY, JSON.stringify(resource));
 
     this.navigateToRoleEntryPoint(user.role);
   }
@@ -315,24 +197,16 @@ export class IamStore {
     this.loadingSignal.set(false);
   }
 
-  /**
-   * Restores the user session from the browser session storage, if present.
-   *
-   * @remarks
-   * Allows the application to keep the user signed in across page reloads
-   * without forcing a new authentication request.
-   */
   private restorePersistedSession(): void {
-    const storedUser = sessionStorage.getItem(AUTHENTICATED_USER_STORAGE_KEY);
-    if (!storedUser) return;
+    const stored = localStorage.getItem(CURRENT_USER_STORAGE_KEY);
+    if (!stored) return;
 
     try {
-      const parsed = JSON.parse(storedUser) as UserResource;
-      const user = this.userAssembler.toEntityFromResource(parsed);
+      const resource = JSON.parse(stored) as UserResource;
+      const user = this.userAssembler.toEntityFromResource(resource);
       this.currentUserSignal.set(user);
     } catch {
-      sessionStorage.removeItem(AUTHENTICATION_TOKEN_STORAGE_KEY);
-      sessionStorage.removeItem(AUTHENTICATED_USER_STORAGE_KEY);
+      localStorage.removeItem(CURRENT_USER_STORAGE_KEY);
     }
   }
 
@@ -344,6 +218,11 @@ export class IamStore {
   private navigateToRoleEntryPoint(role: UserRole): void {
     if (role === UserRole.Dermatologist) {
       this.router.navigate(['/derm']).then();
+      return;
+    }
+    if (this.onboardingPending) {
+      this.onboardingPending = false;
+      this.router.navigate(['/iam/lifestyle-form']).then();
       return;
     }
     this.router.navigate(['/dashboard']).then();

@@ -1,14 +1,20 @@
-import {Component, computed, inject, signal} from '@angular/core';
+import {Component, computed, HostListener, inject, OnInit, signal} from '@angular/core';
 import {Router} from '@angular/router';
 import {MatIconModule} from '@angular/material/icon';
-import {TranslatePipe} from '@ngx-translate/core';
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
+import {take} from 'rxjs';
 import {DermatologyCareStore} from '../../../application/dermatology-care.store';
+import {IamStore} from '../../../../iam/application/iam.store';
 
-/** Represents a selectable day in the booking calendar. */
+/** View model for a selectable day in the booking calendar. */
 interface CalendarDay {
   day:  number;
   name: string;
+  date: Date;
 }
+
+const DAY_NAMES          = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const DESKTOP_BREAKPOINT = 768;
 
 /**
  * Allows the patient to view dermatologist details and select
@@ -20,61 +26,124 @@ interface CalendarDay {
   templateUrl: './book-appointment.html',
   styleUrl:    './book-appointment.css',
 })
-export class BookAppointment {
-  readonly store    = inject(DermatologyCareStore);
-  protected router  = inject(Router);
+export class BookAppointment implements OnInit {
+  readonly store            = inject(DermatologyCareStore);
+  private readonly iamStore = inject(IamStore);
+  protected router          = inject(Router);
+  private translateSvc      = inject(TranslateService);
 
-  selectedDay  = signal<number>(0);
-  selectedTime = signal<string>('');
+  selectedDay    = signal<number>(0);
+  selectedTime   = signal<string>('');
+  pageOffset     = signal<number>(0);
+  pageSize       = signal<number>(this.getPageSize());
+  doctorPhotoUrl = signal<string | null>(null);
 
-  /**
-   * Calendar days built from the selected dermatologist's availability.
-   * Falls back to the next 5 weekdays when no availability is loaded.
-   */
-  readonly calendarDays = computed((): CalendarDay[] => {
-    const dayNames       = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const availabilities = this.store.availabilities();
-    if (availabilities.length > 0) {
-      return availabilities.map(availability => ({
-        day:  0,
-        name: availability.dayOfWeek.slice(0, 3),
-      }));
+  private touchStartX = 0;
+
+  @HostListener('window:resize')
+  onResize(): void {
+    const newSize = this.getPageSize();
+    if (newSize !== this.pageSize()) {
+      this.pageSize.set(newSize);
+      this.pageOffset.set(0);
+      this.selectedDay.set(0);
+      this.selectedTime.set('');
     }
-    const today = new Date();
-    return Array.from({length: 5}, (_, index) => {
-      const date = new Date(today);
-      date.setDate(today.getDate() + index + 1);
-      return { day: date.getDate(), name: dayNames[date.getDay()] };
-    });
+  }
+
+  private getPageSize(): number {
+    return window.innerWidth < DESKTOP_BREAKPOINT ? 3 : 5;
+  }
+
+  ngOnInit(): void {
+    const derm = this.store.selectedDermatologist();
+    if (derm) {
+      this.store.selectDermatologist(derm);
+    }
+    if (derm) {
+      this.iamStore.getUserById(derm.userId)
+        .pipe(take(1))
+        .subscribe({
+          next:  user => this.doctorPhotoUrl.set(user.photoUrl ?? null),
+          error: ()   => {},
+        });
+    }
+  }
+
+  /** Calendar days for the current page, mapped from the store's upcoming available dates. */
+  readonly calendarDays = computed((): CalendarDay[] =>
+    this.store.upcomingAvailableDates()
+      .slice(this.pageOffset(), this.pageOffset() + this.pageSize())
+      .map(date => ({ day: date.getDate(), name: DAY_NAMES[date.getDay()], date }))
+  );
+
+  readonly hasNextPage = computed(() =>
+    this.pageOffset() + this.pageSize() < this.store.upcomingAvailableDates().length
+  );
+
+  readonly hasPrevPage = computed(() => this.pageOffset() > 0);
+
+  /** Formatted working time string built from loaded availability slots. */
+  readonly workingTimeText = computed((): string => {
+    const toTitle = (s: string) => s.charAt(0) + s.slice(1).toLowerCase();
+    const active  = this.store.availabilities().filter(a => a.active);
+    if (active.length === 0) return '-';
+    const groups  = new Map<string, string[]>();
+    for (const a of active) {
+      const key = `${a.startTime} – ${a.endTime}`;
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key)!.push(toTitle(a.dayOfWeek));
+    }
+    return Array.from(groups.entries())
+      .map(([time, days]) => `${days.join(', ')} · ${time}`)
+      .join(' | ');
   });
 
-  /**
-   * Available time slots built from the selected dermatologist's availability.
-   */
+  /** Month label derived from the first visible calendar day. */
+  readonly calendarMonth = computed((): string => {
+    const days   = this.calendarDays();
+    const lang   = this.translateSvc.currentLang === 'es' ? 'es-ES' : 'en-US';
+    const date   = days.length > 0 ? days[0].date : new Date();
+    return date.toLocaleDateString(lang, { month: 'long', year: 'numeric' });
+  });
+
+  /** Time slots for the currently selected day, delegated to the store. */
   readonly timeSlots = computed((): string[] => {
-    const availabilities      = this.store.availabilities();
-    if (availabilities.length === 0) return [];
-    const selectedAvailability = availabilities[this.selectedDay()];
-    if (!selectedAvailability) return [];
-    const slots: string[] = [];
-    const [startHour]     = selectedAvailability.startTime.split(':').map(Number);
-    const [endHour]       = selectedAvailability.endTime.split(':').map(Number);
-    const duration        = selectedAvailability.slotDuration;
-    let current           = startHour * 60;
-    const end             = endHour * 60;
-    while (current + duration <= end) {
-      const startHourStr = String(Math.floor(current / 60)).padStart(2, '0');
-      const startMinStr  = String(current % 60).padStart(2, '0');
-      const endMinutes   = current + duration;
-      const endHourStr   = String(Math.floor(endMinutes / 60)).padStart(2, '0');
-      const endMinStr    = String(endMinutes % 60).padStart(2, '0');
-      slots.push(`${startHourStr}:${startMinStr} - ${endHourStr}:${endMinStr}`);
-      current += duration;
-    }
-    return slots;
+    const selected = this.calendarDays()[this.selectedDay()];
+    return selected ? this.store.timeSlotsForDate(selected.date) : [];
   });
 
-  /** Selects a calendar day by index. */
+  /** Advances to the next page of calendar days. */
+  nextPage(): void {
+    if (this.hasNextPage()) {
+      this.pageOffset.update(o => o + this.pageSize());
+      this.selectedDay.set(0);
+      this.selectedTime.set('');
+    }
+  }
+
+  /** Returns to the previous page of calendar days. */
+  prevPage(): void {
+    if (this.hasPrevPage()) {
+      this.pageOffset.update(o => Math.max(0, o - this.pageSize()));
+      this.selectedDay.set(0);
+      this.selectedTime.set('');
+    }
+  }
+
+  onTouchStart(event: TouchEvent): void {
+    this.touchStartX = event.touches[0].clientX;
+  }
+
+  onTouchEnd(event: TouchEvent): void {
+    const diff = this.touchStartX - event.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) this.nextPage();
+      else this.prevPage();
+    }
+  }
+
+  /** Selects a calendar day by index and clears the time selection. */
   selectDay(index: number): void {
     this.selectedDay.set(index);
     this.selectedTime.set('');
@@ -85,8 +154,13 @@ export class BookAppointment {
     this.selectedTime.set(slot);
   }
 
-  /** Navigates to the payment method screen. */
+  /** Saves the selected date and time, then navigates to payment. */
   confirmBooking(): void {
+    const selectedDate = this.calendarDays()[this.selectedDay()]?.date;
+    const selectedTime = this.selectedTime();
+    if (selectedDate && selectedTime) {
+      this.store.setPendingAppointmentDateTime(selectedDate, selectedTime);
+    }
     this.router.navigate(['/dermatology/payment-method']);
   }
 

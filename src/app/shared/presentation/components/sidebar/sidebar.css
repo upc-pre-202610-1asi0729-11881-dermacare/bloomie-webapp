@@ -60,6 +60,50 @@
   background: rgba(255, 255, 255, 0.15);
 }
 
+/* Current user row */
+.sidebar__user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 24px 16px;
+}
+
+.sidebar__user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.sidebar__user-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.sidebar__user-avatar-icon {
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.7);
+  width: 20px;
+  height: 20px;
+}
+
+.sidebar__user-name {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* Section label */
 .sidebar__section-label {
   font-family: 'Montserrat', sans-serif;
@@ -184,9 +228,15 @@
     transform: translateX(0);
   }
 
-  /* Show hamburger */
+  /* Show hamburger — vertically centered in the 56px topbar */
   .sidebar__hamburger {
     display: flex;
+    top: 6px;   /* (56px topbar - 44px button) / 2 */
+    box-shadow: none;
+  }
+
+  .sidebar__hamburger--hidden {
+    display: none;
   }
 
   /* Show overlay when open */

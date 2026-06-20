@@ -17,7 +17,7 @@ export class DermatologistProfilesApiEndpoint extends BaseApiEndpoint<Dermatolog
   constructor(http: HttpClient) {
     super(
       http,
-      `${environment.serverBasePath}${environment.dermatologistProfilesEndpointPath}`,
+      `${environment.backendBasePath}${environment.backendDermatologistProfilesEndpointPath}`,
       new DermatologistProfileAssembler()
     );
   }

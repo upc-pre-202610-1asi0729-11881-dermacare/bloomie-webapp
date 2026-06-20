@@ -74,3 +74,22 @@
 }
 
 .scan-progress__primary-btn:hover { background: #c09080; }
+
+@media (max-width: 1023px) {
+  .scan-progress {
+    padding: 1rem 1rem 1.5rem;
+  }
+
+  .scan-progress__title {
+    font-size: 22px;
+  }
+
+  .scan-progress__subtitle {
+    font-size: 13px;
+  }
+
+  .scan-progress__primary-btn {
+    width: 100%;
+    max-width: 320px;
+  }
+}

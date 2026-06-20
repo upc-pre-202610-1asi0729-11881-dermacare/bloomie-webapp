@@ -56,7 +56,11 @@
           @for (dermatologist of filteredDermatologists(); track dermatologist.id) {
             <div class="select-doctor__card">
               <div class="select-doctor__card-avatar">
-                <mat-icon>person</mat-icon>
+                @if (photoForDermatologist(dermatologist)) {
+                  <img class="select-doctor__card-avatar-img" [src]="photoForDermatologist(dermatologist)!" alt="Dermatologist photo" />
+                } @else {
+                  <mat-icon>person</mat-icon>
+                }
               </div>
               <div class="select-doctor__card-info">
                 <p class="select-doctor__card-specialty">{{ dermatologist.specialty }}</p>

@@ -30,6 +30,9 @@ export class IamApiEndpoint extends BaseApiEndpoint<User, UserResource, AuthResp
   /** Endpoint URL for the dermatologist registration operation. */
   private readonly registerDermatologistEndpointUrl: string;
 
+  /** Base URL for backend user operations (photo update, user lookup). */
+  private readonly backendUsersUrl: string;
+
   /**
    * Creates an instance of IamApiEndpoint.
    * @param http - The HttpClient to be used for making API requests.
@@ -40,9 +43,10 @@ export class IamApiEndpoint extends BaseApiEndpoint<User, UserResource, AuthResp
       `${environment.serverBasePath}${environment.usersEndpointPath}`,
       new UserAssembler()
     );
-    this.loginEndpointUrl                 = `${environment.serverBasePath}${environment.authenticationLoginEndpointPath}`;
-    this.registerYoungAdultEndpointUrl    = `${environment.serverBasePath}${environment.authenticationRegisterYoungAdultEndpointPath}`;
-    this.registerDermatologistEndpointUrl = `${environment.serverBasePath}${environment.authenticationRegisterDermatologistEndpointPath}`;
+    this.loginEndpointUrl                 = `${environment.backendBasePath}${environment.authenticationLoginEndpointPath}`;
+    this.registerYoungAdultEndpointUrl    = `${environment.backendBasePath}${environment.backendAuthenticationRegisterEndpointPath}`;
+    this.registerDermatologistEndpointUrl = `${environment.backendBasePath}${environment.backendAuthenticationRegisterDermatologistEndpointPath}`;
+    this.backendUsersUrl                  = `${environment.backendBasePath}${environment.backendUsersEndpointPath}`;
   }
 
   /**
@@ -61,10 +65,10 @@ export class IamApiEndpoint extends BaseApiEndpoint<User, UserResource, AuthResp
   /**
    * Registers a new young adult account.
    * @param resource - User resource carrying the registration payload.
-   * @returns Stream emitting the {@link AuthResponse} envelope on success.
+   * @returns Stream emitting the created {@link UserResource}.
    */
-  registerYoungAdult(resource: UserResource): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(this.registerYoungAdultEndpointUrl, resource).pipe(
+  registerYoungAdult(resource: UserResource): Observable<UserResource> {
+    return this.http.post<UserResource>(this.registerYoungAdultEndpointUrl, resource).pipe(
       map(response => response),
       catchError(this.handleError('Failed to register young adult'))
     );
@@ -73,12 +77,46 @@ export class IamApiEndpoint extends BaseApiEndpoint<User, UserResource, AuthResp
   /**
    * Registers a new dermatologist account.
    * @param resource - Dermatologist resource carrying the registration payload.
-   * @returns Stream emitting the {@link AuthResponse} envelope on success.
+   * @returns Stream emitting the created {@link UserResource}.
    */
-  registerDermatologist(resource: DermatologistResource): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(this.registerDermatologistEndpointUrl, resource).pipe(
+  registerDermatologist(resource: DermatologistResource): Observable<UserResource> {
+    return this.http.post<UserResource>(this.registerDermatologistEndpointUrl, resource).pipe(
       map(response => response),
       catchError(this.handleError('Failed to register dermatologist'))
+    );
+  }
+
+  /**
+   * Retrieves all users from the backend.
+   * @returns Stream emitting the full list of {@link UserResource}.
+   */
+  getAllUsers(): Observable<UserResource[]> {
+    return this.http.get<UserResource[]>(this.backendUsersUrl).pipe(
+      catchError(this.handleError('Failed to get users'))
+    );
+  }
+
+  /**
+   * Updates the profile photo of a user.
+   * @param userId - Identifier of the user whose photo is being updated.
+   * @param photoUrl - Base64-encoded data URL of the new photo.
+   * @returns Completion stream for the update operation.
+   */
+  updateUserPhoto(userId: number, photoUrl: string): Observable<void> {
+    return this.http.put<void>(`${this.backendUsersUrl}/${userId}/photo`, { photoUrl }).pipe(
+      catchError(this.handleError('Failed to update user photo'))
+    );
+  }
+
+  /**
+   * Retrieves a single user by identifier from the backend.
+   * @param userId - Identifier of the user to retrieve.
+   * @returns Stream with the mapped User entity.
+   */
+  getUserById(userId: number): Observable<User> {
+    return this.http.get<UserResource>(`${this.backendUsersUrl}/${userId}`).pipe(
+      map(resource => this.assembler.toEntityFromResource(resource)),
+      catchError(this.handleError('Failed to get user'))
     );
   }
 }

@@ -2,6 +2,7 @@ import { Injectable }   from '@angular/core';
 import { HttpClient }   from '@angular/common/http';
 import { Observable }   from 'rxjs';
 import { BaseApi }      from '../../shared/infrastructure/base-api';
+import { User }         from '../domain/model/user.entity';
 import { UserResource } from './user.response';
 import { DermatologistResource } from './dermatologist.response';
 import { AuthResponse }      from './auth.response';
@@ -43,18 +44,45 @@ export class IamApi extends BaseApi {
   /**
    * Registers a new young adult account.
    * @param resource - User resource carrying the registration payload.
-   * @returns Stream emitting the {@link AuthResponse} envelope on success.
+   * @returns Stream emitting the created {@link UserResource}.
    */
-  registerYoungAdult(resource: UserResource): Observable<AuthResponse> {
+  registerYoungAdult(resource: UserResource): Observable<UserResource> {
     return this.iamEndpoint.registerYoungAdult(resource);
   }
 
   /**
    * Registers a new dermatologist account.
    * @param resource - Dermatologist resource carrying the registration payload.
-   * @returns Stream emitting the {@link AuthResponse} envelope on success.
+   * @returns Stream emitting the created {@link UserResource}.
    */
-  registerDermatologist(resource: DermatologistResource): Observable<AuthResponse> {
+  registerDermatologist(resource: DermatologistResource): Observable<UserResource> {
     return this.iamEndpoint.registerDermatologist(resource);
+  }
+
+  /**
+   * Retrieves all users from the backend.
+   * @returns Stream emitting the full list of {@link UserResource}.
+   */
+  getAllUsers(): Observable<UserResource[]> {
+    return this.iamEndpoint.getAllUsers();
+  }
+
+  /**
+   * Updates the profile photo of a user.
+   * @param userId - Identifier of the user.
+   * @param photoUrl - Base64-encoded data URL of the new photo.
+   * @returns Completion stream for the update operation.
+   */
+  updateUserPhoto(userId: number, photoUrl: string): Observable<void> {
+    return this.iamEndpoint.updateUserPhoto(userId, photoUrl);
+  }
+
+  /**
+   * Retrieves a user by identifier from the backend.
+   * @param userId - Identifier of the user to retrieve.
+   * @returns Stream with the matched User entity.
+   */
+  getUserById(userId: number): Observable<User> {
+    return this.iamEndpoint.getUserById(userId);
   }
 }

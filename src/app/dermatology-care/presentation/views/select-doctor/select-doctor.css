@@ -155,6 +155,13 @@
   color: #a26769;
 }
 
+.select-doctor__card-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
 .select-doctor__card-info { flex: 1; min-width: 0; }
 
 .select-doctor__card-specialty {

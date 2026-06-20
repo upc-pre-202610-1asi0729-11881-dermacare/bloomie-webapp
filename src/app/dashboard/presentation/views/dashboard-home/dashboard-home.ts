@@ -7,6 +7,7 @@ import { SkinAnalysisStore } from '../../../../skin-analysis/application/skin-an
 import { RoutineManagementStore } from '../../../../routine-management/application/routine-management.store';
 import { DermatologyCareStore } from '../../../../dermatology-care/application/dermatology-care.store';
 import { ProductDiscoveryStore } from '../../../../product-discovery/application/product-discovery.store';
+import { IamStore } from '../../../../iam/application/iam.store';
 import { SkinSensitivity, SkinType, } from '../../../../skin-analysis/domain/model/skin-profile.entity';
 import { FacialScan } from '../../../../skin-analysis/domain/model/facial-scan.entity';
 import { RoutineItem } from '../../../../routine-management/domain/model/routine-item.entity';
@@ -34,10 +35,16 @@ interface SkinProgressBar {
 interface StatCard {
   /** i18n translation key for the card title. */
   titleKey: string;
-  /** Primary value displayed in large text. */
+  /** Primary value displayed in large text (number or pre-formatted string). */
   value: string;
-  /** Secondary subtitle line beneath the value. */
-  subtitle: string;
+  /** Optional i18n key for the unit label shown after the value. */
+  unitKey?: string;
+  /** Optional i18n key for the subtitle line. */
+  subtitleKey?: string;
+  /** Optional numeric param used in subtitle interpolation (e.g. thisWeek). */
+  subtitleParam?: number;
+  /** Pre-formatted subtitle string when a translation key is not applicable (e.g. data values). */
+  subtitleRaw?: string;
   /** Material icon name for the card. */
   icon: string;
 }
@@ -99,6 +106,19 @@ export class DashboardHome implements OnInit {
   /** Used to resolve translated strings for dynamic computed values. */
   private readonly translateService = inject(TranslateService);
 
+  /** Provides the authenticated user's profile for personalized display. */
+  private readonly iamStore = inject(IamStore);
+
+  // ─── Current user ────────────────────────────────────────────────────────────
+
+  /** First name of the currently authenticated user. */
+  readonly currentUserName = computed((): string => this.iamStore.currentUser()?.name ?? '');
+
+  /** First letter of the user's name, used as the avatar placeholder. */
+  readonly currentUserFirstLetter = computed((): string =>
+    this.currentUserName()[0]?.toUpperCase() ?? '?',
+  );
+
   // ─── Greeting ────────────────────────────────────────────────────────────────
 
   /**
@@ -131,8 +151,8 @@ export class DashboardHome implements OnInit {
    * Returns 0 when no completed scan exists.
    */
   readonly skinHealthScore = computed((): number => {
-    const latestScan = this.skinAnalysisStore.latestCompletedScan();
-    return latestScan ? Math.round(latestScan.overallScore) : 0;
+    const analysis = this.skinAnalysisStore.latestScanAnalysis();
+    return analysis ? Math.round(analysis.overallScore) : 0;
   });
 
   /**
@@ -236,34 +256,33 @@ export class DashboardHome implements OnInit {
    */
   readonly statCards = computed((): StatCard[] => {
     const scoreImprovement = this.skinScoreImprovement();
-    const improvementLabel =
-      scoreImprovement > 0
-        ? this.translateService.instant('dashboard.stats.thisWeek', { value: scoreImprovement })
-        : '';
 
     return [
       {
         titleKey: 'dashboard.stats.skinHealthScore',
         value: `${this.skinHealthScore()}/100`,
-        subtitle: improvementLabel,
+        subtitleKey: scoreImprovement > 0 ? 'dashboard.stats.thisWeek' : undefined,
+        subtitleParam: scoreImprovement > 0 ? scoreImprovement : undefined,
         icon: 'monitor_heart',
       },
       {
         titleKey: 'dashboard.stats.routineStreak',
-        value: `${this.routineStreakDays()} ${this.translateService.instant('dashboard.stats.days')}`,
-        subtitle: this.translateService.instant('dashboard.stats.keepItUp'),
+        value: `${this.routineStreakDays()}`,
+        unitKey: 'dashboard.stats.days',
+        subtitleKey: 'dashboard.stats.keepItUp',
         icon: 'auto_awesome',
       },
       {
         titleKey: 'dashboard.stats.nextAppointment',
         value: this.nextAppointmentDateLabel(),
-        subtitle: this.nextAppointmentDoctorLabel(),
+        subtitleRaw: this.nextAppointmentDoctorLabel(),
         icon: 'calendar_month',
       },
       {
         titleKey: 'dashboard.stats.productsInRoutine',
-        value: `${this.productsInRoutineCount()} ${this.translateService.instant('dashboard.stats.steps')}`,
-        subtitle: this.translateService.instant('dashboard.stats.lastUpdatedToday'),
+        value: `${this.productsInRoutineCount()}`,
+        unitKey: 'dashboard.stats.steps',
+        subtitleKey: 'dashboard.stats.lastUpdatedToday',
         icon: 'check_circle',
       },
     ];
@@ -323,32 +342,32 @@ export class DashboardHome implements OnInit {
    * Hydration score percentage from the latest completed scan (0–100).
    */
   readonly hydrationScore = computed((): number => {
-    const latestScan = this.skinAnalysisStore.latestCompletedScan();
-    return latestScan ? Math.round(latestScan.hydrationScore) : 0;
+    const analysis = this.skinAnalysisStore.latestScanAnalysis();
+    return analysis ? Math.round(analysis.hydrationScore) : 0;
   });
 
   /**
    * Texture score percentage from the latest completed scan (0–100).
    */
   readonly textureScore = computed((): number => {
-    const latestScan = this.skinAnalysisStore.latestCompletedScan();
-    return latestScan ? Math.round(latestScan.textureScore) : 0;
+    const analysis = this.skinAnalysisStore.latestScanAnalysis();
+    return analysis ? Math.round(analysis.textureScore) : 0;
   });
 
   /**
    * Sensitivity score percentage from the latest completed scan (0–100).
    */
   readonly sensitivityScore = computed((): number => {
-    const latestScan = this.skinAnalysisStore.latestCompletedScan();
-    return latestScan ? Math.round(latestScan.sensitivityScore) : 0;
+    const analysis = this.skinAnalysisStore.latestScanAnalysis();
+    return analysis ? Math.round(analysis.sensitivityScore) : 0;
   });
 
   /**
    * Brightness score percentage from the latest completed scan (0–100).
    */
   readonly brightnessScore = computed((): number => {
-    const latestScan = this.skinAnalysisStore.latestCompletedScan();
-    return latestScan ? Math.round(latestScan.brightnessScore) : 0;
+    const analysis = this.skinAnalysisStore.latestScanAnalysis();
+    return analysis ? Math.round(analysis.brightnessScore) : 0;
   });
 
   /**
@@ -407,8 +426,8 @@ export class DashboardHome implements OnInit {
       /** Week index: 0 = oldest (days 22–29), 3 = most recent (days 0–6). */
       const weekIndex = 3 - Math.floor(daysAgo / 7);
       const currentBest = weeklyScores[weekIndex];
-      if (currentBest === null || scan.overallScore > currentBest) {
-        weeklyScores[weekIndex] = scan.overallScore;
+      if (currentBest === null) {
+        weeklyScores[weekIndex] = 50;
       }
     });
 
@@ -617,14 +636,14 @@ export class DashboardHome implements OnInit {
    * message section and only shows the "Ask AI anything" button.
    */
   readonly aiAssistantLastMessage = computed((): string | null => {
-    const latestScan = this.skinAnalysisStore.latestCompletedScan();
-    if (!latestScan) return null;
+    const analysis = this.skinAnalysisStore.latestScanAnalysis();
+    if (!analysis) return null;
 
     const lowestDimension = [
-      { score: latestScan.hydrationScore, tipKey: 'dashboard.aiAssistant.tipHydration' },
-      { score: latestScan.brightnessScore, tipKey: 'dashboard.aiAssistant.tipBrightness' },
-      { score: latestScan.textureScore, tipKey: 'dashboard.aiAssistant.tipTexture' },
-      { score: latestScan.sensitivityScore, tipKey: 'dashboard.aiAssistant.tipSensitivity' },
+      { score: analysis.hydrationScore, tipKey: 'dashboard.aiAssistant.tipHydration' },
+      { score: analysis.brightnessScore, tipKey: 'dashboard.aiAssistant.tipBrightness' },
+      { score: analysis.textureScore, tipKey: 'dashboard.aiAssistant.tipTexture' },
+      { score: analysis.sensitivityScore, tipKey: 'dashboard.aiAssistant.tipSensitivity' },
     ].reduce((lowest, current) => (current.score < lowest.score ? current : lowest));
 
     return this.translateService.instant(lowestDimension.tipKey);

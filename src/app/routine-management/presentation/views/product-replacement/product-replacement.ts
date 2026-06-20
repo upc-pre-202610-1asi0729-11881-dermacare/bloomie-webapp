@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -14,13 +14,16 @@ import { RoutineManagementStore } from '../../../application/routine-management.
   templateUrl: './product-replacement.html',
   styleUrl: './product-replacement.css',
 })
-export class ProductReplacement {
+export class ProductReplacement implements OnInit {
   readonly store = inject(RoutineManagementStore);
   protected router = inject(Router);
   private route = inject(ActivatedRoute);
 
-  /** The ID of the selected replacement product, or null if none chosen. */
-  selectedProductId = signal<number | null>(null);
+  /** The name of the selected replacement product, or null if none chosen. */
+  selectedProductName = signal<string | null>(null);
+
+  /** Simulated compatibility scores for the replacement options (index-aligned). */
+  readonly compatibilityScores = [95, 92, 88, 85];
 
   /** The routine item ID received via query params. */
   readonly routineItemId = computed(() => {
@@ -28,50 +31,60 @@ export class ProductReplacement {
     return paramValue ? Number(paramValue) : null;
   });
 
-  /** The routine item being replaced, looked up from the store. */
+  /** The routine item being replaced, looked up from the active routine items. */
   readonly routineItem = computed(() => {
     const itemId = this.routineItemId();
     if (!itemId) return undefined;
     return this.store.getRoutineItemById(itemId)();
   });
 
+  ngOnInit(): void {
+    const itemId = this.routineItemId();
+    if (itemId) {
+      this.store.loadReplacementOptions(itemId);
+    }
+  }
+
   /**
-   * Returns the compatibility label for a given compatibility score.
-   * Scores >= 90 are Excellent, >= 80 are Good, below 80 are Fair.
-   * @param compatibilityScore - A number between 0 and 100.
-   * @returns A translated key suffix for the compatibility label.
+   * Returns the compatibility score for a given product index.
    */
-  readonly getCompatibilityLabel = (compatibilityScore: number): string => {
-    if (compatibilityScore >= 90) return 'excellent';
-    if (compatibilityScore >= 80) return 'good';
+  getScoreForIndex(index: number): number {
+    return this.compatibilityScores[index] ?? 85;
+  }
+
+  /**
+   * Returns the compatibility label key for a given score.
+   */
+  readonly getCompatibilityLabel = (score: number): string => {
+    if (score >= 90) return 'excellent';
+    if (score >= 80) return 'good';
     return 'fair';
   };
 
   /**
    * Returns the CSS color for a given compatibility score.
-   * @param compatibilityScore - A number between 0 and 100.
-   * @returns A hex color string.
    */
-  readonly getCompatibilityColor = (compatibilityScore: number): string => {
-    if (compatibilityScore >= 90) return '#4caf50';
-    if (compatibilityScore >= 80) return '#e8a43a';
+  readonly getCompatibilityColor = (score: number): string => {
+    if (score >= 90) return '#4caf50';
+    if (score >= 80) return '#e8a43a';
     return '#ef5350';
   };
 
-  /** Selects a product as the candidate replacement. */
-  selectProduct(productId: number): void {
-    this.selectedProductId.set(productId);
+  /** Selects a product name as the candidate replacement. */
+  selectProduct(productName: string): void {
+    this.selectedProductName.set(productName);
   }
 
   /**
-   * Navigates to the replacement confirmation view with the selected product.
+   * Navigates to the replacement confirmation view with the selected product name and its index.
    */
   continueWithSelection(): void {
     const itemId = this.routineItemId();
-    const productId = this.selectedProductId();
-    if (!itemId || !productId) return;
+    const productName = this.selectedProductName();
+    if (!itemId || !productName) return;
+    const productIndex = this.store.replacementOptions().indexOf(productName);
     this.router.navigate(['/routine/replace-confirmation'], {
-      queryParams: { routineItemId: itemId, newProductId: productId },
+      queryParams: { routineItemId: itemId, newProductName: productName, productIndex },
     });
   }
 

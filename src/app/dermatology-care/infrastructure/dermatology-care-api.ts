@@ -70,11 +70,12 @@ export class DermatologyCareApi extends BaseApi {
   }
 
   /**
-   * Retrieves all availability slots for a dermatologist.
-   * @returns Stream with the dermatologist availability collection.
+   * Retrieves availability slots for a given dermatologist from the backend.
+   * @param dermatologistId - The dermatologist user ID to filter by.
+   * @returns Stream with the filtered dermatologist availability collection.
    */
-  getDermatologistAvailabilities(): Observable<DermatologistAvailability[]> {
-    return this.dermatologistAvailabilitiesEndpoint.getAll();
+  getDermatologistAvailabilities(dermatologistId: number): Observable<DermatologistAvailability[]> {
+    return this.dermatologistAvailabilitiesEndpoint.getByDermatologistId(dermatologistId);
   }
 
   /**

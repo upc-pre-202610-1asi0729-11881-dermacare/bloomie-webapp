@@ -14,6 +14,8 @@ import {DermatologyCareApi} from '../infrastructure/dermatology-care-api';
 @Injectable({providedIn: 'root'})
 export class DermatologyCareStore {
 
+  private static readonly AVAILABILITY_LOOKAHEAD_DAYS = 120;
+
   private readonly dermatologistProfilesSignal  = signal<DermatologistProfile[]>([]);
   private readonly availabilitiesSignal          = signal<DermatologistAvailability[]>([]);
   private readonly appointmentsSignal            = signal<Appointment[]>([]);
@@ -23,6 +25,8 @@ export class DermatologyCareStore {
   private readonly selectedConsultationSignal    = signal<Consultation | null>(null);
   private readonly loadingSignal                 = signal<boolean>(false);
   private readonly errorSignal                   = signal<string | null>(null);
+  private readonly pendingAppointmentDateSignal  = signal<Date | null>(null);
+  private readonly pendingAppointmentTimeSignal  = signal<string>('');
 
   /**
    * Readonly signal for the list of dermatologist profiles.
@@ -70,6 +74,16 @@ export class DermatologyCareStore {
   readonly error = this.errorSignal.asReadonly();
 
   /**
+   * Readonly signal for the pending appointment date selected by the patient.
+   */
+  readonly pendingAppointmentDate = this.pendingAppointmentDateSignal.asReadonly();
+
+  /**
+   * Readonly signal for the pending appointment time slot selected by the patient.
+   */
+  readonly pendingAppointmentTime = this.pendingAppointmentTimeSignal.asReadonly();
+
+  /**
    * Computed signal for the count of available dermatologists.
    */
   readonly availableDermatologistCount = computed(() =>
@@ -82,6 +96,32 @@ export class DermatologyCareStore {
   readonly confirmedAppointmentCount = computed(() =>
     this.appointments().filter(appointment => appointment.isConfirmed).length
   );
+
+  /**
+   * Upcoming calendar dates (starting tomorrow) that match the loaded dermatologist availabilities.
+   */
+  readonly upcomingAvailableDates = computed((): Date[] => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const availabilities = this.availabilitiesSignal();
+    const dates: Date[] = [];
+    for (let i = 1; i <= DermatologyCareStore.AVAILABILITY_LOOKAHEAD_DAYS; i++) {
+      const date = new Date(today);
+      date.setDate(today.getDate() + i);
+      if (availabilities.length === 0 || availabilities.some(a => a.matchesDate(date))) {
+        dates.push(date);
+      }
+    }
+    return dates;
+  });
+
+  /**
+   * Returns the bookable time slots for a given date based on loaded availabilities.
+   * @param date - The calendar date to get slots for.
+   */
+  timeSlotsForDate(date: Date): string[] {
+    return this.availabilitiesSignal().find(a => a.matchesDate(date))?.timeSlots ?? [];
+  }
 
   /**
    * Creates an instance of DermatologyCareStore and loads initial data.
@@ -128,7 +168,17 @@ export class DermatologyCareStore {
    */
   selectDermatologist(dermatologistProfile: DermatologistProfile): void {
     this.selectedDermatologistSignal.set(dermatologistProfile);
-    this.loadAvailabilities(dermatologistProfile.id);
+    this.loadAvailabilities(dermatologistProfile.userId);
+  }
+
+  /**
+   * Stores the date and time slot chosen by the patient before navigating to payment.
+   * @param date - The calendar date of the appointment.
+   * @param time - The time slot string (e.g. "09:00 - 10:00").
+   */
+  setPendingAppointmentDateTime(date: Date, time: string): void {
+    this.pendingAppointmentDateSignal.set(date);
+    this.pendingAppointmentTimeSignal.set(time);
   }
 
   /**
@@ -275,11 +325,9 @@ export class DermatologyCareStore {
   private loadAvailabilities(dermatologistId: number): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
-    this.dermatologyCareApi.getDermatologistAvailabilities().pipe(take(1)).subscribe({
+    this.dermatologyCareApi.getDermatologistAvailabilities(dermatologistId).pipe(take(1)).subscribe({
       next: availabilities => {
-        this.availabilitiesSignal.set(
-          availabilities.filter(availability => availability.dermatologistId === dermatologistId)
-        );
+        this.availabilitiesSignal.set(availabilities);
         this.loadingSignal.set(false);
         this.errorSignal.set(null);
       },
