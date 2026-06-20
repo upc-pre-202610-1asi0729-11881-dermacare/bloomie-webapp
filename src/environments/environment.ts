@@ -23,7 +23,7 @@ export const environment = {
   authenticationLoginEndpointPath: '/authentication/sign-in',
   authenticationRegisterYoungAdultEndpointPath: '/authentication/sign-up/young-adult',
   authenticationRegisterDermatologistEndpointPath: '/authentication/sign-up/dermatologist',
-  backendBasePath: '',
+  backendBasePath: 'https://bloomie-platform-awb7d0fyajc6fgby.eastus-01.azurewebsites.net/api/v1',
   backendUsersEndpointPath: '/users',
   backendAuthenticationRegisterEndpointPath: '/authentication/register',
   backendAuthenticationRegisterDermatologistEndpointPath: '/authentication/register-dermatologist',
