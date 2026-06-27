@@ -1,6 +1,7 @@
 import { computed, DestroyRef, effect, inject, Injectable, Signal, signal, untracked } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { retry, switchMap } from 'rxjs';
+import { forkJoin, of, retry, switchMap } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { FacialScan, FacialScanStatus } from '../domain/model/facial-scan.entity';
 import { SkinProfile } from '../domain/model/skin-profile.entity';
 import { SkinAnalysis } from '../domain/model/skin-analysis.entity';
@@ -13,6 +14,7 @@ export class SkinAnalysisStore {
   private readonly currentScanSignal         = signal<FacialScan | null>(null);
   private readonly currentScanAnalysisSignal = signal<SkinAnalysis | null>(null);
   private readonly latestScanAnalysisSignal  = signal<SkinAnalysis | null>(null);
+  private readonly skinAnalysesSignal        = signal<SkinAnalysis[]>([]);
   private readonly skinProfileSignal         = signal<SkinProfile | null>(null);
   private readonly loadingSignal             = signal<boolean>(false);
   private readonly errorSignal               = signal<string | null>(null);
@@ -21,6 +23,7 @@ export class SkinAnalysisStore {
   readonly currentScan         = this.currentScanSignal.asReadonly();
   readonly currentScanAnalysis = this.currentScanAnalysisSignal.asReadonly();
   readonly latestScanAnalysis  = this.latestScanAnalysisSignal.asReadonly();
+  readonly skinAnalyses        = this.skinAnalysesSignal.asReadonly();
   readonly skinProfile         = this.skinProfileSignal.asReadonly();
   readonly loading             = this.loadingSignal.asReadonly();
   readonly error               = this.errorSignal.asReadonly();
@@ -195,6 +198,7 @@ export class SkinAnalysisStore {
           this.currentScanSignal.set(latest);
           this.loadingSignal.set(false);
           this.errorSignal.set(null);
+          this.loadAllCompletedAnalyses(scans);
           if (latest) {
             this.loadLatestScanAnalysis(latest.id);
           }
@@ -206,6 +210,28 @@ export class SkinAnalysisStore {
           } else {
             this.errorSignal.set(this.formatError(err, 'Failed to load facial scans'));
           }
+        },
+      });
+  }
+
+  private loadAllCompletedAnalyses(scans: FacialScan[]): void {
+    const completed = scans.filter(s => s.isCompleted);
+    if (completed.length === 0) {
+      this.skinAnalysesSignal.set([]);
+      return;
+    }
+    const requests = completed.map(scan =>
+      this.skinAnalysisApi
+        .getSkinAnalysisByFacialScanId(scan.id)
+        .pipe(catchError(() => of(null))),
+    );
+    forkJoin(requests)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: results => {
+          this.skinAnalysesSignal.set(
+            results.filter((a): a is SkinAnalysis => a !== null),
+          );
         },
       });
   }

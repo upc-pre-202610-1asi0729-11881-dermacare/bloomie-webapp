@@ -260,9 +260,9 @@ export class DashboardHome implements OnInit {
     return [
       {
         titleKey: 'dashboard.stats.skinHealthScore',
-        value: `${this.skinHealthScore()}/100`,
-        subtitleKey: scoreImprovement > 0 ? 'dashboard.stats.thisWeek' : undefined,
-        subtitleParam: scoreImprovement > 0 ? scoreImprovement : undefined,
+        value: `${this.skinHealthScore()}`,
+        subtitleKey: scoreImprovement !== 0 ? 'dashboard.stats.thisWeek' : undefined,
+        subtitleParam: scoreImprovement !== 0 ? scoreImprovement : undefined,
         icon: 'monitor_heart',
       },
       {
@@ -277,13 +277,6 @@ export class DashboardHome implements OnInit {
         value: this.nextAppointmentDateLabel(),
         subtitleRaw: this.nextAppointmentDoctorLabel(),
         icon: 'calendar_month',
-      },
-      {
-        titleKey: 'dashboard.stats.productsInRoutine',
-        value: `${this.productsInRoutineCount()}`,
-        unitKey: 'dashboard.stats.steps',
-        subtitleKey: 'dashboard.stats.lastUpdatedToday',
-        icon: 'check_circle',
       },
     ];
   });
@@ -394,6 +387,29 @@ export class DashboardHome implements OnInit {
     return 'trend-badge--stable';
   });
 
+  /** stroke-dasharray for the main SVG score ring (r=40, circumference≈251.3). */
+  readonly mainCircleDasharray = computed((): string => {
+    const score = this.skinStatusScore();
+    const c = 251.3;
+    const filled = (score / 100) * c;
+    return `${filled.toFixed(1)} ${(c - filled).toFixed(1)}`;
+  });
+
+  /** Time label for the next appointment (e.g. "02:30 PM"). */
+  readonly nextAppointmentTimeLabel = computed((): string => {
+    const appointment = this.nextAppointment();
+    if (!appointment) return '';
+    return new Date(appointment.scheduledAt).toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  });
+
+  /** Converts a 0–100 score to stroke-dasharray for a ring with circumference≈100 (r≈15.9). */
+  protected toRingDasharray(score: number): string {
+    return `${score} ${100 - score}`;
+  }
+
   // ─── Skin progress chart ─────────────────────────────────────────────────────
 
   /**
@@ -407,46 +423,59 @@ export class DashboardHome implements OnInit {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const weekLabels = ['W1', 'W2', 'W3', 'W4'];
+    const analyses = this.skinAnalysisStore.skinAnalyses();
+    const locale = this.translateService.currentLang === 'es' ? 'es-ES' : 'en-US';
 
-    /** Score buckets indexed 0–3 from oldest to newest week. */
-    const weeklyScores: (number | null)[] = [null, null, null, null];
+    /**
+     * Build 4 seven-day windows, oldest → newest (left → right).
+     * Bar i=0: days 27–21 ago, bar i=3: days 6–0 ago.
+     */
+    const weeklyData = Array.from({ length: 4 }, (_, i) => {
+      const weeksFromNow = 3 - i;
+      const endDaysAgo   = weeksFromNow * 7;
+      const startDaysAgo = endDaysAgo + 6;
 
-    const completedScans = this.skinAnalysisStore
-      .facialScans()
-      .filter((scan: FacialScan) => scan.isCompleted);
+      const startDate = new Date(today);
+      startDate.setDate(today.getDate() - startDaysAgo);
 
-    completedScans.forEach((scan: FacialScan) => {
-      const scanDate = new Date(scan.scannedAt);
-      scanDate.setHours(0, 0, 0, 0);
-      const daysAgo = Math.floor((today.getTime() - scanDate.getTime()) / (1000 * 60 * 60 * 24));
+      const endDate = new Date(today);
+      endDate.setDate(today.getDate() - endDaysAgo);
 
-      if (daysAgo < 0 || daysAgo > 29) return;
+      /** Average overallScore of all analyses whose analyzedAt falls in this window. */
+      const inWindow = analyses.filter(a => {
+        const d = new Date(a.analyzedAt);
+        d.setHours(0, 0, 0, 0);
+        return d >= startDate && d <= endDate;
+      });
 
-      /** Week index: 0 = oldest (days 22–29), 3 = most recent (days 0–6). */
-      const weekIndex = 3 - Math.floor(daysAgo / 7);
-      const currentBest = weeklyScores[weekIndex];
-      if (currentBest === null) {
-        weeklyScores[weekIndex] = 50;
-      }
+      const score: number | null =
+        inWindow.length > 0
+          ? Math.round(inWindow.reduce((s, a) => s + a.overallScore, 0) / inWindow.length)
+          : null;
+
+      /** Show the first day of the window (e.g. "Jun 1" / "1 jun"). */
+      const label = startDate.toLocaleDateString(locale, { month: 'short', day: 'numeric' });
+
+      return { label, score };
     });
 
-    const validScores = weeklyScores.filter((score): score is number => score !== null);
+    const validScores = weeklyData.map(w => w.score).filter((s): s is number => s !== null);
     const maximumScore = validScores.length > 0 ? Math.max(...validScores) : 100;
-    const latestNonNullIndex = weeklyScores.reduce(
-      (lastIndex, score, index) => (score !== null ? index : lastIndex),
+    const latestNonNullIndex = weeklyData.reduce(
+      (last, w, i) => (w.score !== null ? i : last),
       -1,
     );
 
-    return weekLabels.map((label, index) => {
-      const score = weeklyScores[index] ?? 0;
-      const heightPercent = score > 0 ? Math.max(10, Math.round((score / maximumScore) * 100)) : 0;
+    return weeklyData.map(({ label, score }, i) => {
+      const numericScore = score ?? 0;
+      const heightPercent =
+        numericScore > 0 ? Math.max(10, Math.round((numericScore / maximumScore) * 100)) : 0;
 
       return {
         weekLabel: label,
-        score: Math.round(score),
+        score: numericScore,
         heightPercent,
-        isLatest: index === latestNonNullIndex,
+        isLatest: i === latestNonNullIndex,
       };
     });
   });
@@ -521,11 +550,7 @@ export class DashboardHome implements OnInit {
    * Calculated as: completed days this week × number of items in the active routine.
    * This is the correct business rule: each completed day applies all routine items.
    */
-  readonly weekProductsAppliedCount = computed((): number => {
-    const completedDays = this.routineManagementStore.completedDaysThisWeek();
-    const itemsPerDay = this.routineManagementStore.activeRoutineItems().length;
-    return completedDays * itemsPerDay;
-  });
+  readonly weekMissedDays = computed((): number => 7 - this.weekRoutineCompletedDays());
 
   // ─── Skin scan due widget ────────────────────────────────────────────────────
 
@@ -715,6 +740,13 @@ export class DashboardHome implements OnInit {
    */
   goToTrending(): void {
     this.router.navigate(['/trending']);
+  }
+
+  /**
+   * Navigates to the dermatology appointments view.
+   */
+  goToAppointments(): void {
+    this.router.navigate(['/dermatology']);
   }
 
   /**
