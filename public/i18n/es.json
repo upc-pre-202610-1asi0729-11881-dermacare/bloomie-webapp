@@ -136,7 +136,9 @@
       "pastBtn": "Ver consulta",
       "scheduledTitle": "Tus citas programadas",
       "scheduledDesc": "Mira, gestiona y cancela tus próximas citas.",
-      "scheduledBtn": "Ver citas"
+      "scheduledBtn": "Ver citas",
+      "specialistsAvailable": "especialistas disponibles",
+      "manageLabel": "Gestiona tu atención"
     },
     "selectDoctor": {
       "title": "Selecciona un dermatólogo",
