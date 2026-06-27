@@ -144,7 +144,9 @@
       "title": "Select a dermatologist",
       "searchPlaceholder": "Search by specialty...",
       "perSession": "per session",
-      "yearsExp": "years exp.",
+      "yearsExp": "yrs exp.",
+      "patients": "patients",
+      "specialistsAvailable": "specialists available",
       "bookBtn": "Book appointment",
       "filterByPrice": "Filter by price",
       "allPrices": "All prices",
@@ -166,7 +168,14 @@
       "schedule": "Schedule",
       "availableTimes": "Available Times",
       "noSlots": "No slots available for this day.",
-      "continue": "Continue"
+      "continue": "Continue",
+      "beforeVisit": "Before your appointment",
+      "tip1Title": "Prepare your questions",
+      "tip1Desc": "Write down any skin concerns or symptoms you want to discuss with your specialist.",
+      "tip2Title": "Take clear skin photos",
+      "tip2Desc": "Photos of affected areas help your dermatologist assess your condition more accurately.",
+      "tip3Title": "Stable internet connection",
+      "tip3Desc": "Ensure a reliable connection for a smooth online consultation experience."
     },
     "payment": {
       "title": "Payment method",
