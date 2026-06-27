@@ -144,7 +144,9 @@
       "title": "Selecciona un dermatólogo",
       "searchPlaceholder": "Buscar por especialidad...",
       "perSession": "por sesión",
-      "yearsExp": "años de exp.",
+      "yearsExp": "años exp.",
+      "patients": "pacientes",
+      "specialistsAvailable": "especialistas disponibles",
       "bookBtn": "Reservar cita",
       "filterByPrice": "Filtrar por precio",
       "allPrices": "Todos los precios",
@@ -166,6 +168,14 @@
       "schedule": "Horario",
       "availableTimes": "Horarios Disponibles",
       "noSlots": "No hay horarios disponibles para este día.",
+      "continue": "Continuar",
+      "beforeVisit": "Antes de tu cita",
+      "tip1Title": "Prepara tus preguntas",
+      "tip1Desc": "Anota cualquier problema o síntoma de tu piel que quieras comentar con el especialista.",
+      "tip2Title": "Toma fotos de tu piel",
+      "tip2Desc": "Las fotos de las zonas afectadas ayudan al dermatólogo a evaluar tu condición con mayor precisión.",
+      "tip3Title": "Conexión a internet estable",
+      "tip3Desc": "Asegúrate de tener una buena conexión para una consulta online sin interrupciones."
       "continue": "Continuar"
     },
     "payment": {
