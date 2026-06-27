@@ -20,8 +20,13 @@
   <div class="derm-sign-up__form-wrapper">
     <form class="derm-sign-up__form" [formGroup]="form" (ngSubmit)="onSubmit()">
 
-      <h2 class="derm-sign-up__form-title">{{ 'iam.dermSignUp.formTitle' | translate }}</h2>
-      <p class="derm-sign-up__form-subtitle">{{ 'iam.dermSignUp.formSubtitle' | translate }}</p>
+      <div class="derm-sign-up__form-header">
+        <div>
+          <h2 class="derm-sign-up__form-title">{{ 'iam.dermSignUp.formTitle' | translate }}</h2>
+          <p class="derm-sign-up__form-subtitle">{{ 'iam.dermSignUp.formSubtitle' | translate }}</p>
+        </div>
+        <app-language-switcher></app-language-switcher>
+      </div>
 
       <div class="derm-sign-up__role-badge">
         <mat-icon class="derm-sign-up__role-icon">medical_services</mat-icon>
