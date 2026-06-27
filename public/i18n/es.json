@@ -235,6 +235,7 @@
       "title": "Tus Citas Programadas",
       "activeLabel": "citas activas",
       "noAppointments": "No tienes citas programadas aún.",
+      "noAppointmentsDesc": "Reserva una consulta con un dermatólogo para comenzar.",
       "cancelBtn": "Cancelar cita",
       "joinNow": "Unirse ahora",
       "startCall": "Iniciar llamada",
@@ -272,6 +273,7 @@
       "date": "Fecha:",
       "status": "Estado:",
       "noConsultations": "No se encontraron consultas.",
+      "noConsultationsDesc": "Tus consultas pasadas aparecerán aquí una vez completadas.",
       "viewDetails": "Ver detalles",
       "rebook": "Volver a reservar",
       "statusValue": {
@@ -291,6 +293,7 @@
       "duration": "Duración",
       "returnBtn": "Volver a Consultas",
       "noData": "No hay consulta seleccionada.",
+      "noPhotos": "No se subieron imágenes para esta consulta.",
       "doctorLabel": "Dermatólogo"
     },
     "dermAgenda": {
