@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
 import { IamStore } from '../../../application/iam.store';
+import { LanguageSwitcher } from '../../../../shared/presentation/components/language-switcher/language-switcher';
 
 const passwordMatchValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const password = control.get('password')?.value;
@@ -14,7 +15,7 @@ const passwordMatchValidator: ValidatorFn = (control: AbstractControl): Validati
 @Component({
   selector: 'app-dermatologist-sign-up',
   standalone: true,
-  imports: [ReactiveFormsModule, TranslatePipe, MatIconModule, RouterLink],
+  imports: [ReactiveFormsModule, TranslatePipe, MatIconModule, RouterLink, LanguageSwitcher],
   templateUrl: './dermatologist-sign-up.html',
   styleUrl: './dermatologist-sign-up.css',
 })
