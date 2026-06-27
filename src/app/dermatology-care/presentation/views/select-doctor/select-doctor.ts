@@ -16,7 +16,7 @@ interface PriceRange {
 
 @Component({
   selector:    'app-select-doctor',
-  imports:     [MatIconModule, FormsModule, TranslatePipe, DecimalPipe],
+  imports:     [MatIconModule, FormsModule, TranslatePipe],
   templateUrl: './select-doctor.html',
   styleUrl:    './select-doctor.css',
 })
@@ -81,12 +81,6 @@ export class SelectDoctor {
       .slice(0, 2)
       .join('')
       .toUpperCase();
-  }
-
-  /** Returns an array of 5 booleans: true = filled star. */
-  protected starArray(rating: number): boolean[] {
-    const rounded = Math.round(rating);
-    return [1, 2, 3, 4, 5].map(i => i <= rounded);
   }
 
   protected displayName(profile: DermatologistProfile): string {

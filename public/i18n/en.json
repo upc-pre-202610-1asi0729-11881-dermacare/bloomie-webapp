@@ -234,6 +234,7 @@
       "title": "Your Scheduled Appointments",
       "activeLabel": "active appointments",
       "noAppointments": "No appointments scheduled yet.",
+      "noAppointmentsDesc": "Book a consultation with a dermatologist to get started.",
       "cancelBtn": "Cancel appointment",
       "joinNow": "Join now",
       "startCall": "Start call",
@@ -271,6 +272,7 @@
       "date": "Date:",
       "status": "Status:",
       "noConsultations": "No consultations found.",
+      "noConsultationsDesc": "Your past consultations will appear here once completed.",
       "viewDetails": "View details",
       "rebook": "Rebook",
       "statusValue": {
@@ -290,6 +292,7 @@
       "duration": "Duration",
       "returnBtn": "Return to Consultations",
       "noData": "No consultation selected.",
+      "noPhotos": "No images were uploaded for this consultation.",
       "doctorLabel": "Dermatologist"
     },
     "dermAgenda": {
