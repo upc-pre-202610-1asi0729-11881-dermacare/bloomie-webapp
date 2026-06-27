@@ -478,7 +478,13 @@
       "historyBtn": "View history",
       "progressTitle": "Skin progress",
       "progressDesc": "See how your skin has improved over time.",
-      "progressBtn": "View progress"
+      "progressBtn": "View progress",
+      "weeklyScans": "scans this week",
+      "limitReached": "Weekly scan limit reached",
+      "limitReachedDesc": "You've used both scans for this week. Your skin needs time to reflect your routine changes.",
+      "nextScanIn": "Next scan available in {{days}} days",
+      "whyTitle": "Why only 2 scans per week?",
+      "whyText": "Daily facial scans capture random variation, not real skin changes. Your routine takes several days to take effect — scanning twice a week gives you meaningful progress without over-analyzing."
     },
     "scanPrepare": {
       "title": "Prepare your scan",

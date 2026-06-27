@@ -479,7 +479,13 @@
       "historyBtn": "Ver historial",
       "progressTitle": "Progreso de piel",
       "progressDesc": "Ve cómo ha mejorado tu piel con el tiempo.",
-      "progressBtn": "Ver progreso"
+      "progressBtn": "Ver progreso",
+      "weeklyScans": "escaneos esta semana",
+      "limitReached": "Límite semanal alcanzado",
+      "limitReachedDesc": "Ya usaste los 2 escaneos de esta semana. Tu piel necesita tiempo para reflejar los cambios de tu rutina.",
+      "nextScanIn": "Próximo escaneo disponible en {{days}} días",
+      "whyTitle": "¿Por qué solo 2 escaneos por semana?",
+      "whyText": "Los escaneos diarios capturan variaciones aleatorias, no cambios reales de la piel. Tu rutina tarda varios días en hacer efecto — escanear dos veces por semana te da un progreso real sin sobre-analizar."
     },
     "scanPrepare": {
       "title": "Prepara tu escaneo",
