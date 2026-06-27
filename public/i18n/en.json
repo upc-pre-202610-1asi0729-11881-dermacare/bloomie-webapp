@@ -91,8 +91,7 @@
       "title": "This Week",
       "routineCompleted": "Routine completed",
       "skinScans": "Skin scans",
-      "productsApplied": "Products applied",
-      "times": "times"
+      "missedDays": "Days without routine"
     },
     "skinScanDue": {
       "title": "Skin Scan Due",
@@ -110,7 +109,7 @@
     "loading": "Loading dashboard...",
     "error": "Could not load dashboard data.",
     "routineStep": {
-      "CLEANSE": "Cleanse",
+      "CLEANSER": "Cleanser",
       "ESSENCE": "Essence",
       "TONER": "Toner",
       "MOISTURIZER": "Moisturizer",
@@ -871,7 +870,7 @@
     }
   },
   "routineStep": {
-    "CLEANSE": "Cleanse",
+    "CLEANSER": "Cleanser",
     "ESSENCE": "Essence",
     "TONER": "Toner",
     "MOISTURIZER": "Moisturizer",
