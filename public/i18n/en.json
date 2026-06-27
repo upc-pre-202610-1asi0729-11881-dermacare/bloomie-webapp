@@ -136,7 +136,9 @@
       "pastBtn": "View consultation",
       "scheduledTitle": "Your scheduled appointments",
       "scheduledDesc": "See, manage and cancel your upcoming appointments.",
-      "scheduledBtn": "View appointments"
+      "scheduledBtn": "View appointments",
+      "specialistsAvailable": "specialists available",
+      "manageLabel": "Manage your care"
     },
     "selectDoctor": {
       "title": "Select a dermatologist",
