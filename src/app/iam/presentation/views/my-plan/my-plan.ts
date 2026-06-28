@@ -30,6 +30,23 @@ export class MyPlan {
   protected showChangePlan = signal<boolean>(false);
   protected selectedNewPlan = signal<string | null>(null);
   protected cancelConfirmed = signal<boolean>(false);
+  protected expandedPlanId = signal<string | null>(null);
+
+  protected showUpdatePayment = signal<boolean>(false);
+  protected payCardNumber = signal<string>('');
+  protected payCardName = signal<string>('');
+  protected payExpiry = signal<string>('');
+  protected payCvv = signal<string>('');
+  protected payUpdateSuccess = signal<boolean>(false);
+
+  protected cardDisplayNumber = computed(() => {
+    const num = this.payCardNumber().replace(/\D/g, '');
+    if (!num) return '•••• •••• •••• ••••';
+    const padded = num.padEnd(16, '•');
+    return `${padded.slice(0, 4)} ${padded.slice(4, 8)} ${padded.slice(8, 12)} ${padded.slice(12, 16)}`;
+  });
+  protected cardDisplayName = computed(() => this.payCardName() || 'CARDHOLDER NAME');
+  protected cardDisplayExpiry = computed(() => this.payExpiry() || 'MM/YY');
 
   readonly currentPlanId = 'advanced';
 
@@ -105,6 +122,10 @@ export class MyPlan {
     return plan.price > this.currentPlan.price;
   }
 
+  togglePlanExpand(planId: string): void {
+    this.expandedPlanId.set(this.expandedPlanId() === planId ? null : planId);
+  }
+
   onSelectPlan(planId: string): void {
     this.selectedNewPlan.set(planId);
   }
@@ -126,6 +147,26 @@ export class MyPlan {
 
   onConfirmCancel(): void {
     this.cancelConfirmed.set(true);
+  }
+
+  onCardNumberInput(raw: string): void {
+    const digits = raw.replace(/\D/g, '').slice(0, 16);
+    const formatted = digits.replace(/(.{4})(?=.)/g, '$1 ');
+    this.payCardNumber.set(formatted);
+  }
+
+  onExpiryInput(raw: string): void {
+    const digits = raw.replace(/\D/g, '').slice(0, 4);
+    const formatted = digits.length > 2 ? `${digits.slice(0, 2)}/${digits.slice(2)}` : digits;
+    this.payExpiry.set(formatted);
+  }
+
+  onSavePayment(): void {
+    this.payUpdateSuccess.set(true);
+    setTimeout(() => {
+      this.payUpdateSuccess.set(false);
+      this.showUpdatePayment.set(false);
+    }, 1500);
   }
 
   onBack(): void {

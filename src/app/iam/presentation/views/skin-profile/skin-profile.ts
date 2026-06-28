@@ -76,6 +76,14 @@ export class SkinProfileView implements OnInit {
     '30 - 60 minutes': 'iam.skinProfile.sunOptions.30to60',
     'More than 1 hour': 'iam.skinProfile.sunOptions.moreThan1h',
   };
+  readonly skinTypeIcons: Record<string, string> = {
+    'Normal skin': 'spa',
+    'Oily skin': 'water_drop',
+    'Dry skin': 'thermostat',
+    'Combination skin': 'tune',
+    'Sensitive skin': 'favorite',
+  };
+
   readonly sleepLabelKeys: Record<string, string> = {
     'Less than 5 hours': 'iam.skinProfile.sleepOptions.lessThan5',
     '5 - 6 hours': 'iam.skinProfile.sleepOptions.5to6',
