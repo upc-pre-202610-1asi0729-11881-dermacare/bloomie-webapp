@@ -10,6 +10,7 @@ const selectConsultation    = () => import('./views/select-consultation/select-c
 const consultationSummary   = () => import('./views/consultation-summary/consultation-summary').then(m => m.ConsultationSummary);
 const virtualCall           = () => import('./views/virtual-call/virtual-call').then(m => m.VirtualCall);
 const dermAgenda            = () => import('./views/derm-agenda/derm-agenda').then(m => m.DermAgenda);
+const dermSetup             = () => import('./views/derm-setup/derm-setup').then(m => m.DermSetup);
 const dermPastConsultations = () => import('./views/derm-past-consultations/derm-past-consultations').then(m => m.DermPastConsultations);
 const dermConsultationSummary = () => import('./views/derm-consultation-summary/derm-consultation-summary').then(m => m.DermConsultationSummary);
 const dermAvailability      = () => import('./views/derm-availability/derm-availability').then(m => m.DermAvailability);
@@ -35,6 +36,7 @@ export const dermatologyCareRoutes: Routes = [
  */
 export const dermRoutes: Routes = [
   { path: '', redirectTo: 'agenda', pathMatch: 'full' },
+  { path: 'setup',  loadComponent: dermSetup  },
   { path: 'agenda', loadComponent: dermAgenda },
   { path: 'past-consultations', loadComponent: dermPastConsultations },
   { path: 'consultation-summary', loadComponent: dermConsultationSummary },
