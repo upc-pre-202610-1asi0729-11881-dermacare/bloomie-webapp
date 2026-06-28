@@ -10,28 +10,33 @@ import {DermatologistProfilesApiEndpoint} from './dermatologist-profiles-api-end
 import {DermatologistAvailabilitiesApiEndpoint} from './dermatologist-availabilities-api-endpoint';
 import {AppointmentsApiEndpoint} from './appointments-api-endpoint';
 import {ConsultationsApiEndpoint} from './consultations-api-endpoint'
+import { ConsultationResource } from './consultation.response';
+import { environment } from '../../../environments/environment';
+import { map } from 'rxjs/operators';
+import { ConsultationAssembler } from './consultation.assembler';
+import { AppointmentResource } from './appointment.response';
+import { AppointmentAssembler } from './appointment.assembler';
 
 /**
  * Infrastructure facade for dermatology care endpoint operations.
  */
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class DermatologyCareApi extends BaseApi {
-
-  private readonly dermatologistProfilesEndpoint:     DermatologistProfilesApiEndpoint;
+  private readonly dermatologistProfilesEndpoint: DermatologistProfilesApiEndpoint;
   private readonly dermatologistAvailabilitiesEndpoint: DermatologistAvailabilitiesApiEndpoint;
-  private readonly appointmentsEndpoint:              AppointmentsApiEndpoint;
-  private readonly consultationsEndpoint:             ConsultationsApiEndpoint;
+  private readonly appointmentsEndpoint: AppointmentsApiEndpoint;
+  private readonly consultationsEndpoint: ConsultationsApiEndpoint;
 
   /**
    * Creates an instance of DermatologyCareApi.
    * @param http - The HttpClient to be used for making API requests.
    */
-  constructor(http: HttpClient) {
+  constructor(private readonly http: HttpClient) {
     super();
-    this.dermatologistProfilesEndpoint      = new DermatologistProfilesApiEndpoint(http);
+    this.dermatologistProfilesEndpoint = new DermatologistProfilesApiEndpoint(http);
     this.dermatologistAvailabilitiesEndpoint = new DermatologistAvailabilitiesApiEndpoint(http);
-    this.appointmentsEndpoint               = new AppointmentsApiEndpoint(http);
-    this.consultationsEndpoint              = new ConsultationsApiEndpoint(http);
+    this.appointmentsEndpoint = new AppointmentsApiEndpoint(http);
+    this.consultationsEndpoint = new ConsultationsApiEndpoint(http);
   }
 
   /**
@@ -56,7 +61,9 @@ export class DermatologyCareApi extends BaseApi {
    * @param dermatologistProfile - The profile to create.
    * @returns Stream with the created DermatologistProfile entity.
    */
-  createDermatologistProfile(dermatologistProfile: DermatologistProfile): Observable<DermatologistProfile> {
+  createDermatologistProfile(
+    dermatologistProfile: DermatologistProfile,
+  ): Observable<DermatologistProfile> {
     return this.dermatologistProfilesEndpoint.create(dermatologistProfile);
   }
 
@@ -65,7 +72,9 @@ export class DermatologyCareApi extends BaseApi {
    * @param dermatologistProfile - The profile to update.
    * @returns Stream with the updated DermatologistProfile entity.
    */
-  updateDermatologistProfile(dermatologistProfile: DermatologistProfile): Observable<DermatologistProfile> {
+  updateDermatologistProfile(
+    dermatologistProfile: DermatologistProfile,
+  ): Observable<DermatologistProfile> {
     return this.dermatologistProfilesEndpoint.update(dermatologistProfile, dermatologistProfile.id);
   }
 
@@ -83,7 +92,9 @@ export class DermatologyCareApi extends BaseApi {
    * @param dermatologistAvailability - The availability slot to create.
    * @returns Stream with the created DermatologistAvailability entity.
    */
-  createDermatologistAvailability(dermatologistAvailability: DermatologistAvailability): Observable<DermatologistAvailability> {
+  createDermatologistAvailability(
+    dermatologistAvailability: DermatologistAvailability,
+  ): Observable<DermatologistAvailability> {
     return this.dermatologistAvailabilitiesEndpoint.create(dermatologistAvailability);
   }
 
@@ -92,8 +103,13 @@ export class DermatologyCareApi extends BaseApi {
    * @param dermatologistAvailability - The availability slot to update.
    * @returns Stream with the updated DermatologistAvailability entity.
    */
-  updateDermatologistAvailability(dermatologistAvailability: DermatologistAvailability): Observable<DermatologistAvailability> {
-    return this.dermatologistAvailabilitiesEndpoint.update(dermatologistAvailability, dermatologistAvailability.id);
+  updateDermatologistAvailability(
+    dermatologistAvailability: DermatologistAvailability,
+  ): Observable<DermatologistAvailability> {
+    return this.dermatologistAvailabilitiesEndpoint.update(
+      dermatologistAvailability,
+      dermatologistAvailability.id,
+    );
   }
 
   /**
@@ -101,7 +117,15 @@ export class DermatologyCareApi extends BaseApi {
    * @returns Stream with the appointment collection.
    */
   getAppointments(): Observable<Appointment[]> {
-    return this.appointmentsEndpoint.getAll();
+    return this.http
+      .get<
+        AppointmentResource[]
+      >(`${environment.backendBasePath}${environment.backendAppointmentsEndpointPath}`)
+      .pipe(
+        map((resources: AppointmentResource[]) =>
+          resources.map((r) => new AppointmentAssembler().toEntityFromResource(r)),
+        ),
+      );
   }
 
   /**
@@ -136,9 +160,16 @@ export class DermatologyCareApi extends BaseApi {
    * @returns Stream with the consultation collection.
    */
   getConsultations(): Observable<Consultation[]> {
-    return this.consultationsEndpoint.getAll();
+    return this.http
+      .get<
+        ConsultationResource[]
+      >(`${environment.backendBasePath}${environment.backendConsultationsEndpointPath}`)
+      .pipe(
+        map((resources: ConsultationResource[]) =>
+          resources.map((r) => new ConsultationAssembler().toEntityFromResource(r)),
+        ),
+      );
   }
-
   /**
    * Retrieves a single consultation by ID.
    * @param id - The ID of the consultation.
@@ -164,5 +195,29 @@ export class DermatologyCareApi extends BaseApi {
    */
   updateConsultation(consultation: Consultation): Observable<Consultation> {
     return this.consultationsEndpoint.update(consultation, consultation.id);
+  }
+
+  getAppointmentsByDermatologistId(dermatologistId: number): Observable<Appointment[]> {
+    return this.http
+      .get<
+        AppointmentResource[]
+      >(`${environment.backendBasePath}${environment.backendAppointmentsEndpointPath}?dermatologistId=${dermatologistId}`)
+      .pipe(
+        map((resources: AppointmentResource[]) =>
+          resources.map((r) => new AppointmentAssembler().toEntityFromResource(r)),
+        ),
+      );
+  }
+
+  getAppointmentsByPatientId(patientId: number): Observable<Appointment[]> {
+    return this.http
+      .get<
+        AppointmentResource[]
+      >(`${environment.backendBasePath}${environment.backendAppointmentsEndpointPath}?patientId=${patientId}`)
+      .pipe(
+        map((resources: AppointmentResource[]) =>
+          resources.map((r) => new AppointmentAssembler().toEntityFromResource(r)),
+        ),
+      );
   }
 }

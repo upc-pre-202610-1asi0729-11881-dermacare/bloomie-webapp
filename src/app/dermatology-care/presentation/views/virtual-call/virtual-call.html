@@ -1,6 +1,6 @@
 <div class="vc-page">
 
-  <!-- ── End call modal ──────────────────────────────────────────────────────── -->
+  <!-- ── End call modal ── -->
   @if (showEndModal()) {
     <div class="vc-modal-overlay">
       <div class="vc-modal">
@@ -21,7 +21,7 @@
     </div>
   }
 
-  <!-- ── Top bar ──────────────────────────────────────────────────────────────── -->
+  <!-- ── Top bar ── -->
   <div class="vc-topbar">
     <div class="vc-topbar__left">
       <span class="vc-topbar__live-dot"></span>
@@ -38,99 +38,28 @@
               title="Toggle chat">
         <mat-icon>chat_bubble_outline</mat-icon>
       </button>
+      <!-- End call -->
+      <button class="vc-ctrl vc-ctrl--end" (click)="requestEndCall()"
+              style="border-radius:8px; padding:6px 14px;">
+        <mat-icon>call_end</mat-icon>
+      </button>
     </div>
   </div>
 
-  <!-- ── Body ─────────────────────────────────────────────────────────────────── -->
+  <!-- ── Body ── -->
   <div class="vc-body">
 
-    <!-- Video area -->
     <div class="vc-video-area">
-
-      <!-- Doctor main view -->
-      <div class="vc-doctor-view">
-        <div class="vc-doctor-avatar">
-          <div class="vc-doctor-avatar__ring vc-doctor-avatar__ring--1"></div>
-          <div class="vc-doctor-avatar__ring vc-doctor-avatar__ring--2"></div>
-          <div class="vc-doctor-avatar__circle">
-            <span class="vc-doctor-avatar__initials">{{ doctorInitials() }}</span>
-          </div>
-        </div>
-        <div class="vc-doctor-info">
-          <span class="vc-doctor-name">{{ doctorDisplayName() }}</span>
-          <span class="vc-doctor-role">{{ 'dermatology.virtualCall.doctorLabel' | translate }}</span>
-        </div>
-      </div>
-
-      <!-- Self PiP — real camera or cam-off placeholder -->
-      <div class="vc-pip">
-        @if (camOn()) {
-          <video #selfVideo class="vc-pip__video" autoplay muted playsinline></video>
-        } @else {
-          <div class="vc-pip__cam-off">
-            <mat-icon>videocam_off</mat-icon>
-          </div>
-        }
-        <div class="vc-pip__label">{{ 'dermatology.virtualCall.youLabel' | translate }}</div>
-        @if (!micOn()) {
-          <div class="vc-pip__mic-off">
-            <mat-icon>mic_off</mat-icon>
-          </div>
-        }
-      </div>
-
-      <!-- Controls bar -->
-      <div class="vc-controls">
-
-        <!-- Mic -->
-        <button class="vc-ctrl" [class.vc-ctrl--off]="!micOn()" (click)="toggleMic()"
-                [title]="micOn() ? 'Mute' : 'Unmute'">
-          <div class="vc-ctrl__icon">
-            <mat-icon>{{ micOn() ? 'mic' : 'mic_off' }}</mat-icon>
-          </div>
-          <span class="vc-ctrl__label">{{ micOn() ? 'Mute' : 'Unmute' }}</span>
-        </button>
-
-        <!-- Camera -->
-        <button class="vc-ctrl" [class.vc-ctrl--off]="!camOn()" (click)="toggleCam()"
-                [title]="camOn() ? 'Turn off camera' : 'Turn on camera'">
-          <div class="vc-ctrl__icon">
-            <mat-icon>{{ camOn() ? 'videocam' : 'videocam_off' }}</mat-icon>
-          </div>
-          <span class="vc-ctrl__label">{{ camOn() ? 'Camera' : 'Start cam' }}</span>
-        </button>
-
-        <!-- Share screen (decorative) -->
-        <button class="vc-ctrl vc-ctrl--disabled" title="Share screen (unavailable)">
-          <div class="vc-ctrl__icon">
-            <mat-icon>present_to_all</mat-icon>
-          </div>
-          <span class="vc-ctrl__label">Share</span>
-        </button>
-
-        <!-- Chat toggle -->
-        <button class="vc-ctrl" [class.vc-ctrl--active]="showChat()" (click)="toggleChatPanel()" title="Chat">
-          <div class="vc-ctrl__icon">
-            <mat-icon>chat_bubble_outline</mat-icon>
-          </div>
-          <span class="vc-ctrl__label">Chat</span>
-        </button>
-
-        <!-- End call -->
-        <button class="vc-ctrl vc-ctrl--end" (click)="requestEndCall()" title="End call">
-          <div class="vc-ctrl__icon">
-            <mat-icon>call_end</mat-icon>
-          </div>
-          <span class="vc-ctrl__label">End call</span>
-        </button>
-
-      </div>
+      <iframe
+        [src]="wherebyUrl"
+        allow="camera; microphone; fullscreen; display-capture; autoplay"
+        style="width:100%; height:100%; border:none; border-radius:12px;">
+      </iframe>
     </div>
 
-    <!-- ── Chat panel ──────────────────────────────────────────────────────────── -->
+    <!-- ── Chat panel ── -->
     @if (showChat()) {
       <aside class="vc-chat">
-
         <div class="vc-chat__header">
           <span class="vc-chat__title">{{ 'dermatology.virtualCall.chatTitle' | translate }}</span>
           <button class="vc-chat__close" (click)="toggleChatPanel()" title="Close chat">
@@ -164,7 +93,6 @@
             <mat-icon>send</mat-icon>
           </button>
         </div>
-
       </aside>
     }
 
