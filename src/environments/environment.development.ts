@@ -43,6 +43,10 @@ export const environment = {
   backendFacialScansEndpointPath: '/facial-scans',
   backendSkinAnalysesEndpointPath: '/skin-analyses',
 
+  // Intelligent Support
+  backendSupportQueriesEndpointPath: '/support-queries',
+  backendChatMessagesEndpointPath: '/chat-messages',
+
   // Routine Management
   backendRoutinesEndpointPath: '/routines',
   backendDailyTrackingsEndpointPath: '/daily-trackings',
