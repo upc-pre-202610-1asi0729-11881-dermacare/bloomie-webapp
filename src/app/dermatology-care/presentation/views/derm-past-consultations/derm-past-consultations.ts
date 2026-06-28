@@ -27,7 +27,7 @@ export class DermPastConsultations {
 
   constructor() {
     effect(() => {
-      const consultations = this.store.consultations();
+      const consultations = this.store.myConsultations();
       const loaded        = untracked(() => this.userPhotoMap());
 
       consultations.forEach(c => {
@@ -63,7 +63,7 @@ export class DermPastConsultations {
 
   readonly filteredConsultations = computed(() => {
     const query = this.searchQuery().toLowerCase();
-    return this.store.consultations().filter(consultation =>
+    return this.store.myConsultations().filter(consultation =>
       !query
       || consultation.notes.toLowerCase().includes(query)
       || consultation.recommendations.toLowerCase().includes(query)

@@ -24,12 +24,12 @@ export class AppointmentAssembler implements BaseAssembler<Appointment, Appointm
   toEntityFromResource(resource: AppointmentResource): Appointment {
     return new Appointment({
       id:                 resource.id,
-      patientId:          resource.patient_id,
-      dermatologistId:    resource.dermatologist_id,
-      paymentId:          resource.payment_id,
-      scheduledAt:        resource.scheduled_at,
+      patientId:          resource.patientId          ?? resource.patient_id          ?? 0,
+      dermatologistId:    resource.dermatologistId    ?? resource.dermatologist_id    ?? 0,
+      paymentId:          resource.paymentId          ?? resource.payment_id          ?? 0,
+      scheduledAt:        resource.scheduledAt        ?? resource.scheduled_at        ?? '',
       status:             resource.status as AppointmentStatus,
-      cancellationReason: resource.cancellation_reason,
+      cancellationReason: resource.cancellationReason ?? resource.cancellation_reason ?? '',
     });
   }
 

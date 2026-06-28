@@ -3,28 +3,42 @@ import {Router} from '@angular/router';
 import {MatIconModule} from '@angular/material/icon';
 import {TranslatePipe} from '@ngx-translate/core';
 import {FormsModule} from '@angular/forms';
+import {SlicePipe} from '@angular/common';
 import {IamStore} from '../../../../iam/application/iam.store';
 import {DermatologyCareStore} from '../../../application/dermatology-care.store';
 import {PhotoUpload} from '../../../../shared/presentation/components/photo-upload/photo-upload';
 
 @Component({
-  selector:    'app-derm-profile',
-  standalone:  true,
-  imports:     [MatIconModule, TranslatePipe, FormsModule, PhotoUpload],
+  selector: 'app-derm-profile',
+  standalone: true,
+  imports: [MatIconModule, TranslatePipe, FormsModule, PhotoUpload, SlicePipe],
   templateUrl: './derm-profile.html',
-  styleUrl:    './derm-profile.css',
+  styleUrl: './derm-profile.css',
 })
 export class DermProfile {
-  private readonly router               = inject(Router);
-  protected readonly iamStore           = inject(IamStore);
+  private readonly router = inject(Router);
+  protected readonly iamStore = inject(IamStore);
   protected readonly dermatologyCareStore = inject(DermatologyCareStore);
 
-  protected name        = signal<string>('');
-  protected email       = signal<string>('');
-  protected specialty   = signal<string>('');
-  protected experience  = signal<string>('8');
-  protected fee         = signal<string>('');
-  protected saveSuccess = signal<boolean>(false);
+  readonly specialties = [
+    'Dermatology',
+    'Pediatric Dermatology',
+    'Cosmetic Dermatology',
+    'Dermatopathology',
+    'Mohs Surgery',
+    'Teledermatology',
+  ] as const;
+
+  protected name = signal<string>('');
+  protected email = signal<string>('');
+  protected licenseNumber = signal<string>('');
+  protected contactPhone = signal<string>('');
+  protected specialty = signal<string>('');
+  protected biography = signal<string>('');
+  protected fee = signal<string>('');
+
+  protected savePersonalSuccess = signal<boolean>(false);
+  protected saveProfessionalSuccess = signal<boolean>(false);
 
   protected readonly currentPhotoUrl = computed(() => this.iamStore.currentUser()?.photoUrl);
 
@@ -36,27 +50,52 @@ export class DermProfile {
     }
     effect(() => {
       const profiles = this.dermatologyCareStore.dermatologistProfiles();
-      const u        = this.iamStore.currentUser();
+      const u = this.iamStore.currentUser();
       if (!u) return;
-      const profile  = profiles.find(p => p.userId === u.id);
+      const profile = profiles.find((p) => Number(p.userId) === Number(u.id));
       if (profile) {
         this.specialty.set(profile.specialty);
         this.fee.set(profile.consultationFee.toString());
+        this.licenseNumber.set(profile.licenseNumber);
+        this.contactPhone.set(profile.contactPhone);
+        this.biography.set(profile.biography);
       }
     });
   }
 
-  onSaveChanges(): void {
+  onSavePersonal(): void {
     const user = this.iamStore.currentUser();
     if (!user) return;
-    const profile = this.dermatologyCareStore.dermatologistProfiles()
-      .find(p => p.userId === user.id);
+    const profile = this.dermatologyCareStore
+      .dermatologistProfiles()
+      .find((p) => Number(p.userId) === Number(user.id));
     if (!profile) return;
-    profile.specialty      = this.specialty();
-    profile.consultationFee = parseFloat(this.fee()) || 0;
+    profile.licenseNumber = this.licenseNumber();
+    profile.contactPhone = this.contactPhone();
     this.dermatologyCareStore.updateDermatologistProfile(profile);
-    this.saveSuccess.set(true);
-    setTimeout(() => this.saveSuccess.set(false), 2000);
+    this.savePersonalSuccess.set(true);
+    setTimeout(() => this.savePersonalSuccess.set(false), 2000);
+  }
+
+  onSaveProfessional(): void {
+    const user = this.iamStore.currentUser();
+    if (!user) return;
+    const profile = this.dermatologyCareStore
+      .dermatologistProfiles()
+      .find((p) => Number(p.userId) === Number(user.id));
+    if (!profile) return;
+
+    if (!this.specialty() || !this.fee()) {
+      alert('Specialty and fee are required');
+      return;
+    }
+
+    profile.specialty = this.specialty();
+    profile.consultationFee = parseFloat(this.fee()) || 0;
+    profile.biography = this.biography();
+    this.dermatologyCareStore.updateDermatologistProfile(profile);
+    this.saveProfessionalSuccess.set(true);
+    setTimeout(() => this.saveProfessionalSuccess.set(false), 2000);
   }
 
   onNavigateToAvailability(): void {

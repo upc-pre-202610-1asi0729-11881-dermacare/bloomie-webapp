@@ -126,7 +126,7 @@ export class DermVirtualCall implements OnInit, OnDestroy {
   saveNotes(): void {
     const appt = this.store.selectedAppointment();
     if (appt) {
-      const consultation = this.store.consultations().find(c => c.appointmentId === appt.id);
+      const consultation = this.store.myConsultations().find(c => c.appointmentId === appt.id);
       if (consultation) {
         consultation.notes = this.notes;
         this.store.updateConsultation(consultation);
