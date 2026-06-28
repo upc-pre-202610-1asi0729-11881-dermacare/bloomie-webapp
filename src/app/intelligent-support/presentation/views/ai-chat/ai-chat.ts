@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -10,11 +10,16 @@ import { IntelligentSupportStore } from '../../../application/intelligent-suppor
   templateUrl: './ai-chat.html',
   styleUrl: './ai-chat.css',
 })
-export class AiChat {
+export class AiChat implements OnInit {
   readonly store = inject(IntelligentSupportStore);
   protected router = inject(Router);
-
   readonly inputText = signal<string>('');
+
+  ngOnInit(): void {
+    const patientId = 1;
+    const skinProfileId = 1;
+    this.store.initializeChat(patientId, skinProfileId);
+  }
 
   onSendMessage(): void {
     const text = this.inputText().trim();
