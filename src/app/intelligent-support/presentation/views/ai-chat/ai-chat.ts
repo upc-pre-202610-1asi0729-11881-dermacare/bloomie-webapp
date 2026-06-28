@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe } from '@ngx-translate/core';
 import { IntelligentSupportStore } from '../../../application/intelligent-support.store';
+import { IamStore } from '../../../../iam/application/iam.store';
+import { SkinAnalysisStore } from '../../../../skin-analysis/application/skin-analysis.store';
 
 @Component({
   selector: 'app-ai-chat',
@@ -12,13 +14,20 @@ import { IntelligentSupportStore } from '../../../application/intelligent-suppor
 })
 export class AiChat implements OnInit {
   readonly store = inject(IntelligentSupportStore);
+  readonly iamStore = inject(IamStore);
+  readonly skinAnalysisStore = inject(SkinAnalysisStore);
   protected router = inject(Router);
   readonly inputText = signal<string>('');
 
   ngOnInit(): void {
-    const patientId = 1;
-    const skinProfileId = 1;
-    this.store.initializeChat(patientId, skinProfileId);
+    const currentUser = this.iamStore.currentUser();
+    if (!currentUser) {
+      this.router.navigate(['/iam/sign-in-home']);
+      return;
+    }
+
+    const skinProfileId = this.skinAnalysisStore.skinProfile()?.id ?? 1;
+    this.store.initializeChat(currentUser.id, skinProfileId);
   }
 
   onSendMessage(): void {

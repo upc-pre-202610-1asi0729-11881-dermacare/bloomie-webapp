@@ -229,7 +229,9 @@
       "mockMessage1": "¡Hola doctor! Quería mostrarle el enrojecimiento de mi mejilla del que hablé antes.",
       "mockMessage2": "¡Hola! Adelante, por favor describa la zona para que pueda verla.",
       "mockMessage3": "Empezó hace una semana, principalmente por las mañanas.",
-      "mockAutoReply": "Gracias, aprecio su orientación."
+      "mockAutoReply": "Gracias, aprecio su orientación.",
+      "saveNotes": "Guardar notas",
+      "notesSaved": "¡Guardado!"
     },
     "scheduledAppointments": {
       "title": "Tus Citas Programadas",
@@ -301,8 +303,10 @@
       "dayLabel": "Viernes, 24 de Abril",
       "consultations": "consultas",
       "completed": "completadas",
-      "noAppointments": "No hay citas para hoy.",
-      "startCall": "Iniciar llamada"
+      "confirmed": "confirmadas",
+      "noAppointments": "No hay citas para este día.",
+      "startCall": "Iniciar llamada",
+      "patientLabel": "Paciente"
     },
     "dermPastConsultations": {
       "title": "Consultas Pasadas",

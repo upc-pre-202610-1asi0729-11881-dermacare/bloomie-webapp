@@ -228,7 +228,9 @@
       "mockMessage1": "Hello doctor! I wanted to show you the redness on my cheek I mentioned earlier.",
       "mockMessage2": "Hello! Go ahead, please describe the area so I can take a look.",
       "mockMessage3": "It started about a week ago, mostly in the mornings.",
-      "mockAutoReply": "Thank you, I appreciate your guidance."
+      "mockAutoReply": "Thank you, I appreciate your guidance.",
+      "saveNotes": "Save notes",
+      "notesSaved": "Saved!"
     },
     "scheduledAppointments": {
       "title": "Your Scheduled Appointments",
@@ -300,8 +302,10 @@
       "dayLabel": "Friday, April 24",
       "consultations": "consultations",
       "completed": "completed",
-      "noAppointments": "No appointments for today.",
-      "startCall": "Start call"
+      "confirmed": "confirmed",
+      "noAppointments": "No appointments for this day.",
+      "startCall": "Start call",
+      "patientLabel": "Patient"
     },
     "dermPastConsultations": {
       "title": "Past Consultations",
