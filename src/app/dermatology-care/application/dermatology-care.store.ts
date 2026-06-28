@@ -128,7 +128,7 @@ export class DermatologyCareStore {
     today.setHours(0, 0, 0, 0);
     const availabilities = this.availabilitiesSignal();
     const dates: Date[] = [];
-    for (let i = 1; i <= DermatologyCareStore.AVAILABILITY_LOOKAHEAD_DAYS; i++) {
+    for (let i = 0; i <= DermatologyCareStore.AVAILABILITY_LOOKAHEAD_DAYS; i++) {
       const date = new Date(today);
       date.setDate(today.getDate() + i);
       if (availabilities.length === 0 || availabilities.some((a) => a.matchesDate(date))) {
@@ -414,23 +414,22 @@ export class DermatologyCareStore {
   private loadAppointments(dermatologistId?: number): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
-    this.dermatologyCareApi
-      .getAppointments()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (appointments) => {
-          const filtered = dermatologistId
-            ? appointments.filter((a) => Number(a.dermatologistId) === Number(dermatologistId))
-            : appointments;
-          this.appointmentsSignal.set(filtered);
-          this.loadingSignal.set(false);
-          this.errorSignal.set(null);
-        },
-        error: (err) => {
-          this.errorSignal.set(this.formatError(err, 'Failed to load appointments'));
-          this.loadingSignal.set(false);
-        },
-      });
+
+    const request$ = dermatologistId
+      ? this.dermatologyCareApi.getAppointmentsByDermatologistId(dermatologistId)
+      : this.dermatologyCareApi.getAppointments(); // fallback por si acaso
+
+    request$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      next: (appointments) => {
+        this.appointmentsSignal.set(appointments);
+        this.loadingSignal.set(false);
+        this.errorSignal.set(null);
+      },
+      error: (err) => {
+        this.errorSignal.set(this.formatError(err, 'Failed to load appointments'));
+        this.loadingSignal.set(false);
+      },
+    });
   }
 
   private loadConsultations(dermatologistId?: number): void {
@@ -469,4 +468,25 @@ export class DermatologyCareStore {
     }
     return fallback;
   }
+
+  loadAppointmentsByPatientId(patientId: number): void {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    this.dermatologyCareApi
+      .getAppointmentsByPatientId(patientId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (appointments) => {
+          this.appointmentsSignal.set(appointments);
+          this.loadingSignal.set(false);
+          this.errorSignal.set(null);
+        },
+        error: (err) => {
+          this.errorSignal.set(this.formatError(err, 'Failed to load appointments'));
+          this.loadingSignal.set(false);
+        },
+      });
+  }
 }
+
+

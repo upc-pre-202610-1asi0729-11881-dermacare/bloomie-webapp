@@ -8,8 +8,12 @@ import {environment} from '../../../environments/environment';
 /**
  * Endpoint client for appointment CRUD operations.
  */
-export class AppointmentsApiEndpoint extends BaseApiEndpoint<Appointment, AppointmentResource, AppointmentsResponse, AppointmentAssembler> {
-
+export class AppointmentsApiEndpoint extends BaseApiEndpoint<
+  Appointment,
+  AppointmentResource,
+  AppointmentsResponse,
+  AppointmentAssembler
+> {
   /**
    * Creates an instance of AppointmentsApiEndpoint.
    * @param http - The HttpClient to be used for making API requests.
@@ -18,7 +22,7 @@ export class AppointmentsApiEndpoint extends BaseApiEndpoint<Appointment, Appoin
     super(
       http,
       `${environment.backendBasePath}${environment.backendAppointmentsEndpointPath}`,
-      new AppointmentAssembler()
+      new AppointmentAssembler(),
     );
   }
 }

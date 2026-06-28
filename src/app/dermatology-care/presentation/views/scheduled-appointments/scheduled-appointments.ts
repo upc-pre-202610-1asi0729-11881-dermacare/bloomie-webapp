@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, signal, untracked } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -46,6 +46,13 @@ export class ScheduledAppointments {
     }, { allowSignalWrites: true });
   }
 
+  ngOnInit(): void {
+    const user = this.iamStore.currentUser();
+    if (user) {
+      this.store.loadAppointmentsByPatientId(user.id);
+    }
+  }
+
   readonly activeAppointmentCount = computed(() =>
     this.store.appointments().filter(a => !a.isCancelled).length
   );
@@ -89,11 +96,14 @@ export class ScheduledAppointments {
     this.router.navigate(['/dermatology/cancel-appointment']);
   }
 
-  joinCall(): void {
+  joinCall(appointment: Appointment): void {
+    this.store.selectAppointment(appointment);
     this.router.navigate(['/dermatology/virtual-call']);
   }
 
   navigateBack(): void {
     this.router.navigate(['/dermatology']);
   }
+
+
 }

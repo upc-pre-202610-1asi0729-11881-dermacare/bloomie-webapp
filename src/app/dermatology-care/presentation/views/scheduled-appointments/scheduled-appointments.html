@@ -98,7 +98,7 @@
                 </button>
                 <button class="sa-join-btn"
                         [class.sa-join-btn--live]="apt.status === AppointmentStatus.InProgress"
-                        (click)="joinCall()">
+                        (click)="joinCall(apt)">
                   <mat-icon>video_call</mat-icon>
                   @if (apt.status === AppointmentStatus.InProgress) {
                     {{ 'dermatology.scheduledAppointments.joinNow' | translate }}

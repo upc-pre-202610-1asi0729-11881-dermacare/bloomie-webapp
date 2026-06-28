@@ -42,92 +42,29 @@
               (click)="setTab('chat')" title="Chat">
         <mat-icon>chat_bubble_outline</mat-icon>
       </button>
+      <!-- End call en topbar -->
+      <button
+        (click)="requestEndCall()"
+        style="background:#e53935; color:white; border:none; border-radius:8px; padding:8px 16px; cursor:pointer; display:flex; align-items:center; gap:6px;">
+        <mat-icon>call_end</mat-icon>
+      </button>
     </div>
   </div>
 
   <!-- ── Body ── -->
   <div class="derm-call__body">
 
-    <!-- Video area -->
     <div class="derm-call__video-area">
-
-      <!-- Patient main view -->
-      <div class="derm-call__patient-view">
-        <div class="derm-call__patient-avatar">
-          <div class="derm-call__patient-ring derm-call__patient-ring--1"></div>
-          <div class="derm-call__patient-ring derm-call__patient-ring--2"></div>
-          <div class="derm-call__patient-circle">
-            <mat-icon class="derm-call__patient-icon">person</mat-icon>
-          </div>
-        </div>
-        <div class="derm-call__patient-info">
-          <span class="derm-call__patient-name">{{ 'dermatology.dermCall.patientLabel' | translate }}</span>
-          <span class="derm-call__patient-role">{{ 'dermatology.dermCall.patientLabel' | translate }}</span>
-        </div>
-      </div>
-
-      <!-- Self PiP (doctor's camera) -->
-      <div class="derm-call__pip">
-        @if (camOn()) {
-          <video #selfVideo class="derm-call__pip-video" autoplay muted playsinline></video>
-        } @else {
-          <div class="derm-call__pip-camoff">
-            <mat-icon>videocam_off</mat-icon>
-          </div>
-        }
-        <div class="derm-call__pip-label">{{ 'dermatology.dermCall.youLabel' | translate }}</div>
-        @if (!micOn()) {
-          <div class="derm-call__pip-micoff">
-            <mat-icon>mic_off</mat-icon>
-          </div>
-        }
-      </div>
-
-      <!-- Controls bar -->
-      <div class="derm-call__controls">
-
-        <button class="derm-call__ctrl" [class.derm-call__ctrl--off]="!micOn()" (click)="toggleMic()">
-          <div class="derm-call__ctrl-icon">
-            <mat-icon>{{ micOn() ? 'mic' : 'mic_off' }}</mat-icon>
-          </div>
-          <span class="derm-call__ctrl-label">{{ micOn() ? 'Mute' : 'Unmute' }}</span>
-        </button>
-
-        <button class="derm-call__ctrl" [class.derm-call__ctrl--off]="!camOn()" (click)="toggleCam()">
-          <div class="derm-call__ctrl-icon">
-            <mat-icon>{{ camOn() ? 'videocam' : 'videocam_off' }}</mat-icon>
-          </div>
-          <span class="derm-call__ctrl-label">{{ camOn() ? 'Camera' : 'Start cam' }}</span>
-        </button>
-
-        <button class="derm-call__ctrl derm-call__ctrl--disabled">
-          <div class="derm-call__ctrl-icon">
-            <mat-icon>present_to_all</mat-icon>
-          </div>
-          <span class="derm-call__ctrl-label">Share</span>
-        </button>
-
-        <button class="derm-call__ctrl" [class.derm-call__ctrl--active]="activeTab() === 'chat'" (click)="setTab('chat')">
-          <div class="derm-call__ctrl-icon">
-            <mat-icon>chat_bubble_outline</mat-icon>
-          </div>
-          <span class="derm-call__ctrl-label">Chat</span>
-        </button>
-
-        <button class="derm-call__ctrl derm-call__ctrl--end" (click)="requestEndCall()">
-          <div class="derm-call__ctrl-icon">
-            <mat-icon>call_end</mat-icon>
-          </div>
-          <span class="derm-call__ctrl-label">End call</span>
-        </button>
-
-      </div>
+      <iframe
+        [src]="wherebyUrl"
+        allow="camera; microphone; fullscreen; display-capture; autoplay"
+        style="width:100%; height:100%; border:none; border-radius:12px;">
+      </iframe>
     </div>
 
-    <!-- ── Right panel (always visible) ── -->
+    <!-- ── Right panel (notes + chat) ── -->
     <aside class="derm-call__panel">
 
-      <!-- Tab bar -->
       <div class="derm-call__panel-tabs">
         <button class="derm-call__panel-tab"
                 [class.derm-call__panel-tab--active]="activeTab() === 'notes'"
@@ -193,6 +130,5 @@
       }
 
     </aside>
-
   </div>
 </div>
