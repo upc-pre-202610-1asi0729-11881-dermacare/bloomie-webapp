@@ -59,16 +59,18 @@ export class PaymentMethod {
     }
   }
 
-  /**
-   * Formats the expiration date input to dd/mm/yyyy automatically.
-   * Only allows digits and inserts slashes after day and month.
-   */
+  onCardNumberInput(event: Event): void {
+    const input  = event.target as HTMLInputElement;
+    const digits = input.value.replace(/\D/g, '').slice(0, 16);
+    const value  = digits.match(/.{1,4}/g)?.join(' ') ?? digits;
+    this.cardNumber = value;
+    input.value     = value;
+  }
+
   onExpirationDateInput(event: Event): void {
-    const input   = event.target as HTMLInputElement;
-    let value     = input.value.replace(/\D/g, '');
-    if (value.length > 2) value = value.slice(0, 2) + '/' + value.slice(2);
-    if (value.length > 5) value = value.slice(0, 5) + '/' + value.slice(5);
-    if (value.length > 10) value = value.slice(0, 10);
+    const input  = event.target as HTMLInputElement;
+    const digits = input.value.replace(/\D/g, '').slice(0, 4);
+    const value  = digits.length > 2 ? digits.slice(0, 2) + '/' + digits.slice(2) : digits;
     this.expirationDate = value;
     input.value         = value;
   }
@@ -77,7 +79,8 @@ export class PaymentMethod {
    * Validates card fields, creates the appointment in the backend, then shows confirmation.
    */
   payNow(): void {
-    if (!this.cardHolderName || !this.cardNumber || !this.expirationDate || !this.cvv) {
+    const rawCard = this.cardNumber.replace(/\s/g, '');
+    if (!this.cardHolderName || rawCard.length !== 16 || this.expirationDate.length !== 5 || this.cvv.length !== 3) {
       this.showError.set(true);
       return;
     }
