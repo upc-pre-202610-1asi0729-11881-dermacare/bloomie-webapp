@@ -1,97 +1,101 @@
 <div class="derm-profile">
 
-  <!-- MOBILE -->
+  <!-- ═══════════════════ MOBILE ═══════════════════ -->
   <div class="derm-profile__mobile">
+
     <div class="derm-profile__mobile-header">
       <button class="derm-profile__back-btn" (click)="onBack()" aria-label="Back">
         <mat-icon>arrow_back</mat-icon>
       </button>
       <h1 class="derm-profile__mobile-title">{{ 'iam.dermProfile.title' | translate }}</h1>
     </div>
-    <p class="derm-profile__mobile-subtitle">{{ 'iam.dermProfile.subtitle' | translate }}</p>
 
     <div class="derm-profile__mobile-body">
-      <!-- Avatar -->
-      <div class="derm-profile__avatar-section">
+
+      <!-- Avatar + identity -->
+      <div class="derm-profile__hero">
         <app-photo-upload
           [userId]="iamStore.currentUser()?.id ?? 0"
           [currentPhotoUrl]="currentPhotoUrl()"
         />
-      </div>
-
-      <!-- Specialty badge -->
-      <div class="derm-profile__specialty-badge">
-        <div class="derm-profile__specialty-icon-wrap">
-          <mat-icon class="derm-profile__specialty-icon">stethoscope</mat-icon>
-        </div>
-        <div class="derm-profile__specialty-info">
-          <p class="derm-profile__specialty-title">{{ 'iam.dermProfile.specialistLabel' | translate }} · {{ experience() }} {{ 'iam.dermProfile.yrsExperience' | translate }}</p>
-          <p class="derm-profile__specialty-fee">{{ 'iam.dermProfile.consultationFeeLabel' | translate }}: ${{ fee() }} / {{ 'iam.dermProfile.session' | translate }}</p>
+        <p class="derm-profile__hero-name">{{ name() }}</p>
+        <p class="derm-profile__hero-email">{{ email() }}</p>
+        <div class="derm-profile__hero-chip">
+          <mat-icon class="derm-profile__hero-chip-icon">stethoscope</mat-icon>
+          <span>{{ specialty() }}</span>
         </div>
       </div>
 
-      <!-- Personal Info -->
-      <p class="derm-profile__section-title">{{ 'iam.dermProfile.personalInfo' | translate }}</p>
-      <div class="derm-profile__field">
-        <label class="derm-profile__label">{{ 'iam.dermProfile.nameLabel' | translate }}</label>
-        <input class="derm-profile__input" type="text" [ngModel]="name()" (ngModelChange)="name.set($event)" />
-      </div>
-      <div class="derm-profile__field">
-        <label class="derm-profile__label">{{ 'iam.dermProfile.emailLabel' | translate }}</label>
-        <input class="derm-profile__input" type="email" [ngModel]="email()" (ngModelChange)="email.set($event)" />
-      </div>
-
-      <!-- Professional Info -->
-      <p class="derm-profile__section-title">{{ 'iam.dermProfile.professionalInfo' | translate }}</p>
-      <div class="derm-profile__field">
-        <label class="derm-profile__label">{{ 'iam.dermProfile.specialtyLabel' | translate }}</label>
-        <input class="derm-profile__input" type="text" [ngModel]="specialty()" (ngModelChange)="specialty.set($event)" />
-      </div>
-      <div class="derm-profile__field-row">
-        <div class="derm-profile__field derm-profile__field--half">
-          <label class="derm-profile__label">{{ 'iam.dermProfile.experienceLabel' | translate }}</label>
-          <input class="derm-profile__input" type="number" [ngModel]="experience()" (ngModelChange)="experience.set($event)" />
+      <!-- Stats strip -->
+      <div class="derm-profile__stats-strip">
+        <div class="derm-profile__stat">
+          <span class="derm-profile__stat-value">{{ experience() }}</span>
+          <span class="derm-profile__stat-label">{{ 'iam.dermProfile.yrsExperience' | translate }}</span>
         </div>
-        <div class="derm-profile__field derm-profile__field--half">
-          <label class="derm-profile__label">{{ 'iam.dermProfile.feeLabel' | translate }}</label>
-          <input class="derm-profile__input" type="number" [ngModel]="fee()" (ngModelChange)="fee.set($event)" />
+        <div class="derm-profile__stat-divider"></div>
+        <div class="derm-profile__stat">
+          <span class="derm-profile__stat-value">${{ fee() }}</span>
+          <span class="derm-profile__stat-label">{{ 'iam.dermProfile.session' | translate }}</span>
         </div>
       </div>
 
+      <!-- Personal info card -->
+      <div class="derm-profile__form-card">
+        <p class="derm-profile__card-title">{{ 'iam.dermProfile.personalInfo' | translate }}</p>
+        <div class="derm-profile__field">
+          <label class="derm-profile__label">{{ 'iam.dermProfile.nameLabel' | translate }}</label>
+          <input class="derm-profile__input" type="text" [ngModel]="name()" (ngModelChange)="name.set($event)" />
+        </div>
+        <div class="derm-profile__field">
+          <label class="derm-profile__label">{{ 'iam.dermProfile.emailLabel' | translate }}</label>
+          <input class="derm-profile__input" type="email" [ngModel]="email()" (ngModelChange)="email.set($event)" />
+        </div>
+      </div>
+
+      <!-- Professional info card -->
+      <div class="derm-profile__form-card">
+        <p class="derm-profile__card-title">{{ 'iam.dermProfile.professionalInfo' | translate }}</p>
+        <div class="derm-profile__field">
+          <label class="derm-profile__label">{{ 'iam.dermProfile.specialtyLabel' | translate }}</label>
+          <input class="derm-profile__input" type="text" [ngModel]="specialty()" (ngModelChange)="specialty.set($event)" />
+        </div>
+        <div class="derm-profile__field-row">
+          <div class="derm-profile__field derm-profile__field--half">
+            <label class="derm-profile__label">{{ 'iam.dermProfile.experienceLabel' | translate }}</label>
+            <input class="derm-profile__input" type="number" [ngModel]="experience()" (ngModelChange)="experience.set($event)" />
+          </div>
+          <div class="derm-profile__field derm-profile__field--half">
+            <label class="derm-profile__label">{{ 'iam.dermProfile.feeLabel' | translate }}</label>
+            <input class="derm-profile__input" type="number" [ngModel]="fee()" (ngModelChange)="fee.set($event)" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Save -->
       <button
         class="derm-profile__save-btn-mobile"
-        [class.derm-profile__save-btn-mobile--success]="saveSuccess()"
+        [class.derm-profile__save-btn--success]="saveSuccess()"
         (click)="onSaveChanges()"
       >
         @if (saveSuccess()) {
+          <mat-icon>check_circle</mat-icon>
           {{ 'iam.dermProfile.saved' | translate }}
         } @else {
           {{ 'iam.dermProfile.saveChanges' | translate }}
         }
       </button>
 
-      <!-- Menu items -->
-      <div class="derm-profile__menu">
-        <button class="derm-profile__menu-item" (click)="onNavigateToAvailability()">
-          <div class="derm-profile__menu-icon-wrap" style="background-color: #b3cee3;">
-            <mat-icon class="derm-profile__menu-icon">calendar_month</mat-icon>
+      <!-- Navigation card -->
+      <div class="derm-profile__form-card derm-profile__form-card--nav">
+        <button class="derm-profile__nav-item" (click)="onNavigateToAvailability()">
+          <div class="derm-profile__nav-icon-wrap" style="background-color: #b3cee3;">
+            <mat-icon>calendar_month</mat-icon>
           </div>
-          <div class="derm-profile__menu-text">
-            <p class="derm-profile__menu-label">{{ 'iam.dermProfile.availability' | translate }}</p>
-            <p class="derm-profile__menu-sub">{{ 'iam.dermProfile.availabilitySub' | translate }}</p>
+          <div class="derm-profile__nav-text">
+            <p class="derm-profile__nav-label">{{ 'iam.dermProfile.availability' | translate }}</p>
+            <p class="derm-profile__nav-sub">{{ 'iam.dermProfile.availabilitySub' | translate }}</p>
           </div>
-          <mat-icon class="derm-profile__menu-arrow">chevron_right</mat-icon>
-        </button>
-
-        <button class="derm-profile__menu-item" (click)="onNavigateToSettings()">
-          <div class="derm-profile__menu-icon-wrap">
-            <mat-icon class="derm-profile__menu-icon">settings</mat-icon>
-          </div>
-          <div class="derm-profile__menu-text">
-            <p class="derm-profile__menu-label">{{ 'iam.dermProfile.settingsLabel' | translate }}</p>
-            <p class="derm-profile__menu-sub">{{ 'iam.dermProfile.settingsSub' | translate }}</p>
-          </div>
-          <mat-icon class="derm-profile__menu-arrow">chevron_right</mat-icon>
+          <mat-icon class="derm-profile__nav-arrow">chevron_right</mat-icon>
         </button>
       </div>
 
@@ -100,11 +104,13 @@
         <mat-icon class="derm-profile__logout-icon">logout</mat-icon>
         <span class="derm-profile__logout-text">{{ 'iam.dermProfile.logout' | translate }}</span>
       </button>
+
     </div>
   </div>
 
-  <!-- DESKTOP -->
+  <!-- ═══════════════════ DESKTOP ═══════════════════ -->
   <div class="derm-profile__desktop">
+
     <div class="derm-profile__desktop-header">
       <h1 class="derm-profile__desktop-title">{{ 'iam.dermProfile.title' | translate }}</h1>
       <p class="derm-profile__desktop-subtitle">{{ 'iam.dermProfile.desktopSubtitle' | translate }}</p>
@@ -112,8 +118,10 @@
     <div class="derm-profile__desktop-divider"></div>
 
     <div class="derm-profile__desktop-body">
-      <!-- Left: User card -->
+
+      <!-- Left: identity + summary -->
       <div class="derm-profile__desktop-left">
+
         <div class="derm-profile__user-card">
           <app-photo-upload
             [userId]="iamStore.currentUser()?.id ?? 0"
@@ -132,7 +140,6 @@
           </button>
         </div>
 
-        <!-- Professional summary card -->
         <div class="derm-profile__specialist-card">
           <div class="derm-profile__specialist-header">
             <mat-icon class="derm-profile__specialist-header-icon">stethoscope</mat-icon>
@@ -142,12 +149,16 @@
           <p class="derm-profile__specialist-exp">{{ experience() }} {{ 'iam.dermProfile.yearsExperience' | translate }}</p>
           <div class="derm-profile__specialist-divider"></div>
           <p class="derm-profile__specialist-fee-label">{{ 'iam.dermProfile.consultationFeeLabel' | translate }}</p>
-          <p class="derm-profile__specialist-fee-value">${{ fee() }}<span class="derm-profile__specialist-fee-unit"> / {{ 'iam.dermProfile.session' | translate }}</span></p>
+          <p class="derm-profile__specialist-fee-value">
+            ${{ fee() }}<span class="derm-profile__specialist-fee-unit"> / {{ 'iam.dermProfile.session' | translate }}</span>
+          </p>
         </div>
+
       </div>
 
-      <!-- Right: Info forms -->
+      <!-- Right: forms -->
       <div class="derm-profile__desktop-right">
+
         <!-- Personal info -->
         <div class="derm-profile__info-card">
           <p class="derm-profile__card-title">{{ 'iam.dermProfile.personalInfo' | translate }}</p>
@@ -186,6 +197,7 @@
             (click)="onSaveChanges()"
           >
             @if (saveSuccess()) {
+              <mat-icon>check_circle</mat-icon>
               {{ 'iam.dermProfile.saved' | translate }}
             } @else {
               {{ 'iam.dermProfile.saveChanges' | translate }}
@@ -193,26 +205,21 @@
           </button>
         </div>
 
-        <!-- Account Sections -->
+        <!-- Account sections: only Availability -->
         <div class="derm-profile__info-card">
           <p class="derm-profile__card-title">{{ 'iam.dermProfile.accountSections' | translate }}</p>
-          <div class="derm-profile__sections-grid">
-            <button class="derm-profile__section-card" (click)="onNavigateToAvailability()">
-              <div class="derm-profile__section-icon-wrap" style="background-color: #b3cee3;">
-                <mat-icon class="derm-profile__section-icon">calendar_month</mat-icon>
-              </div>
-              <p class="derm-profile__section-label">{{ 'iam.dermProfile.availability' | translate }}</p>
-              <p class="derm-profile__section-sub">{{ 'iam.dermProfile.availabilitySub' | translate }}</p>
-            </button>
-            <button class="derm-profile__section-card" (click)="onNavigateToSettings()">
-              <div class="derm-profile__section-icon-wrap">
-                <mat-icon class="derm-profile__section-icon">settings</mat-icon>
-              </div>
-              <p class="derm-profile__section-label">{{ 'iam.dermProfile.settingsLabel' | translate }}</p>
-              <p class="derm-profile__section-sub">{{ 'iam.dermProfile.settingsSub' | translate }}</p>
-            </button>
-          </div>
+          <button class="derm-profile__nav-item" (click)="onNavigateToAvailability()">
+            <div class="derm-profile__nav-icon-wrap" style="background-color: #b3cee3;">
+              <mat-icon>calendar_month</mat-icon>
+            </div>
+            <div class="derm-profile__nav-text">
+              <p class="derm-profile__nav-label">{{ 'iam.dermProfile.availability' | translate }}</p>
+              <p class="derm-profile__nav-sub">{{ 'iam.dermProfile.availabilitySub' | translate }}</p>
+            </div>
+            <mat-icon class="derm-profile__nav-arrow">chevron_right</mat-icon>
+          </button>
         </div>
+
       </div>
     </div>
   </div>

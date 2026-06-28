@@ -63,10 +63,6 @@ export class DermProfile {
     this.router.navigate(['/derm/availability']).then();
   }
 
-  onNavigateToSettings(): void {
-    this.router.navigate(['/derm/settings']).then();
-  }
-
   onLogout(): void {
     this.iamStore.logout();
   }
