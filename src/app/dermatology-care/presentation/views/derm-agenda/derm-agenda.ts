@@ -58,7 +58,7 @@ export class DermAgenda implements OnInit {
     const day = this.agendaDays()[this.selectedDayIndex()];
     if (!day) return this.store.appointments();
     const target = day.date;
-    return this.store.appointments().filter(a => {
+    return this.store.myAppointments().filter(a => {
       const d = new Date(a.scheduledAt);
       return d.getFullYear() === target.getFullYear() &&
              d.getMonth()    === target.getMonth()    &&
@@ -76,7 +76,7 @@ export class DermAgenda implements OnInit {
 
   /** Fetches patient display names for all loaded appointments via IAM bounded context. */
   private loadPatientNames(): void {
-    const uniqueIds = [...new Set(this.store.appointments().map(a => a.patientId))];
+    const uniqueIds = [...new Set(this.store.myConsultations().map(a => a.patientId))];
     uniqueIds.forEach(id => {
       this.iamStore.getUserById(id)
         .pipe(takeUntilDestroyed(this.destroyRef))

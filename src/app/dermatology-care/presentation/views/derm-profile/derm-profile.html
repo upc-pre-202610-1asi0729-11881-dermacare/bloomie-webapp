@@ -26,22 +26,15 @@
         </div>
       </div>
 
-      <!-- Stats strip -->
-      <div class="derm-profile__stats-strip">
-        <div class="derm-profile__stat">
-          <span class="derm-profile__stat-value">{{ experience() }}</span>
-          <span class="derm-profile__stat-label">{{ 'iam.dermProfile.yrsExperience' | translate }}</span>
-        </div>
-        <div class="derm-profile__stat-divider"></div>
-        <div class="derm-profile__stat">
-          <span class="derm-profile__stat-value">${{ fee() }}</span>
-          <span class="derm-profile__stat-label">{{ 'iam.dermProfile.session' | translate }}</span>
-        </div>
-      </div>
-
-      <!-- Personal info card -->
+      <!-- ── Personal data card ── -->
       <div class="derm-profile__form-card">
-        <p class="derm-profile__card-title">{{ 'iam.dermProfile.personalInfo' | translate }}</p>
+        <div class="derm-profile__card-header">
+          <div class="derm-profile__card-icon-wrap derm-profile__card-icon-wrap--blue">
+            <mat-icon>person</mat-icon>
+          </div>
+          <p class="derm-profile__card-title">{{ 'iam.dermProfile.personalInfo' | translate }}</p>
+        </div>
+
         <div class="derm-profile__field">
           <label class="derm-profile__label">{{ 'iam.dermProfile.nameLabel' | translate }}</label>
           <input class="derm-profile__input" type="text" [ngModel]="name()" (ngModelChange)="name.set($event)" />
@@ -50,42 +43,75 @@
           <label class="derm-profile__label">{{ 'iam.dermProfile.emailLabel' | translate }}</label>
           <input class="derm-profile__input" type="email" [ngModel]="email()" (ngModelChange)="email.set($event)" />
         </div>
+        <div class="derm-profile__field">
+          <label class="derm-profile__label">{{ 'iam.dermProfile.licenseLabel' | translate }}</label>
+          <input class="derm-profile__input" type="text" [ngModel]="licenseNumber()" (ngModelChange)="licenseNumber.set($event)" />
+        </div>
+        <div class="derm-profile__field derm-profile__field--last">
+          <label class="derm-profile__label">{{ 'iam.dermProfile.phoneLabel' | translate }}</label>
+          <input class="derm-profile__input" type="tel" [ngModel]="contactPhone()" (ngModelChange)="contactPhone.set($event)" />
+        </div>
+
+        <button
+          class="derm-profile__save-btn-mobile"
+          [class.derm-profile__save-btn--success]="savePersonalSuccess()"
+          (click)="onSavePersonal()"
+        >
+          @if (savePersonalSuccess()) {
+            <mat-icon>check_circle</mat-icon>
+            {{ 'iam.dermProfile.saved' | translate }}
+          } @else {
+            {{ 'iam.dermProfile.saveChanges' | translate }}
+          }
+        </button>
       </div>
 
-      <!-- Professional info card -->
+      <!-- ── Dermatologist profile card ── -->
       <div class="derm-profile__form-card">
-        <p class="derm-profile__card-title">{{ 'iam.dermProfile.professionalInfo' | translate }}</p>
+        <div class="derm-profile__card-header">
+          <div class="derm-profile__card-icon-wrap derm-profile__card-icon-wrap--rose">
+            <mat-icon>stethoscope</mat-icon>
+          </div>
+          <p class="derm-profile__card-title">{{ 'iam.dermProfile.professionalInfo' | translate }}</p>
+        </div>
+
+        <div class="derm-profile__field">
+          <label class="derm-profile__label">{{ 'iam.dermProfile.biographyLabel' | translate }}</label>
+          <textarea class="derm-profile__input derm-profile__textarea" rows="4"
+            [ngModel]="biography()" (ngModelChange)="biography.set($event)"></textarea>
+        </div>
         <div class="derm-profile__field">
           <label class="derm-profile__label">{{ 'iam.dermProfile.specialtyLabel' | translate }}</label>
-          <input class="derm-profile__input" type="text" [ngModel]="specialty()" (ngModelChange)="specialty.set($event)" />
+          <select class="derm-profile__input derm-profile__select" [ngModel]="specialty()" (ngModelChange)="specialty.set($event)">
+            @for (s of specialties; track s) {
+              <option [value]="s">{{ s }}</option>
+            }
+          </select>
         </div>
-        <div class="derm-profile__field-row">
-          <div class="derm-profile__field derm-profile__field--half">
-            <label class="derm-profile__label">{{ 'iam.dermProfile.experienceLabel' | translate }}</label>
-            <input class="derm-profile__input" type="number" [ngModel]="experience()" (ngModelChange)="experience.set($event)" />
-          </div>
-          <div class="derm-profile__field derm-profile__field--half">
-            <label class="derm-profile__label">{{ 'iam.dermProfile.feeLabel' | translate }}</label>
-            <input class="derm-profile__input" type="number" [ngModel]="fee()" (ngModelChange)="fee.set($event)" />
+        <div class="derm-profile__field derm-profile__field--last">
+          <label class="derm-profile__label">{{ 'iam.dermProfile.feeLabel' | translate }}</label>
+          <div class="derm-profile__input-prefix-wrap">
+            <span class="derm-profile__input-prefix">$</span>
+            <input class="derm-profile__input derm-profile__input--prefixed" type="number"
+              [ngModel]="fee()" (ngModelChange)="fee.set($event)" />
           </div>
         </div>
+
+        <button
+          class="derm-profile__save-btn-mobile"
+          [class.derm-profile__save-btn--success]="saveProfessionalSuccess()"
+          (click)="onSaveProfessional()"
+        >
+          @if (saveProfessionalSuccess()) {
+            <mat-icon>check_circle</mat-icon>
+            {{ 'iam.dermProfile.saved' | translate }}
+          } @else {
+            {{ 'iam.dermProfile.saveChanges' | translate }}
+          }
+        </button>
       </div>
 
-      <!-- Save -->
-      <button
-        class="derm-profile__save-btn-mobile"
-        [class.derm-profile__save-btn--success]="saveSuccess()"
-        (click)="onSaveChanges()"
-      >
-        @if (saveSuccess()) {
-          <mat-icon>check_circle</mat-icon>
-          {{ 'iam.dermProfile.saved' | translate }}
-        } @else {
-          {{ 'iam.dermProfile.saveChanges' | translate }}
-        }
-      </button>
-
-      <!-- Navigation card -->
+      <!-- ── Navigation ── -->
       <div class="derm-profile__form-card derm-profile__form-card--nav">
         <button class="derm-profile__nav-item" (click)="onNavigateToAvailability()">
           <div class="derm-profile__nav-icon-wrap" style="background-color: #b3cee3;">
@@ -99,7 +125,6 @@
         </button>
       </div>
 
-      <!-- Logout -->
       <button class="derm-profile__logout-btn" (click)="onLogout()">
         <mat-icon class="derm-profile__logout-icon">logout</mat-icon>
         <span class="derm-profile__logout-text">{{ 'iam.dermProfile.logout' | translate }}</span>
@@ -146,7 +171,9 @@
             <span class="derm-profile__specialist-header-label">{{ 'iam.dermProfile.specialistLabel' | translate }}</span>
           </div>
           <p class="derm-profile__specialist-name">{{ specialty() }}</p>
-          <p class="derm-profile__specialist-exp">{{ experience() }} {{ 'iam.dermProfile.yearsExperience' | translate }}</p>
+          @if (biography()) {
+            <p class="derm-profile__specialist-bio">{{ biography() | slice:0:120 }}{{ biography().length > 120 ? '…' : '' }}</p>
+          }
           <div class="derm-profile__specialist-divider"></div>
           <p class="derm-profile__specialist-fee-label">{{ 'iam.dermProfile.consultationFeeLabel' | translate }}</p>
           <p class="derm-profile__specialist-fee-value">
@@ -159,9 +186,14 @@
       <!-- Right: forms -->
       <div class="derm-profile__desktop-right">
 
-        <!-- Personal info -->
+        <!-- Personal data -->
         <div class="derm-profile__info-card">
-          <p class="derm-profile__card-title">{{ 'iam.dermProfile.personalInfo' | translate }}</p>
+          <div class="derm-profile__card-header">
+            <div class="derm-profile__card-icon-wrap derm-profile__card-icon-wrap--blue">
+              <mat-icon>person</mat-icon>
+            </div>
+            <p class="derm-profile__card-title">{{ 'iam.dermProfile.personalInfo' | translate }}</p>
+          </div>
           <div class="derm-profile__info-grid">
             <div class="derm-profile__field">
               <label class="derm-profile__label">{{ 'iam.dermProfile.nameLabel' | translate }}</label>
@@ -171,32 +203,21 @@
               <label class="derm-profile__label">{{ 'iam.dermProfile.emailLabel' | translate }}</label>
               <input class="derm-profile__input" type="email" [ngModel]="email()" (ngModelChange)="email.set($event)" />
             </div>
-          </div>
-        </div>
-
-        <!-- Professional info -->
-        <div class="derm-profile__info-card">
-          <p class="derm-profile__card-title">{{ 'iam.dermProfile.professionalInfo' | translate }}</p>
-          <div class="derm-profile__info-grid-3">
             <div class="derm-profile__field">
-              <label class="derm-profile__label">{{ 'iam.dermProfile.specialtyLabel' | translate }}</label>
-              <input class="derm-profile__input" type="text" [ngModel]="specialty()" (ngModelChange)="specialty.set($event)" />
+              <label class="derm-profile__label">{{ 'iam.dermProfile.licenseLabel' | translate }}</label>
+              <input class="derm-profile__input" type="text" [ngModel]="licenseNumber()" (ngModelChange)="licenseNumber.set($event)" />
             </div>
             <div class="derm-profile__field">
-              <label class="derm-profile__label">{{ 'iam.dermProfile.experienceLabel' | translate }}</label>
-              <input class="derm-profile__input" type="number" [ngModel]="experience()" (ngModelChange)="experience.set($event)" />
-            </div>
-            <div class="derm-profile__field">
-              <label class="derm-profile__label">{{ 'iam.dermProfile.feeLabel' | translate }}</label>
-              <input class="derm-profile__input" type="number" [ngModel]="fee()" (ngModelChange)="fee.set($event)" />
+              <label class="derm-profile__label">{{ 'iam.dermProfile.phoneLabel' | translate }}</label>
+              <input class="derm-profile__input" type="tel" [ngModel]="contactPhone()" (ngModelChange)="contactPhone.set($event)" />
             </div>
           </div>
           <button
             class="derm-profile__save-btn"
-            [class.derm-profile__save-btn--success]="saveSuccess()"
-            (click)="onSaveChanges()"
+            [class.derm-profile__save-btn--success]="savePersonalSuccess()"
+            (click)="onSavePersonal()"
           >
-            @if (saveSuccess()) {
+            @if (savePersonalSuccess()) {
               <mat-icon>check_circle</mat-icon>
               {{ 'iam.dermProfile.saved' | translate }}
             } @else {
@@ -205,7 +226,52 @@
           </button>
         </div>
 
-        <!-- Account sections: only Availability -->
+        <!-- Dermatologist profile -->
+        <div class="derm-profile__info-card">
+          <div class="derm-profile__card-header">
+            <div class="derm-profile__card-icon-wrap derm-profile__card-icon-wrap--rose">
+              <mat-icon>stethoscope</mat-icon>
+            </div>
+            <p class="derm-profile__card-title">{{ 'iam.dermProfile.professionalInfo' | translate }}</p>
+          </div>
+          <div class="derm-profile__field">
+            <label class="derm-profile__label">{{ 'iam.dermProfile.biographyLabel' | translate }}</label>
+            <textarea class="derm-profile__input derm-profile__textarea" rows="4"
+              [ngModel]="biography()" (ngModelChange)="biography.set($event)"></textarea>
+          </div>
+          <div class="derm-profile__info-grid derm-profile__info-grid--2col">
+            <div class="derm-profile__field">
+              <label class="derm-profile__label">{{ 'iam.dermProfile.specialtyLabel' | translate }}</label>
+              <select class="derm-profile__input derm-profile__select" [ngModel]="specialty()" (ngModelChange)="specialty.set($event)">
+                @for (s of specialties; track s) {
+                  <option [value]="s">{{ s }}</option>
+                }
+              </select>
+            </div>
+            <div class="derm-profile__field">
+              <label class="derm-profile__label">{{ 'iam.dermProfile.feeLabel' | translate }}</label>
+              <div class="derm-profile__input-prefix-wrap">
+                <span class="derm-profile__input-prefix">$</span>
+                <input class="derm-profile__input derm-profile__input--prefixed" type="number"
+                  [ngModel]="fee()" (ngModelChange)="fee.set($event)" />
+              </div>
+            </div>
+          </div>
+          <button
+            class="derm-profile__save-btn"
+            [class.derm-profile__save-btn--success]="saveProfessionalSuccess()"
+            (click)="onSaveProfessional()"
+          >
+            @if (saveProfessionalSuccess()) {
+              <mat-icon>check_circle</mat-icon>
+              {{ 'iam.dermProfile.saved' | translate }}
+            } @else {
+              {{ 'iam.dermProfile.saveChanges' | translate }}
+            }
+          </button>
+        </div>
+
+        <!-- Account sections -->
         <div class="derm-profile__info-card">
           <p class="derm-profile__card-title">{{ 'iam.dermProfile.accountSections' | translate }}</p>
           <button class="derm-profile__nav-item" (click)="onNavigateToAvailability()">

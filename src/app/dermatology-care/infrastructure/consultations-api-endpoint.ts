@@ -17,7 +17,7 @@ export class ConsultationsApiEndpoint extends BaseApiEndpoint<Consultation, Cons
   constructor(http: HttpClient) {
     super(
       http,
-      `${environment.serverBasePath}${environment.consultationsEndpointPath}`,
+      `${environment.backendBasePath}${environment.backendConsultationsEndpointPath}`,
       new ConsultationAssembler()
     );
   }

@@ -1,4 +1,13 @@
-import {computed, DestroyRef, inject, Injectable, Signal, signal} from '@angular/core';
+import {
+  computed,
+  DestroyRef,
+  effect,
+  inject,
+  Injectable,
+  Signal,
+  signal,
+  untracked,
+} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {retry, take} from 'rxjs';
 import {DermatologistProfile} from '../domain/model/dermatologist-profile.entity';
@@ -6,27 +15,29 @@ import {DermatologistAvailability} from '../domain/model/dermatologist-availabil
 import {Appointment, AppointmentStatus} from '../domain/model/appointment.entity';
 import {Consultation} from '../domain/model/consultation.entity';
 import {DermatologyCareApi} from '../infrastructure/dermatology-care-api';
+import { IamStore } from '../../iam/application/iam.store';
 
 /**
  * Holds dermatology care application state and coordinates
  * dermatologist, appointment, and consultation application layer behavior.
  */
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class DermatologyCareStore {
-
   private static readonly AVAILABILITY_LOOKAHEAD_DAYS = 120;
 
-  private readonly dermatologistProfilesSignal  = signal<DermatologistProfile[]>([]);
-  private readonly availabilitiesSignal          = signal<DermatologistAvailability[]>([]);
-  private readonly appointmentsSignal            = signal<Appointment[]>([]);
-  private readonly consultationsSignal           = signal<Consultation[]>([]);
-  private readonly selectedDermatologistSignal   = signal<DermatologistProfile | null>(null);
-  private readonly selectedAppointmentSignal     = signal<Appointment | null>(null);
-  private readonly selectedConsultationSignal    = signal<Consultation | null>(null);
-  private readonly loadingSignal                 = signal<boolean>(false);
-  private readonly errorSignal                   = signal<string | null>(null);
-  private readonly pendingAppointmentDateSignal  = signal<Date | null>(null);
-  private readonly pendingAppointmentTimeSignal  = signal<string>('');
+  private readonly dermatologistProfilesSignal = signal<DermatologistProfile[]>([]);
+  private readonly availabilitiesSignal = signal<DermatologistAvailability[]>([]);
+  private readonly appointmentsSignal = signal<Appointment[]>([]);
+  private readonly consultationsSignal = signal<Consultation[]>([]);
+  private readonly selectedDermatologistSignal = signal<DermatologistProfile | null>(null);
+  private readonly selectedAppointmentSignal = signal<Appointment | null>(null);
+  private readonly selectedConsultationSignal = signal<Consultation | null>(null);
+  private readonly loadingSignal = signal<boolean>(false);
+  private readonly errorSignal = signal<string | null>(null);
+  private readonly pendingAppointmentDateSignal = signal<Date | null>(null);
+  private readonly pendingAppointmentTimeSignal = signal<string>('');
+  private readonly iamStore = inject(IamStore);
+  private loadedForDermatologistId: number | null = null;
 
   /**
    * Readonly signal for the list of dermatologist profiles.
@@ -86,16 +97,28 @@ export class DermatologyCareStore {
   /**
    * Computed signal for the count of available dermatologists.
    */
-  readonly availableDermatologistCount = computed(() =>
-    this.dermatologistProfiles().filter(dermatologist => dermatologist.available).length
+  readonly availableDermatologistCount = computed(
+    () => this.dermatologistProfiles().filter((dermatologist) => dermatologist.available).length,
   );
 
   /**
    * Computed signal for the count of confirmed appointments.
    */
-  readonly confirmedAppointmentCount = computed(() =>
-    this.appointments().filter(appointment => appointment.isConfirmed).length
+  readonly confirmedAppointmentCount = computed(
+    () => this.appointments().filter((appointment) => appointment.isConfirmed).length,
   );
+
+  readonly myAppointments = computed(() => {
+    const user = this.iamStore.currentUser();
+    if (!user) return [];
+    return this.appointmentsSignal().filter((a) => Number(a.dermatologistId) === Number(user.id));
+  });
+
+  readonly myConsultations = computed(() => {
+    const user = this.iamStore.currentUser();
+    if (!user) return [];
+    return this.consultationsSignal().filter((c) => Number(c.dermatologistId) === Number(user.id));
+  });
 
   /**
    * Upcoming calendar dates (starting tomorrow) that match the loaded dermatologist availabilities.
@@ -108,7 +131,7 @@ export class DermatologyCareStore {
     for (let i = 1; i <= DermatologyCareStore.AVAILABILITY_LOOKAHEAD_DAYS; i++) {
       const date = new Date(today);
       date.setDate(today.getDate() + i);
-      if (availabilities.length === 0 || availabilities.some(a => a.matchesDate(date))) {
+      if (availabilities.length === 0 || availabilities.some((a) => a.matchesDate(date))) {
         dates.push(date);
       }
     }
@@ -120,7 +143,7 @@ export class DermatologyCareStore {
    * @param date - The calendar date to get slots for.
    */
   timeSlotsForDate(date: Date): string[] {
-    return this.availabilitiesSignal().find(a => a.matchesDate(date))?.timeSlots ?? [];
+    return this.availabilitiesSignal().find((a) => a.matchesDate(date))?.timeSlots ?? [];
   }
 
   /**
@@ -131,8 +154,16 @@ export class DermatologyCareStore {
 
   constructor(private dermatologyCareApi: DermatologyCareApi) {
     this.loadDermatologistProfiles();
-    this.loadAppointments();
-    this.loadConsultations();
+    effect(() => {
+      const user = this.iamStore.currentUser();
+      untracked(() => {
+        if (user && user.id !== this.loadedForDermatologistId) {
+          this.loadedForDermatologistId = user.id;
+          this.loadAppointments(user.id);
+          this.loadConsultations(user.id);
+        }
+      });
+    });
   }
 
   /**
@@ -141,7 +172,11 @@ export class DermatologyCareStore {
    * @returns Reactive selection for the requested dermatologist profile.
    */
   getDermatologistProfileById(id: number): Signal<DermatologistProfile | undefined> {
-    return computed(() => id ? this.dermatologistProfiles().find(dermatologist => dermatologist.id === id) : undefined);
+    return computed(() =>
+      id
+        ? this.dermatologistProfiles().find((dermatologist) => dermatologist.id === id)
+        : undefined,
+    );
   }
 
   /**
@@ -150,7 +185,9 @@ export class DermatologyCareStore {
    * @returns Reactive selection for the requested appointment.
    */
   getAppointmentById(id: number): Signal<Appointment | undefined> {
-    return computed(() => id ? this.appointments().find(appointment => appointment.id === id) : undefined);
+    return computed(() =>
+      id ? this.appointments().find((appointment) => appointment.id === id) : undefined,
+    );
   }
 
   /**
@@ -159,7 +196,9 @@ export class DermatologyCareStore {
    * @returns Reactive selection for the requested consultation.
    */
   getConsultationById(id: number): Signal<Consultation | undefined> {
-    return computed(() => id ? this.consultations().find(consultation => consultation.id === id) : undefined);
+    return computed(() =>
+      id ? this.consultations().find((consultation) => consultation.id === id) : undefined,
+    );
   }
 
   /**
@@ -204,16 +243,19 @@ export class DermatologyCareStore {
   addAppointment(appointment: Appointment): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
-    this.dermatologyCareApi.createAppointment(appointment).pipe(retry(2)).subscribe({
-      next: createdAppointment => {
-        this.appointmentsSignal.update(appointments => [...appointments, createdAppointment]);
-        this.loadingSignal.set(false);
-      },
-      error: err => {
-        this.errorSignal.set(this.formatError(err, 'Failed to create appointment'));
-        this.loadingSignal.set(false);
-      }
-    });
+    this.dermatologyCareApi
+      .createAppointment(appointment)
+      .pipe(retry(2))
+      .subscribe({
+        next: (createdAppointment) => {
+          this.appointmentsSignal.update((appointments) => [...appointments, createdAppointment]);
+          this.loadingSignal.set(false);
+        },
+        error: (err) => {
+          this.errorSignal.set(this.formatError(err, 'Failed to create appointment'));
+          this.loadingSignal.set(false);
+        },
+      });
   }
 
   /**
@@ -223,19 +265,24 @@ export class DermatologyCareStore {
   cancelAppointment(appointment: Appointment): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
-    appointment.status             = AppointmentStatus.Cancelled;
-    this.dermatologyCareApi.updateAppointment(appointment).pipe(retry(2)).subscribe({
-      next: updatedAppointment => {
-        this.appointmentsSignal.update(appointments =>
-          appointments.map(existing => existing.id === updatedAppointment.id ? updatedAppointment : existing)
-        );
-        this.loadingSignal.set(false);
-      },
-      error: err => {
-        this.errorSignal.set(this.formatError(err, 'Failed to cancel appointment'));
-        this.loadingSignal.set(false);
-      }
-    });
+    appointment.status = AppointmentStatus.Cancelled;
+    this.dermatologyCareApi
+      .updateAppointment(appointment)
+      .pipe(retry(2))
+      .subscribe({
+        next: (updatedAppointment) => {
+          this.appointmentsSignal.update((appointments) =>
+            appointments.map((existing) =>
+              existing.id === updatedAppointment.id ? updatedAppointment : existing,
+            ),
+          );
+          this.loadingSignal.set(false);
+        },
+        error: (err) => {
+          this.errorSignal.set(this.formatError(err, 'Failed to cancel appointment'));
+          this.loadingSignal.set(false);
+        },
+      });
   }
 
   /**
@@ -245,18 +292,23 @@ export class DermatologyCareStore {
   updateConsultation(consultation: Consultation): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
-    this.dermatologyCareApi.updateConsultation(consultation).pipe(retry(2)).subscribe({
-      next: updatedConsultation => {
-        this.consultationsSignal.update(consultations =>
-          consultations.map(existing => existing.id === updatedConsultation.id ? updatedConsultation : existing)
-        );
-        this.loadingSignal.set(false);
-      },
-      error: err => {
-        this.errorSignal.set(this.formatError(err, 'Failed to update consultation'));
-        this.loadingSignal.set(false);
-      }
-    });
+    this.dermatologyCareApi
+      .updateConsultation(consultation)
+      .pipe(retry(2))
+      .subscribe({
+        next: (updatedConsultation) => {
+          this.consultationsSignal.update((consultations) =>
+            consultations.map((existing) =>
+              existing.id === updatedConsultation.id ? updatedConsultation : existing,
+            ),
+          );
+          this.loadingSignal.set(false);
+        },
+        error: (err) => {
+          this.errorSignal.set(this.formatError(err, 'Failed to update consultation'));
+          this.loadingSignal.set(false);
+        },
+      });
   }
 
   /**
@@ -266,16 +318,22 @@ export class DermatologyCareStore {
   addAvailability(availability: DermatologistAvailability): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
-    this.dermatologyCareApi.createDermatologistAvailability(availability).pipe(retry(2)).subscribe({
-      next: createdAvailability => {
-        this.availabilitiesSignal.update(availabilities => [...availabilities, createdAvailability]);
-        this.loadingSignal.set(false);
-      },
-      error: err => {
-        this.errorSignal.set(this.formatError(err, 'Failed to create availability'));
-        this.loadingSignal.set(false);
-      }
-    });
+    this.dermatologyCareApi
+      .createDermatologistAvailability(availability)
+      .pipe(retry(2))
+      .subscribe({
+        next: (createdAvailability) => {
+          this.availabilitiesSignal.update((availabilities) => [
+            ...availabilities,
+            createdAvailability,
+          ]);
+          this.loadingSignal.set(false);
+        },
+        error: (err) => {
+          this.errorSignal.set(this.formatError(err, 'Failed to create availability'));
+          this.loadingSignal.set(false);
+        },
+      });
   }
 
   /**
@@ -285,18 +343,23 @@ export class DermatologyCareStore {
   updateDermatologistProfile(dermatologistProfile: DermatologistProfile): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
-    this.dermatologyCareApi.updateDermatologistProfile(dermatologistProfile).pipe(retry(2)).subscribe({
-      next: updatedProfile => {
-        this.dermatologistProfilesSignal.update(profiles =>
-          profiles.map(existing => existing.id === updatedProfile.id ? updatedProfile : existing)
-        );
-        this.loadingSignal.set(false);
-      },
-      error: err => {
-        this.errorSignal.set(this.formatError(err, 'Failed to update dermatologist profile'));
-        this.loadingSignal.set(false);
-      }
-    });
+    this.dermatologyCareApi
+      .updateDermatologistProfile(dermatologistProfile)
+      .pipe(retry(2))
+      .subscribe({
+        next: (updatedProfile) => {
+          this.dermatologistProfilesSignal.update((profiles) =>
+            profiles.map((existing) =>
+              existing.id === updatedProfile.id ? updatedProfile : existing,
+            ),
+          );
+          this.loadingSignal.set(false);
+        },
+        error: (err) => {
+          this.errorSignal.set(this.formatError(err, 'Failed to update dermatologist profile'));
+          this.loadingSignal.set(false);
+        },
+      });
   }
 
   /**
@@ -305,17 +368,20 @@ export class DermatologyCareStore {
   private loadDermatologistProfiles(): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
-    this.dermatologyCareApi.getDermatologistProfiles().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
-      next: dermatologistProfiles => {
-        this.dermatologistProfilesSignal.set(dermatologistProfiles);
-        this.loadingSignal.set(false);
-        this.errorSignal.set(null);
-      },
-      error: err => {
-        this.errorSignal.set(this.formatError(err, 'Failed to load dermatologist profiles'));
-        this.loadingSignal.set(false);
-      }
-    });
+    this.dermatologyCareApi
+      .getDermatologistProfiles()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (dermatologistProfiles) => {
+          this.dermatologistProfilesSignal.set(dermatologistProfiles);
+          this.loadingSignal.set(false);
+          this.errorSignal.set(null);
+        },
+        error: (err) => {
+          this.errorSignal.set(this.formatError(err, 'Failed to load dermatologist profiles'));
+          this.loadingSignal.set(false);
+        },
+      });
   }
 
   /**
@@ -325,55 +391,68 @@ export class DermatologyCareStore {
   private loadAvailabilities(dermatologistId: number): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
-    this.dermatologyCareApi.getDermatologistAvailabilities(dermatologistId).pipe(take(1)).subscribe({
-      next: availabilities => {
-        this.availabilitiesSignal.set(availabilities);
-        this.loadingSignal.set(false);
-        this.errorSignal.set(null);
-      },
-      error: err => {
-        this.errorSignal.set(this.formatError(err, 'Failed to load availabilities'));
-        this.loadingSignal.set(false);
-      }
-    });
+    this.dermatologyCareApi
+      .getDermatologistAvailabilities(dermatologistId)
+      .pipe(take(1))
+      .subscribe({
+        next: (availabilities) => {
+          this.availabilitiesSignal.set(availabilities);
+          this.loadingSignal.set(false);
+          this.errorSignal.set(null);
+        },
+        error: (err) => {
+          this.errorSignal.set(this.formatError(err, 'Failed to load availabilities'));
+          this.loadingSignal.set(false);
+        },
+      });
   }
 
   /**
    * Loads all appointments from the API.
    */
-  private loadAppointments(): void {
+
+  private loadAppointments(dermatologistId?: number): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
-    this.dermatologyCareApi.getAppointments().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
-      next: appointments => {
-        this.appointmentsSignal.set(appointments);
-        this.loadingSignal.set(false);
-        this.errorSignal.set(null);
-      },
-      error: err => {
-        this.errorSignal.set(this.formatError(err, 'Failed to load appointments'));
-        this.loadingSignal.set(false);
-      }
-    });
+    this.dermatologyCareApi
+      .getAppointments()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (appointments) => {
+          const filtered = dermatologistId
+            ? appointments.filter((a) => Number(a.dermatologistId) === Number(dermatologistId))
+            : appointments;
+          this.appointmentsSignal.set(filtered);
+          this.loadingSignal.set(false);
+          this.errorSignal.set(null);
+        },
+        error: (err) => {
+          this.errorSignal.set(this.formatError(err, 'Failed to load appointments'));
+          this.loadingSignal.set(false);
+        },
+      });
   }
 
-  /**
-   * Loads all consultations from the API.
-   */
-  private loadConsultations(): void {
+  private loadConsultations(dermatologistId?: number): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
-    this.dermatologyCareApi.getConsultations().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
-      next: consultations => {
-        this.consultationsSignal.set(consultations);
-        this.loadingSignal.set(false);
-        this.errorSignal.set(null);
-      },
-      error: err => {
-        this.errorSignal.set(this.formatError(err, 'Failed to load consultations'));
-        this.loadingSignal.set(false);
-      }
-    });
+    this.dermatologyCareApi
+      .getConsultations()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (consultations) => {
+          const filtered = dermatologistId
+            ? consultations.filter((c) => Number(c.dermatologistId) === Number(dermatologistId))
+            : consultations;
+          this.consultationsSignal.set(filtered);
+          this.loadingSignal.set(false);
+          this.errorSignal.set(null);
+        },
+        error: (err) => {
+          this.errorSignal.set(this.formatError(err, 'Failed to load consultations'));
+          this.loadingSignal.set(false);
+        },
+      });
   }
 
   /**
@@ -384,7 +463,9 @@ export class DermatologyCareStore {
    */
   private formatError(error: any, fallback: string): string {
     if (error instanceof Error) {
-      return error.message.includes('Resource not found') ? `${fallback}: Not found` : error.message;
+      return error.message.includes('Resource not found')
+        ? `${fallback}: Not found`
+        : error.message;
     }
     return fallback;
   }

@@ -17,7 +17,7 @@ export class AppointmentsApiEndpoint extends BaseApiEndpoint<Appointment, Appoin
   constructor(http: HttpClient) {
     super(
       http,
-      `${environment.serverBasePath}${environment.appointmentsEndpointPath}`,
+      `${environment.backendBasePath}${environment.backendAppointmentsEndpointPath}`,
       new AppointmentAssembler()
     );
   }

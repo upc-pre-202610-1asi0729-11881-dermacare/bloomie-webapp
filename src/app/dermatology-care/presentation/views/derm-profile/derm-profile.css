@@ -7,16 +7,30 @@
 }
 
 /* ═══════════════════ Shared: fields ═══════════════════ */
-.derm-profile__field { margin-bottom: 0.75rem; }
+.derm-profile__field { margin-bottom: 0.875rem; }
+.derm-profile__field--last { margin-bottom: 0; }
 .derm-profile__field--half { flex: 1; }
 .derm-profile__field-row { display: flex; gap: 0.75rem; }
+
+.derm-profile__card-header {
+  display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem;
+}
+.derm-profile__card-icon-wrap {
+  width: 36px; height: 36px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.derm-profile__card-icon-wrap--blue { background: rgba(123,170,179,0.18); }
+.derm-profile__card-icon-wrap--blue mat-icon { color: #7baab3; font-size: 20px; width: 20px; height: 20px; }
+.derm-profile__card-icon-wrap--rose { background: rgba(162,103,105,0.12); }
+.derm-profile__card-icon-wrap--rose mat-icon { color: #a26769; font-size: 20px; width: 20px; height: 20px; }
+
 .derm-profile__card-title {
-  font-weight: 700; font-size: 15px; color: #1a1a2e; margin: 0 0 1rem;
+  font-weight: 700; font-size: 15px; color: #1a1a2e; margin: 0;
 }
 
 .derm-profile__label {
-  display: block; font-weight: 600; font-size: 12px;
-  color: #888; margin-bottom: 0.375rem; text-transform: uppercase; letter-spacing: 0.04em;
+  display: block; font-weight: 600; font-size: 11px;
+  color: #aaa; margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.05em;
 }
 .derm-profile__input {
   width: 100%; border: 1.5px solid #ece8e8; border-radius: 12px;
@@ -28,6 +42,31 @@
 .derm-profile__input:focus {
   border-color: #a26769; box-shadow: 0 0 0 3px rgba(162,103,105,0.1);
 }
+.derm-profile__textarea {
+  resize: vertical; min-height: 100px; line-height: 1.6;
+}
+
+/* Select dropdown */
+.derm-profile__select {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a26769'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.875rem center;
+  background-size: 22px;
+  padding-right: 2.5rem;
+}
+.derm-profile__select:focus { border-color: #a26769; box-shadow: 0 0 0 3px rgba(162,103,105,0.1); }
+
+/* Fee prefix wrapper */
+.derm-profile__input-prefix-wrap {
+  position: relative; display: flex; align-items: center;
+}
+.derm-profile__input-prefix {
+  position: absolute; left: 1rem; font-size: 14px; font-weight: 600; color: #a26769; pointer-events: none;
+}
+.derm-profile__input--prefixed { padding-left: 1.75rem; }
 
 /* ═══════════════════ Shared: nav items ═══════════════════ */
 .derm-profile__nav-item {
@@ -57,12 +96,16 @@
 .derm-profile__logout-icon { font-size: 20px; width: 20px; height: 20px; color: #a26769; }
 .derm-profile__logout-text { font-weight: 600; font-size: 14px; color: #a26769; }
 
+/* Save success modifier */
+.derm-profile__save-btn--success { background: #7baab3 !important; }
+.derm-profile__save-btn--success:hover { background: #6a9aa3 !important; }
+
 /* ═══════════════════ MOBILE ═══════════════════ */
 .derm-profile__mobile { display: flex; flex-direction: column; min-height: 100vh; }
 .derm-profile__desktop { display: none; }
 
 .derm-profile__mobile-header {
-  display: flex; align-items: center; padding: 2.5rem 1rem 0.75rem; gap: 0.5rem;
+  display: flex; align-items: center; gap: 0.5rem; padding: 2.5rem 1rem 0.75rem;
 }
 .derm-profile__back-btn {
   width: 40px; height: 40px; border-radius: 50%; background: #fff;
@@ -71,15 +114,15 @@
 }
 .derm-profile__back-btn:hover { background: #f5f0f0; }
 .derm-profile__mobile-title {
-  font-weight: 300; font-size: 26px; color: #333; margin: 0; flex: 1; text-align: center; padding-right: 2.5rem;
+  font-weight: 300; font-size: 26px; color: #333; margin: 0;
+  flex: 1; text-align: center; padding-right: 2.5rem;
 }
 
 .derm-profile__mobile-body { flex: 1; overflow-y: auto; padding: 0 1.25rem 2rem; }
 
-/* Hero: avatar + identity */
+/* Hero */
 .derm-profile__hero {
-  display: flex; flex-direction: column; align-items: center;
-  padding: 1rem 0 1.5rem;
+  display: flex; flex-direction: column; align-items: center; padding: 1rem 0 1.5rem;
 }
 .derm-profile__hero-name { font-weight: 700; font-size: 18px; color: #1a1a2e; margin: 0.875rem 0 0.125rem; }
 .derm-profile__hero-email { font-size: 13px; color: #aaa; margin: 0 0 0.75rem; }
@@ -91,18 +134,7 @@
 .derm-profile__hero-chip-icon { font-size: 14px; width: 14px; height: 14px; }
 .derm-profile__hero-chip span { font-size: 12px; font-weight: 600; }
 
-/* Stats strip */
-.derm-profile__stats-strip {
-  display: flex; align-items: center; justify-content: center; gap: 2rem;
-  background: #fff; border-radius: 20px; padding: 1rem 1.5rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.07); margin-bottom: 1.25rem;
-}
-.derm-profile__stat { display: flex; flex-direction: column; align-items: center; gap: 2px; }
-.derm-profile__stat-value { font-weight: 700; font-size: 22px; color: #a26769; }
-.derm-profile__stat-label { font-size: 11px; color: #aaa; text-align: center; }
-.derm-profile__stat-divider { width: 1px; height: 36px; background: #e8dede; }
-
-/* Form card (mobile field groups) */
+/* Form card */
 .derm-profile__form-card {
   background: #fff; border-radius: 20px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.07);
@@ -110,36 +142,30 @@
 }
 .derm-profile__form-card--nav { padding: 0.5rem; }
 
-/* Save (mobile) */
+/* Save button (mobile) */
 .derm-profile__save-btn-mobile {
   width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
   padding: 0.875rem; border-radius: 20px; font-family: 'Montserrat', sans-serif;
   font-weight: 700; font-size: 14px; border: none; cursor: pointer;
-  transition: all 0.2s; margin-bottom: 1rem;
+  transition: all 0.2s; margin-top: 1.25rem;
   background: #a26769; color: #fff;
 }
 .derm-profile__save-btn-mobile:hover { background: #8e5759; }
 .derm-profile__save-btn-mobile mat-icon { font-size: 18px; width: 18px; height: 18px; }
-
-/* Save success state (shared modifier) */
-.derm-profile__save-btn--success { background: #7baab3 !important; }
-.derm-profile__save-btn--success:hover { background: #6a9aa3 !important; }
 
 /* ═══════════════════ DESKTOP ═══════════════════ */
 @media (min-width: 1024px) {
   .derm-profile__mobile { display: none; }
   .derm-profile__desktop { display: flex; flex-direction: column; min-height: 100vh; }
 
-  /* Header */
   .derm-profile__desktop-header { padding: 2rem 2.5rem 0.5rem; }
   .derm-profile__desktop-title { font-weight: 300; font-size: 32px; color: #333; margin: 0; }
   .derm-profile__desktop-subtitle { font-size: 13px; color: #aaa; margin: 0.25rem 0 0; }
   .derm-profile__desktop-divider { height: 1px; background: #e8dede; margin: 1rem 2.5rem 1.5rem; }
 
-  /* Body layout */
   .derm-profile__desktop-body { display: flex; gap: 1.75rem; padding: 0 2.5rem 2.5rem; }
 
-  /* Left column */
+  /* Left */
   .derm-profile__desktop-left { width: 280px; flex-shrink: 0; display: flex; flex-direction: column; gap: 1rem; }
 
   .derm-profile__user-card {
@@ -155,43 +181,44 @@
   .derm-profile__user-card-divider { width: 100%; height: 1px; background: #f0eaea; margin: 0.5rem 0; }
 
   .derm-profile__specialist-card {
-    background: rgba(162,103,105,0.08); border-radius: 20px;
-    padding: 1.25rem;
+    background: rgba(162,103,105,0.07); border-radius: 20px; padding: 1.25rem;
   }
   .derm-profile__specialist-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; }
   .derm-profile__specialist-header-icon { font-size: 15px; width: 15px; height: 15px; color: #a26769; }
   .derm-profile__specialist-header-label {
-    font-weight: 700; font-size: 11px; color: #a26769;
-    text-transform: uppercase; letter-spacing: 0.07em;
+    font-weight: 700; font-size: 11px; color: #a26769; text-transform: uppercase; letter-spacing: 0.07em;
   }
-  .derm-profile__specialist-name { font-weight: 700; font-size: 17px; color: #1a1a2e; margin: 0 0 0.125rem; }
-  .derm-profile__specialist-exp { font-size: 13px; color: #888; margin: 0; }
-  .derm-profile__specialist-divider { height: 1px; background: rgba(162,103,105,0.2); margin: 0.875rem 0; }
+  .derm-profile__specialist-name { font-weight: 700; font-size: 17px; color: #1a1a2e; margin: 0 0 0.5rem; }
+  .derm-profile__specialist-bio {
+    font-size: 12px; color: #888; line-height: 1.6; margin: 0;
+  }
+  .derm-profile__specialist-divider { height: 1px; background: rgba(162,103,105,0.18); margin: 0.875rem 0; }
   .derm-profile__specialist-fee-label { font-size: 11px; color: #aaa; margin: 0 0 0.125rem; }
   .derm-profile__specialist-fee-value { font-weight: 700; font-size: 22px; color: #a26769; margin: 0; }
   .derm-profile__specialist-fee-unit { font-weight: 400; font-size: 13px; color: #aaa; }
 
-  /* Right column */
+  /* Right */
   .derm-profile__desktop-right { flex: 1; display: flex; flex-direction: column; gap: 1.25rem; }
 
   .derm-profile__info-card {
     background: #fff; border-radius: 24px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08); padding: 1.75rem;
   }
-  .derm-profile__card-title { font-size: 16px; }
+  .derm-profile__card-title { font-size: 15px; }
 
-  .derm-profile__info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
-  .derm-profile__info-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
+  .derm-profile__info-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem;
+  }
+  .derm-profile__info-grid--2col {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 0;
+  }
 
   .derm-profile__save-btn {
-    display: flex; align-items: center; gap: 0.5rem;
+    display: flex; align-items: center; gap: 0.5rem; margin-top: 1.25rem;
     background: #a26769; color: #fff; font-family: 'Montserrat', sans-serif;
     font-weight: 700; font-size: 14px; padding: 0.625rem 1.75rem;
     border: none; border-radius: 20px; cursor: pointer; transition: all 0.2s;
   }
   .derm-profile__save-btn:hover { background: #8e5759; }
   .derm-profile__save-btn mat-icon { font-size: 17px; width: 17px; height: 17px; }
-
-  /* Nav item used in desktop account sections */
-  .derm-profile__nav-item { background: #faf8f8; }
 }
