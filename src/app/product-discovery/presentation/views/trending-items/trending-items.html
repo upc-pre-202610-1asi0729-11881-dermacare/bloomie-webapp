@@ -103,7 +103,14 @@
 
               <!-- Product icon -->
               <div class="ti-card__img">
-                <mat-icon>inventory_2</mat-icon>
+                @if (product.imageUrl) {
+                  <img [src]="product.imageUrl"
+                       [alt]="product.name"
+                       style="width:100%; height:100%; object-fit:cover; border-radius:8px;"
+                       (error)="onImageError($event)" />
+                } @else {
+                  <mat-icon>inventory_2</mat-icon>
+                }
               </div>
 
               <!-- Footer -->

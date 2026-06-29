@@ -184,4 +184,13 @@ export class TrendingItems {
   navigateBack(): void {
     this.router.navigate(['/dashboard']);
   }
+
+  onImageError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    img.style.display = 'none';
+    const parent = img.parentElement;
+    if (parent) {
+      parent.innerHTML = '<span class="material-icons">inventory_2</span>';
+    }
+  }
 }
