@@ -58,40 +58,63 @@ export class IamStore {
   constructor(private iamApi: IamApi) {
     this.restorePersistedSession();
   }
-
-  login(email: string, _password: string): void {
+  login(email: string, password: string): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
 
-    const normalized = email.trim().toLowerCase();
-
     this.iamApi
-      .getAllUsers()
+      .login(email, password)
       .pipe(retry(1), takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (users) => {
-          const found = users.find(u => u.email.toLowerCase() === normalized);
-          if (!found) {
-            this.handleAuthenticationError(new Error('User not found'), 'User not found');
-            return;
-          }
-          this.handleAuthenticationSuccess(found);
+        next: (authResponse) => {
+          console.log('✅ Auth response:', authResponse);
+          localStorage.setItem('authToken', authResponse.token);
+          console.log('🔑 Token guardado, id:', authResponse.id);
+
+          this.iamApi.getUserById(authResponse.id).subscribe({
+            next: (user) => {
+              console.log('👤 Usuario obtenido:', user);
+              const resource: UserResource = {
+                id: authResponse.id,
+                email: authResponse.email,
+                name: user.name,
+                lastName: user.lastName,
+                role: user.role,
+                photoUrl: user.photoUrl ?? null,
+              } as any;
+              this.handleAuthenticationSuccess(resource);
+            },
+            error: (err) => {
+              console.log('❌ Error getUserById:', err);
+              const resource: UserResource = {
+                id: authResponse.id,
+                email: authResponse.email,
+                name: authResponse.email.split('@')[0],
+                lastName: '',
+                role: 'ROLE_YOUNG_ADULT',
+                photoUrl: null,
+              } as any;
+              this.handleAuthenticationSuccess(resource);
+            },
+          });
         },
-        error: (err) => this.handleAuthenticationError(err, 'Invalid email or password'),
+        error: (err) => {
+          console.log('❌ Error login:', err);
+          this.handleAuthenticationError(err, 'Invalid email or password');
+        },
       });
   }
-
   updateUserPhoto(photoUrl: string): Observable<void> {
     const user = this.currentUserSignal();
     if (!user) return EMPTY;
 
     const applyLocally = (): void => {
       const updated = new User({
-        id:       user.id,
-        email:    user.email,
-        name:     user.name,
+        id: user.id,
+        email: user.email,
+        name: user.name,
         lastName: user.lastName,
-        role:     user.role,
+        role: user.role,
         photoUrl,
       });
       this.currentUserSignal.set(updated);
@@ -101,14 +124,13 @@ export class IamStore {
           const parsed = JSON.parse(stored) as UserResource;
           parsed.photoUrl = photoUrl;
           localStorage.setItem(CURRENT_USER_STORAGE_KEY, JSON.stringify(parsed));
-        } catch { /* ignore */ }
+        } catch {
+          /* ignore */
+        }
       }
     };
 
-    return this.iamApi.updateUserPhoto(user.id, photoUrl).pipe(
-      retry(1),
-      tap(applyLocally)
-    );
+    return this.iamApi.updateUserPhoto(user.id, photoUrl).pipe(retry(1), tap(applyLocally));
   }
 
   /**
@@ -127,6 +149,7 @@ export class IamStore {
   logout(): void {
     this.currentUserSignal.set(null);
     this.errorSignal.set(null);
+    localStorage.removeItem('authToken');
     localStorage.removeItem(CURRENT_USER_STORAGE_KEY);
     this.router.navigate(['/iam/sign-in-home']).then();
   }
@@ -138,9 +161,9 @@ export class IamStore {
 
     const requestBody = {
       firstName: name,
-      lastName:  lastName,
-      email:     email,
-      password:  password,
+      lastName: lastName,
+      email: email,
+      password: password,
     };
 
     this.iamApi
@@ -153,15 +176,21 @@ export class IamStore {
       });
   }
 
-  registerDermatologist(email: string, password: string, name: string, lastName: string, specialty: string): void {
+  registerDermatologist(
+    email: string,
+    password: string,
+    name: string,
+    lastName: string,
+    specialty: string,
+  ): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
 
     const requestBody = {
       firstName: name,
-      lastName:  lastName,
-      email:     email,
-      password:  password,
+      lastName: lastName,
+      email: email,
+      password: password,
     };
 
     this.iamApi

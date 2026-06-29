@@ -3,6 +3,8 @@ import { provideRouter } from '@angular/router';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
+import { authInterceptor } from './shared/infrastructure/auth.interceptor';
+
 
 import { routes } from './app.routes';
 
@@ -17,5 +19,6 @@ export const appConfig: ApplicationConfig = {
       lang: 'en',
     }),
     provideRouter(routes),
+    provideHttpClient(withInterceptors([authInterceptor])),
   ],
 };

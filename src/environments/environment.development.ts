@@ -50,4 +50,6 @@ export const environment = {
   // Routine Management
   backendRoutinesEndpointPath: '/routines',
   backendDailyTrackingsEndpointPath: '/daily-trackings',
+
+  backendProductsEndpointPath: '/products',
 };
