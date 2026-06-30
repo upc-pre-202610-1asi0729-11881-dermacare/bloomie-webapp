@@ -29,6 +29,9 @@ export const environment = {
   backendAuthenticationRegisterDermatologistEndpointPath: '/authentication/register-dermatologist',
   backendDermatologistProfilesEndpointPath: '/dermatologist-profiles',
   backendAvailabilitiesEndpointPath: '/availabilities',
+  backendAppointmentsEndpointPath: '/appointments',
+  backendConsultationsEndpointPath: '/consultations',
+  backendFavoriteProductsEndpointPath: '/favorite-products',
   useMockAuthentication: false,
 
   // Skin Analysis
@@ -36,9 +39,7 @@ export const environment = {
   backendFacialScansEndpointPath: '/facial-scans',
   backendSkinAnalysesEndpointPath: '/skin-analyses',
 
-  backendAppointmentsEndpointPath: '/appointments',
-  backendConsultationsEndpointPath: '/consultations',
-
+  // Intelligent Support
   backendSupportQueriesEndpointPath: '/support-queries',
   backendChatMessagesEndpointPath: '/chat-messages',
 
@@ -47,8 +48,7 @@ export const environment = {
   backendDailyTrackingsEndpointPath: '/daily-trackings',
 
   backendProductsEndpointPath: '/products',
-
   backendSubscriptionsEndpointPath: '/subscriptions',
   backendPaymentsEndpointPath: '/payments',
-  backendPlansEndpointPath: '/plans'
+  backendPlansEndpointPath: '/plans',
 };

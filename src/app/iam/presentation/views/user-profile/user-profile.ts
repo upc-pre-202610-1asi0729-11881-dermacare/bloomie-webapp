@@ -32,8 +32,27 @@ export class UserProfile {
   }
 
   onSaveChanges(): void {
-    this.saveSuccess.set(true);
-    setTimeout(() => this.saveSuccess.set(false), 2000);
+    const user = this.iamStore.currentUser();
+    if (!user) return;
+
+    const emailChanged = this.email() !== user.email;
+
+    this.iamStore.updateUserProfile(user.id, this.name(), user.lastName, this.email())
+      .subscribe({
+        next: () => {
+          this.saveSuccess.set(true);
+          setTimeout(() => {
+            this.saveSuccess.set(false);
+            if (emailChanged) {
+              this.iamStore.logout();
+            }
+          }, 2000);
+        },
+        error: () => {
+          this.saveSuccess.set(true);
+          setTimeout(() => this.saveSuccess.set(false), 2000);
+        }
+      });
   }
 
   onNavigateToSkinProfile(): void {

@@ -268,4 +268,21 @@ export class IamStore {
     }
     this.router.navigate(['/dashboard']).then();
   }
+
+  updateUserProfile(userId: number, firstName: string, lastName: string, email: string): Observable<User> {
+    return this.iamApi.updateUserProfile(userId, firstName, lastName, email).pipe(
+      tap(updatedUser => {
+        const resource: UserResource = {
+          id:        updatedUser.id,
+          email:     updatedUser.email,
+          firstName: updatedUser.name,
+          lastName:  updatedUser.lastName,
+          role:      updatedUser.role,
+          photoUrl:  updatedUser.photoUrl,
+        } as any;
+        localStorage.setItem(CURRENT_USER_STORAGE_KEY, JSON.stringify(resource));
+        this.currentUserSignal.set(updatedUser);
+      })
+    );
+  }
 }

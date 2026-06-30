@@ -31,4 +31,6 @@ export class Layout {
     const url = this.currentUrl();
     return url.startsWith('/derm/') || url === '/derm';
   });
+
+  readonly isOnboardingScanRoute = computed(() => this.currentUrl().includes('/onboarding-scan'));
 }

@@ -41,7 +41,14 @@ export class SkinAnalysisStore {
   );
 
   readonly overallScoreImprovement = computed((): number => {
-    return 0;
+    const analyses = this.skinAnalysesSignal();
+    if (analyses.length < 2) return 0;
+    const sorted = [...analyses].sort(
+      (a, b) => new Date(a.analyzedAt).getTime() - new Date(b.analyzedAt).getTime()
+    );
+    const first  = sorted[0].overallScore;
+    const latest = sorted[sorted.length - 1].overallScore;
+    return Math.round(latest - first);
   });
 
   readonly adherenceRate = computed((): number => {
@@ -158,6 +165,11 @@ export class SkinAnalysisStore {
       .subscribe({
         next: analysis => {
           this.currentScanAnalysisSignal.set(analysis);
+          this.latestScanAnalysisSignal.set(analysis);
+          this.skinAnalysesSignal.update(analyses => {
+            const others = analyses.filter(a => a.facialScanId !== analysis.facialScanId);
+            return [...others, analysis];
+          });
           this.loadingSignal.set(false);
         },
         error: err => {
@@ -166,7 +178,6 @@ export class SkinAnalysisStore {
         },
       });
   }
-
   updateSkinProfile(skinProfile: SkinProfile): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
