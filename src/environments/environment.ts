@@ -47,4 +47,8 @@ export const environment = {
   backendDailyTrackingsEndpointPath: '/daily-trackings',
 
   backendProductsEndpointPath: '/products',
+
+  backendSubscriptionsEndpointPath: '/subscriptions',
+  backendPaymentsEndpointPath: '/payments',
+  backendPlansEndpointPath: '/plans'
 };
