@@ -79,8 +79,8 @@ export class LifestyleForm {
       sunExposure: this.sunExposure(),
       sleepHours:  this.sleepHabits(),
     }).subscribe({
-      next:  () => this.router.navigate(['/dashboard']),
-      error: () => this.router.navigate(['/dashboard']),
+      next:  () => this.router.navigate(['/iam/select-plan']),
+      error: () => this.router.navigate(['/iam/select-plan']),
     });
   }
 

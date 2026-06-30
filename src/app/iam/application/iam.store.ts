@@ -85,7 +85,7 @@ export class IamStore {
               this.handleAuthenticationSuccess(resource);
             },
             error: (err) => {
-              console.log('❌ Error getUserById:', err);
+              console.log('Error getUserById:', err);
               const resource: UserResource = {
                 id: authResponse.id,
                 email: authResponse.email,
@@ -99,7 +99,7 @@ export class IamStore {
           });
         },
         error: (err) => {
-          console.log('❌ Error login:', err);
+          console.log('Error login:', err);
           this.handleAuthenticationError(err, 'Invalid email or password');
         },
       });
@@ -161,16 +161,28 @@ export class IamStore {
 
     const requestBody = {
       firstName: name,
-      lastName: lastName,
-      email: email,
-      password: password,
+      lastName:  lastName,
+      email:     email,
+      password:  password,
     };
 
     this.iamApi
       .registerYoungAdult(requestBody as any)
       .pipe(retry(1), takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (user) => this.handleAuthenticationSuccess(user),
+        next: (user) => {
+          this.iamApi.login(email, password)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe({
+              next: (authResponse) => {
+                localStorage.setItem('authToken', authResponse.token);
+                this.handleAuthenticationSuccess(user);
+              },
+              error: () => {
+                this.handleAuthenticationSuccess(user);
+              }
+            });
+        },
         error: (err) =>
           this.handleAuthenticationError(err, 'Failed to register young adult account'),
       });

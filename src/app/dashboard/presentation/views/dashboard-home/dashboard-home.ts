@@ -2,6 +2,9 @@ import { Component, computed, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { ActivatedRoute } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../../environments/environment';
 
 import { SkinAnalysisStore } from '../../../../skin-analysis/application/skin-analysis.store';
 import { RoutineManagementStore } from '../../../../routine-management/application/routine-management.store';
@@ -109,14 +112,17 @@ export class DashboardHome implements OnInit {
   /** Provides the authenticated user's profile for personalized display. */
   private readonly iamStore = inject(IamStore);
 
+  private readonly route = inject(ActivatedRoute);
+  private readonly http = inject(HttpClient);
+
   // ─── Current user ────────────────────────────────────────────────────────────
 
   /** First name of the currently authenticated user. */
   readonly currentUserName = computed((): string => this.iamStore.currentUser()?.name ?? '');
 
   /** First letter of the user's name, used as the avatar placeholder. */
-  readonly currentUserFirstLetter = computed((): string =>
-    this.currentUserName()[0]?.toUpperCase() ?? '?',
+  readonly currentUserFirstLetter = computed(
+    (): string => this.currentUserName()[0]?.toUpperCase() ?? '?',
   );
 
   // ─── Greeting ────────────────────────────────────────────────────────────────
@@ -432,7 +438,7 @@ export class DashboardHome implements OnInit {
      */
     const weeklyData = Array.from({ length: 4 }, (_, i) => {
       const weeksFromNow = 3 - i;
-      const endDaysAgo   = weeksFromNow * 7;
+      const endDaysAgo = weeksFromNow * 7;
       const startDaysAgo = endDaysAgo + 6;
 
       const startDate = new Date(today);
@@ -442,7 +448,7 @@ export class DashboardHome implements OnInit {
       endDate.setDate(today.getDate() - endDaysAgo);
 
       /** Average overallScore of all analyses whose analyzedAt falls in this window. */
-      const inWindow = analyses.filter(a => {
+      const inWindow = analyses.filter((a) => {
         const d = new Date(a.analyzedAt);
         d.setHours(0, 0, 0, 0);
         return d >= startDate && d <= endDate;
@@ -459,12 +465,9 @@ export class DashboardHome implements OnInit {
       return { label, score };
     });
 
-    const validScores = weeklyData.map(w => w.score).filter((s): s is number => s !== null);
+    const validScores = weeklyData.map((w) => w.score).filter((s): s is number => s !== null);
     const maximumScore = validScores.length > 0 ? Math.max(...validScores) : 100;
-    const latestNonNullIndex = weeklyData.reduce(
-      (last, w, i) => (w.score !== null ? i : last),
-      -1,
-    );
+    const latestNonNullIndex = weeklyData.reduce((last, w, i) => (w.score !== null ? i : last), -1);
 
     return weeklyData.map(({ label, score }, i) => {
       const numericScore = score ?? 0;
@@ -710,6 +713,7 @@ export class DashboardHome implements OnInit {
      * This hook is kept for future dashboard-specific initialization (e.g.
      * analytics events, scroll restoration, etc.).
      */
+    this.checkStripeReturn();
   }
 
   // ─── Navigation helpers ──────────────────────────────────────────────────────
@@ -756,4 +760,48 @@ export class DashboardHome implements OnInit {
   navigateToAction(route: string): void {
     this.router.navigate([route]);
   }
+
+  private checkStripeReturn(): void {
+      const sessionId  = this.route.snapshot.queryParams['session_id'];
+      console.log('session_id:', sessionId);
+      if (!sessionId) return;
+
+    const user      = this.iamStore.currentUser();
+    const token     = localStorage.getItem('authToken');
+    const planId    = localStorage.getItem('pendingPlanId');
+    const planAmount = localStorage.getItem('pendingPlanAmount'); // ← agrega aquí
+
+    console.log('user:', user);
+    console.log('token:', token);
+    console.log('planId:', planId);
+
+    if (!user || !planId) return;
+
+    this.http.post<any>(
+      `${environment.backendBasePath}${environment.backendSubscriptionsEndpointPath}`,
+      { patientId: user.id, planId: Number(planId) }
+    ).subscribe({
+      next: (subscription) => {
+        this.http.post(
+          `${environment.backendBasePath}${environment.backendPaymentsEndpointPath}`,
+          {
+            patientId:      user.id,
+            planId:         Number(planId),
+            subscriptionId: subscription.id,
+            paymentAmount:  Number(planAmount ?? 0),
+          }
+        ).subscribe({
+          next: () => {
+            localStorage.removeItem('pendingPlanId');
+            localStorage.removeItem('pendingPlanName');
+            localStorage.removeItem('pendingPlanAmount');
+            window.history.replaceState({}, '', '/dashboard');
+          },
+          error: (err) => console.error('Payment registration failed:', err)
+        });
+      },
+      error: (err) => console.error('Subscription creation failed:', err)
+    });
+  }
 }
+
