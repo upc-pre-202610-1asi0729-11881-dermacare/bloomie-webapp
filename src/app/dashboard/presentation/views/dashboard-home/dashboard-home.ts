@@ -762,46 +762,18 @@ export class DashboardHome implements OnInit {
   }
 
   private checkStripeReturn(): void {
-      const sessionId  = this.route.snapshot.queryParams['session_id'];
-      console.log('session_id:', sessionId);
-      if (!sessionId) return;
+    const sessionId = this.route.snapshot.queryParams['session_id'];
+    if (!sessionId) return;
 
-    const user      = this.iamStore.currentUser();
-    const token     = localStorage.getItem('authToken');
-    const planId    = localStorage.getItem('pendingPlanId');
-    const planAmount = localStorage.getItem('pendingPlanAmount'); // ← agrega aquí
+    const processed = localStorage.getItem(`stripe_processed_${sessionId}`);
+    if (processed) return;
+    localStorage.setItem(`stripe_processed_${sessionId}`, 'true');
 
-    console.log('user:', user);
-    console.log('token:', token);
-    console.log('planId:', planId);
 
-    if (!user || !planId) return;
-
-    this.http.post<any>(
-      `${environment.backendBasePath}${environment.backendSubscriptionsEndpointPath}`,
-      { patientId: user.id, planId: Number(planId) }
-    ).subscribe({
-      next: (subscription) => {
-        this.http.post(
-          `${environment.backendBasePath}${environment.backendPaymentsEndpointPath}`,
-          {
-            patientId:      user.id,
-            planId:         Number(planId),
-            subscriptionId: subscription.id,
-            paymentAmount:  Number(planAmount ?? 0),
-          }
-        ).subscribe({
-          next: () => {
-            localStorage.removeItem('pendingPlanId');
-            localStorage.removeItem('pendingPlanName');
-            localStorage.removeItem('pendingPlanAmount');
-            window.history.replaceState({}, '', '/dashboard');
-          },
-          error: (err) => console.error('Payment registration failed:', err)
-        });
-      },
-      error: (err) => console.error('Subscription creation failed:', err)
-    });
+    localStorage.removeItem('pendingPlanId');
+    localStorage.removeItem('pendingPlanName');
+    localStorage.removeItem('pendingPlanAmount');
+    window.history.replaceState({}, '', '/dashboard');
   }
 }
 
