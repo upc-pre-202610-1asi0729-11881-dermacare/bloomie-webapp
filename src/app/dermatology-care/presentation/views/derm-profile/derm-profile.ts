@@ -53,6 +53,7 @@ export class DermProfile {
   constructor() {
     const user = this.iamStore.currentUser();
     if (user) {
+      // Fallback default until the dermatologist profile (source of truth for fullName) loads.
       this.name.set(user.name);
       this.email.set(user.email);
     }
@@ -62,6 +63,9 @@ export class DermProfile {
       if (!u) return;
       const profile = profiles.find((p) => Number(p.userId) === Number(u.id));
       if (profile) {
+        // Re-runs after every save too (the store replaces the profile in its signal
+        // with the backend response), so these fields always reflect what's actually saved.
+        this.name.set(profile.fullName || u.name);
         this.specialty.set(profile.specialty);
         this.fee.set(profile.consultationFee.toString());
         this.licenseNumber.set(profile.licenseNumber);
@@ -82,9 +86,26 @@ export class DermProfile {
       .dermatologistProfiles()
       .find((p) => Number(p.userId) === Number(user.id));
     if (!profile) return;
+
+    profile.fullName = this.name();
     profile.licenseNumber = this.licenseNumber();
     profile.contactPhone = this.contactPhone();
     this.dermatologyCareStore.updateDermatologistProfile(profile);
+
+    // The name/email shown here are the dermatologist's IAM account identity
+    // (sidebar greeting, login), not part of the dermatology-care profile —
+    // that PUT alone never touches the `users` table, so update it too.
+    const emailChanged = this.email() !== user.email;
+    const [firstName, ...rest] = this.name().trim().split(/\s+/);
+    const lastName = rest.join(' ');
+    this.iamStore.updateUserProfile(user.id, firstName || user.name, lastName, this.email())
+      .subscribe({
+        next: () => {
+          if (emailChanged) this.iamStore.logout();
+        },
+        error: () => {},
+      });
+
     this.savePersonalSuccess.set(true);
     setTimeout(() => this.savePersonalSuccess.set(false), 2000);
   }

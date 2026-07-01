@@ -126,12 +126,15 @@ export class DermatologyCareStore {
   readonly upcomingAvailableDates = computed((): Date[] => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    const availabilities = this.availabilitiesSignal();
+    const allAvailabilities = this.availabilitiesSignal();
+    const activeAvailabilities = allAvailabilities.filter((a) => a.active);
     const dates: Date[] = [];
     for (let i = 0; i <= DermatologyCareStore.AVAILABILITY_LOOKAHEAD_DAYS; i++) {
       const date = new Date(today);
       date.setDate(today.getDate() + i);
-      if (availabilities.length === 0 || availabilities.some((a) => a.matchesDate(date))) {
+      // No schedule configured at all -> assume every day is bookable. Once a
+      // schedule exists, only its still-active days are, even if that's none.
+      if (allAvailabilities.length === 0 || activeAvailabilities.some((a) => a.matchesDate(date))) {
         dates.push(date);
       }
     }
@@ -143,7 +146,7 @@ export class DermatologyCareStore {
    * @param date - The calendar date to get slots for.
    */
   timeSlotsForDate(date: Date): string[] {
-    return this.availabilitiesSignal().find((a) => a.matchesDate(date))?.timeSlots ?? [];
+    return this.availabilitiesSignal().filter((a) => a.active).find((a) => a.matchesDate(date))?.timeSlots ?? [];
   }
 
   /**
@@ -161,6 +164,7 @@ export class DermatologyCareStore {
           this.loadedForDermatologistId = user.id;
           this.loadAppointments(user.id);
           this.loadConsultations(user.id);
+          this.loadAvailabilities(user.id);
         }
       });
     });
@@ -331,6 +335,32 @@ export class DermatologyCareStore {
         },
         error: (err) => {
           this.errorSignal.set(this.formatError(err, 'Failed to create availability'));
+          this.loadingSignal.set(false);
+        },
+      });
+  }
+
+  /**
+   * Updates an existing dermatologist availability slot.
+   * @param availability - The availability slot to update (must carry its existing id).
+   */
+  updateAvailability(availability: DermatologistAvailability): void {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    this.dermatologyCareApi
+      .updateDermatologistAvailability(availability)
+      .pipe(retry(2))
+      .subscribe({
+        next: (updatedAvailability) => {
+          this.availabilitiesSignal.update((availabilities) =>
+            availabilities.map((existing) =>
+              existing.id === updatedAvailability.id ? updatedAvailability : existing,
+            ),
+          );
+          this.loadingSignal.set(false);
+        },
+        error: (err) => {
+          this.errorSignal.set(this.formatError(err, 'Failed to update availability'));
           this.loadingSignal.set(false);
         },
       });
