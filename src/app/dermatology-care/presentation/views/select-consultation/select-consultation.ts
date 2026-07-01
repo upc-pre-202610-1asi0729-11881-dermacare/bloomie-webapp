@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal, untracked } from '@angular/core';
+import { Component, effect, inject, OnInit, signal, untracked } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -14,7 +14,7 @@ import { IamStore } from '../../../../iam/application/iam.store';
   templateUrl: './select-consultation.html',
   styleUrl:    './select-consultation.css',
 })
-export class SelectConsultation {
+export class SelectConsultation implements OnInit {
   readonly store            = inject(DermatologyCareStore);
   private readonly iamStore = inject(IamStore);
   private readonly translate = inject(TranslateService);
@@ -23,6 +23,11 @@ export class SelectConsultation {
   readonly ConsultationStatus = ConsultationStatus;
 
   protected readonly userPhotoMap = signal<Record<number, string | null>>({});
+
+  ngOnInit(): void {
+    const user = this.iamStore.currentUser();
+    if (user) this.store.loadConsultationsByPatientId(user.id);
+  }
 
   constructor() {
     effect(() => {

@@ -5,8 +5,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { DermatologyCareStore } from '../../../application/dermatology-care.store';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../../environments/environment';
 
 export type DermCallTab = 'chat' | 'notes';
 
@@ -28,7 +26,6 @@ export class DermVirtualCall implements OnInit, OnDestroy {
   protected router = inject(Router);
   private readonly translate = inject(TranslateService);
   private readonly sanitizer = inject(DomSanitizer);
-  private readonly http = inject(HttpClient);
 
   showEndModal = signal<boolean>(false);
   activeTab = signal<DermCallTab>('notes');
@@ -53,6 +50,8 @@ export class DermVirtualCall implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.startTimer();
+    const appt = this.store.selectedAppointment();
+    if (appt) this.store.startConsultationSession(appt);
   }
 
   ngOnDestroy(): void {
@@ -85,8 +84,7 @@ export class DermVirtualCall implements OnInit, OnDestroy {
     if (appt) {
       const consultation = this.store.myConsultations().find((c) => c.appointmentId === appt.id);
       if (consultation) {
-        consultation.notes = this.notes;
-        this.store.updateConsultation(consultation);
+        this.store.saveConsultationNotes(consultation, this.notes);
       }
     }
     this.saveSuccess.set(true);
@@ -98,22 +96,14 @@ export class DermVirtualCall implements OnInit, OnDestroy {
     this.showEndModal.set(false);
 
     const appt = this.store.selectedAppointment();
-    if (appt) {
-      const consultation = this.store.myConsultations()
-        .find(c => c.appointmentId === appt.id);
-
-      if (consultation) {
-        this.http.put(
-          `${environment.backendBasePath}${environment.backendConsultationsEndpointPath}/${consultation.id}/finish`,
-          {}
-        ).subscribe({
-          next: () => console.log('Consultation finished'),
-          error: (err) => console.error('Failed to finish consultation:', err)
-        });
-      }
+    if (!appt) {
+      this.router.navigate(['/derm/agenda']);
+      return;
     }
-
-    this.router.navigate(['/derm/agenda']);
+    this.store.endConsultationSession(appt, this.notes).subscribe({
+      complete: () => this.router.navigate(['/derm/agenda']),
+      error: () => this.router.navigate(['/derm/agenda']),
+    });
   }
 
   sendMessage(): void {

@@ -19,7 +19,7 @@
   <!-- ── Content ─────────────────────────────────────────────────────────────── -->
   <div class="sa-content">
 
-    @if (store.appointments().length === 0) {
+    @if (upcomingAppointments().length === 0) {
       <!-- Empty state -->
       <div class="sa-empty">
         <div class="sa-empty__icon-wrap">
@@ -31,7 +31,7 @@
 
     } @else {
       <div class="sa-cards">
-        @for (apt of store.appointments(); track apt.id) {
+        @for (apt of upcomingAppointments(); track apt.id) {
 
           <div class="sa-card"
                [class.sa-card--cancelled]="apt.isCancelled"

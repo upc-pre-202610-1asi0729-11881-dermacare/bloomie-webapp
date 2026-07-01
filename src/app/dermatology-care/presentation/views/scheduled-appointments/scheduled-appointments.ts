@@ -53,8 +53,13 @@ export class ScheduledAppointments {
     }
   }
 
+  /** Appointments still pending a virtual call — excludes completed sessions, which move to past consultations. */
+  readonly upcomingAppointments = computed(() =>
+    this.store.appointments().filter(a => a.status !== AppointmentStatus.Completed)
+  );
+
   readonly activeAppointmentCount = computed(() =>
-    this.store.appointments().filter(a => !a.isCancelled).length
+    this.upcomingAppointments().filter(a => !a.isCancelled).length
   );
 
   protected doctorProfileForAppointment(apt: Appointment): DermatologistProfile | undefined {

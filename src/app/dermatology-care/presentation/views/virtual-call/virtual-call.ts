@@ -71,6 +71,8 @@ export class VirtualCall implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.startTimer();
+    const appt = this.store.selectedAppointment();
+    if (appt) this.store.startConsultationSession(appt);
   }
 
   ngOnDestroy(): void {
@@ -101,7 +103,16 @@ export class VirtualCall implements OnInit, OnDestroy {
   confirmEndCall(): void {
     if (this.timerInterval) clearInterval(this.timerInterval);
     this.showEndModal.set(false);
-    this.router.navigate(['/dermatology/scheduled-appointments']);
+
+    const appt = this.store.selectedAppointment();
+    if (!appt) {
+      this.router.navigate(['/dermatology/scheduled-appointments']);
+      return;
+    }
+    this.store.endConsultationSession(appt).subscribe({
+      complete: () => this.router.navigate(['/dermatology/scheduled-appointments']),
+      error: () => this.router.navigate(['/dermatology/scheduled-appointments']),
+    });
   }
 
   sendMessage(): void {

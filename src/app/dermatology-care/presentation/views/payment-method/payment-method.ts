@@ -1,5 +1,6 @@
 import {Component, inject, signal} from '@angular/core';
 import {Router} from '@angular/router';
+import {switchMap} from 'rxjs';
 import {MatIconModule} from '@angular/material/icon';
 import {FormsModule} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
@@ -8,7 +9,7 @@ import {IamStore} from '../../../../iam/application/iam.store';
 import {Appointment, AppointmentStatus} from '../../../domain/model/appointment.entity';
 
 export type PaymentStep = 'select' | 'add-card' | 'confirmed';
-export type PaymentOption = 'credit-card' | 'debit-card' | 'google-pay' | 'yape' | null;
+export type PaymentOption = 'credit-card' | 'debit-card' | null;
 
 interface PaymentMethodOption {
   id:       PaymentOption;
@@ -43,18 +44,12 @@ export class PaymentMethod {
     { id: 'debit-card',  labelKey: 'dermatology.payment.debitCard',  icon: 'credit_card' },
   ];
 
-  readonly walletMethods: PaymentMethodOption[] = [
-    { id: 'google-pay', labelKey: 'dermatology.payment.googlePay', icon: 'g_mobiledata' },
-    { id: 'yape',       labelKey: 'dermatology.payment.yape',       icon: 'smartphone'   },
-  ];
-
   selectPaymentMethod(method: PaymentOption): void {
     this.selectedPayment.set(method);
   }
 
   proceedToCardDetails(): void {
-    const selected = this.selectedPayment();
-    if (selected === 'credit-card' || selected === 'debit-card') {
+    if (this.selectedPayment()) {
       this.step.set('add-card');
     }
   }
@@ -106,7 +101,12 @@ export class PaymentMethod {
         cancellationReason: '',
       });
 
-      this.store.addAppointment(appointment);
+      // Confirm right after scheduling so the appointment is ready for its
+      // consultation to start — the backend requires CONFIRMED status for that.
+      this.store
+        .addAppointment(appointment)
+        .pipe(switchMap((created) => this.store.confirmAppointment(created)))
+        .subscribe({ error: () => {} });
     }
 
     this.step.set('confirmed');

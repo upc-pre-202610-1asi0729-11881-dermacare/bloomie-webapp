@@ -43,24 +43,8 @@
       <div class="payment-method__card">
         <p class="payment-method__card-title">{{ 'dermatology.payment.selectMethod' | translate }}</p>
         <p class="payment-method__section-label">{{ 'dermatology.payment.creditDebit' | translate }}</p>
-        <div class="payment-method__methods">
-          @for (method of cardMethods; track method.id) {
-            <div class="payment-method__method-row"
-                 [class.payment-method__method-row--selected]="selectedPayment() === method.id"
-                 (click)="selectPaymentMethod(method.id)">
-              <div class="payment-method__method-icon-wrap">
-                <mat-icon class="payment-method__method-icon">{{ method.icon }}</mat-icon>
-              </div>
-              <span class="payment-method__method-label">{{ method.labelKey | translate }}</span>
-              <div class="payment-method__radio" [class.payment-method__radio--selected]="selectedPayment() === method.id">
-                @if (selectedPayment() === method.id) { <div class="payment-method__radio-dot"></div> }
-              </div>
-            </div>
-          }
-        </div>
-        <p class="payment-method__section-label">{{ 'dermatology.payment.digitalWallets' | translate }}</p>
         <div class="payment-method__methods payment-method__methods--mb">
-          @for (method of walletMethods; track method.id) {
+          @for (method of cardMethods; track method.id) {
             <div class="payment-method__method-row"
                  [class.payment-method__method-row--selected]="selectedPayment() === method.id"
                  (click)="selectPaymentMethod(method.id)">
