@@ -1,4 +1,5 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -17,6 +18,14 @@ export class ConsultationSummary implements OnInit {
   private readonly iamStore  = inject(IamStore);
   protected router           = inject(Router);
   private readonly translate = inject(TranslateService);
+
+  /**
+   * Reactive tick for the active language — `computed()` doesn't track
+   * `translate.instant()`/`translate.currentLang` reads as dependencies on
+   * its own, so computeds that resolve translations must read this to
+   * recompute when the user switches language.
+   */
+  private readonly languageChange = toSignal(this.translate.onLangChange, { initialValue: null });
 
   readonly doctorPhotoUrl = signal<string | null>(null);
 
@@ -45,6 +54,7 @@ export class ConsultationSummary implements OnInit {
   });
 
   readonly doctorLabel = computed((): string => {
+    this.languageChange();
     const p = this.doctorProfile();
     if (!p) return this.translate.instant('dermatology.consultationSummary.doctorLabel');
     return p.fullName ? `Dr. ${p.fullName}` : p.specialty;
@@ -58,6 +68,7 @@ export class ConsultationSummary implements OnInit {
   });
 
   readonly formattedDate = computed((): string => {
+    this.languageChange();
     const c = this.store.selectedConsultation();
     if (!c?.startedAt) return '—';
     const lang = this.translate.currentLang === 'es' ? 'es-ES' : 'en-US';
@@ -65,6 +76,7 @@ export class ConsultationSummary implements OnInit {
   });
 
   readonly formattedTime = computed((): string => {
+    this.languageChange();
     const c = this.store.selectedConsultation();
     if (!c?.startedAt) return '';
     const lang = this.translate.currentLang === 'es' ? 'es-ES' : 'en-US';
