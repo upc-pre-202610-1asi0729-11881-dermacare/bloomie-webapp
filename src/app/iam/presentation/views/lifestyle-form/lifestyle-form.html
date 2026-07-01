@@ -117,8 +117,10 @@
 
       <!-- Next button -->
       <div class="lf__card-actions">
-        <button class="lf__next-btn" type="button" (click)="onNext()">
-          {{ 'iam.lifestyleForm.nextButton' | translate }}
+        <button class="lf__next-btn" type="button"
+                [disabled]="submitting()"
+                (click)="onNext()">
+          {{ submitting() ? 'Loading...' : ('iam.lifestyleForm.nextButton' | translate) }}
         </button>
       </div>
     </div>

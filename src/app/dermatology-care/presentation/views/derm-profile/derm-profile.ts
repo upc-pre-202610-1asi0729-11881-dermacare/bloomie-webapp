@@ -7,6 +7,11 @@ import {SlicePipe} from '@angular/common';
 import {IamStore} from '../../../../iam/application/iam.store';
 import {DermatologyCareStore} from '../../../application/dermatology-care.store';
 import {PhotoUpload} from '../../../../shared/presentation/components/photo-upload/photo-upload';
+import {
+  formatLicenseNumber,
+  LICENSE_NUMBER_MAX_LENGTH,
+  LICENSE_NUMBER_PLACEHOLDER,
+} from '../../../../shared/presentation/utils/license-number.util';
 
 @Component({
   selector: 'app-derm-profile',
@@ -40,6 +45,9 @@ export class DermProfile {
   protected savePersonalSuccess = signal<boolean>(false);
   protected saveProfessionalSuccess = signal<boolean>(false);
 
+  protected readonly licenseNumberPlaceholder = LICENSE_NUMBER_PLACEHOLDER;
+  protected readonly licenseNumberMaxLength   = LICENSE_NUMBER_MAX_LENGTH;
+
   protected readonly currentPhotoUrl = computed(() => this.iamStore.currentUser()?.photoUrl);
 
   constructor() {
@@ -61,6 +69,10 @@ export class DermProfile {
         this.biography.set(profile.biography);
       }
     });
+  }
+
+  onLicenseNumberChange(rawValue: string): void {
+    this.licenseNumber.set(formatLicenseNumber(rawValue));
   }
 
   onSavePersonal(): void {

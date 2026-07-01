@@ -769,11 +769,12 @@ export class DashboardHome implements OnInit {
     if (processed) return;
     localStorage.setItem(`stripe_processed_${sessionId}`, 'true');
 
-
     localStorage.removeItem('pendingPlanId');
     localStorage.removeItem('pendingPlanName');
     localStorage.removeItem('pendingPlanAmount');
     window.history.replaceState({}, '', '/dashboard');
+
+    this.router.navigate(['/skin-analysis/onboarding-scan']);
   }
 }
 

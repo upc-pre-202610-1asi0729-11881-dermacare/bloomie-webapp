@@ -5,6 +5,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { DermatologyCareStore } from '../../../application/dermatology-care.store';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../../environments/environment';
 
 export type DermCallTab = 'chat' | 'notes';
 
@@ -26,6 +28,7 @@ export class DermVirtualCall implements OnInit, OnDestroy {
   protected router = inject(Router);
   private readonly translate = inject(TranslateService);
   private readonly sanitizer = inject(DomSanitizer);
+  private readonly http = inject(HttpClient);
 
   showEndModal = signal<boolean>(false);
   activeTab = signal<DermCallTab>('notes');
@@ -93,6 +96,23 @@ export class DermVirtualCall implements OnInit, OnDestroy {
   confirmEndCall(): void {
     if (this.timerInterval) clearInterval(this.timerInterval);
     this.showEndModal.set(false);
+
+    const appt = this.store.selectedAppointment();
+    if (appt) {
+      const consultation = this.store.myConsultations()
+        .find(c => c.appointmentId === appt.id);
+
+      if (consultation) {
+        this.http.put(
+          `${environment.backendBasePath}${environment.backendConsultationsEndpointPath}/${consultation.id}/finish`,
+          {}
+        ).subscribe({
+          next: () => console.log('Consultation finished'),
+          error: (err) => console.error('Failed to finish consultation:', err)
+        });
+      }
+    }
+
     this.router.navigate(['/derm/agenda']);
   }
 

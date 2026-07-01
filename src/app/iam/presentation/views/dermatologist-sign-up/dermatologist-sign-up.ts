@@ -28,15 +28,6 @@ export class DermatologistSignUp {
   protected readonly showConfirmPassword = signal<boolean>(false);
   protected readonly submitted = signal<boolean>(false);
 
-  protected readonly specialties = [
-    'Dermatology',
-    'Pediatric Dermatology',
-    'Cosmetic Dermatology',
-    'Dermatopathology',
-    'Mohs Surgery',
-    'Teledermatology',
-  ];
-
   protected readonly form = this.formBuilder.group(
     {
       firstName: new FormControl<string>('', {
@@ -50,10 +41,6 @@ export class DermatologistSignUp {
       email: new FormControl<string>('', {
         nonNullable: true,
         validators: [Validators.required, Validators.email],
-      }),
-      specialty: new FormControl<string>('', {
-        nonNullable: true,
-        validators: [Validators.required],
       }),
       password: new FormControl<string>('', {
         nonNullable: true,
@@ -78,8 +65,8 @@ export class DermatologistSignUp {
   onSubmit = (): void => {
     this.submitted.set(true);
     if (this.form.invalid) return;
-    const { firstName, lastName, email, specialty, password } = this.form.getRawValue();
-    this.iamStore.registerDermatologist(email, password, firstName, lastName, specialty);
+    const { firstName, lastName, email, password } = this.form.getRawValue();
+    this.iamStore.registerDermatologist(email, password, firstName, lastName);
   };
 
   onBack = (): void => {

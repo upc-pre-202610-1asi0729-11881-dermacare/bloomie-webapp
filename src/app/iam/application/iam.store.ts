@@ -193,7 +193,6 @@ export class IamStore {
     password: string,
     name: string,
     lastName: string,
-    specialty: string,
   ): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);

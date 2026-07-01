@@ -100,11 +100,14 @@
               <input
                 class="setup__input"
                 type="text"
-                placeholder="e.g. ML-2024-001234"
+                [placeholder]="'e.g. ' + licenseNumberPlaceholder"
+                [maxlength]="licenseNumberMaxLength"
+                autocomplete="off"
+                spellcheck="false"
                 [ngModel]="licenseNumber()"
-                (ngModelChange)="licenseNumber.set($event)"
+                (ngModelChange)="onLicenseNumberChange($event)"
               />
-              <p class="setup__field-hint">Visible to patients to verify your credentials.</p>
+              <p class="setup__field-hint">Format: {{ licenseNumberPlaceholder }} — visible to patients to verify your credentials.</p>
             </div>
           </div>
         }
