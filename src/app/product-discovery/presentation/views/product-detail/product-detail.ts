@@ -4,6 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ProductDiscoveryStore } from '../../../application/product-discovery.store';
 import { FavoriteProduct } from '../../../domain/model/favorite-product.entity';
+import { IamStore } from '../../../../iam/application/iam.store';
 
 /**
  * Displays the full detail of a selected skincare product,
@@ -18,6 +19,7 @@ import { FavoriteProduct } from '../../../domain/model/favorite-product.entity';
 export class ProductDetail {
   readonly store = inject(ProductDiscoveryStore);
   protected router = inject(Router);
+  private readonly iamStore = inject(IamStore);
 
   /**
    * Skin profile ID used to look up the compatibility record.
@@ -57,7 +59,7 @@ export class ProductDetail {
     } else {
       const newFavorite = new FavoriteProduct({
         id: 0,
-        userId: 1,
+        userId: this.iamStore.currentUser()?.id ?? 0,
         productId: product.id,
         savedAt: new Date().toISOString(),
       });

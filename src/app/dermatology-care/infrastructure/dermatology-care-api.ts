@@ -12,7 +12,8 @@ import {AppointmentsApiEndpoint} from './appointments-api-endpoint';
 import {ConsultationsApiEndpoint} from './consultations-api-endpoint'
 import { ConsultationResource } from './consultation.response';
 import { environment } from '../../../environments/environment';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
+import { of } from 'rxjs';
 import { ConsultationAssembler } from './consultation.assembler';
 import { AppointmentResource } from './appointment.response';
 import { AppointmentAssembler } from './appointment.assembler';
@@ -147,12 +148,35 @@ export class DermatologyCareApi extends BaseApi {
   }
 
   /**
-   * Updates an existing appointment.
-   * @param appointment - The appointment to update.
-   * @returns Stream with the updated Appointment entity.
+   * Confirms a scheduled appointment so its consultation can be started.
+   * @param appointmentId - The ID of the appointment to confirm.
+   * @param patientId     - The patient ID, validated against the appointment owner.
+   * @returns Stream with the confirmed Appointment entity.
    */
-  updateAppointment(appointment: Appointment): Observable<Appointment> {
-    return this.appointmentsEndpoint.update(appointment, appointment.id);
+  confirmAppointment(appointmentId: number, patientId: number): Observable<Appointment> {
+    return this.http
+      .put<AppointmentResource>(
+        `${environment.backendBasePath}${environment.backendAppointmentsEndpointPath}/${appointmentId}/confirm`,
+        { patientId },
+      )
+      .pipe(map((r) => new AppointmentAssembler().toEntityFromResource(r)));
+  }
+
+  /**
+   * Cancels an appointment. The endpoint returns no body on success.
+   * @param appointmentId      - The ID of the appointment to cancel.
+   * @param patientId          - The patient ID, validated against the appointment owner.
+   * @param cancellationReason - The reason provided for the cancellation.
+   */
+  cancelAppointmentRequest(
+    appointmentId: number,
+    patientId: number,
+    cancellationReason: string,
+  ): Observable<void> {
+    return this.http.put<void>(
+      `${environment.backendBasePath}${environment.backendAppointmentsEndpointPath}/${appointmentId}/cancel`,
+      { patientId, cancellationReason },
+    );
   }
 
   /**
@@ -180,21 +204,74 @@ export class DermatologyCareApi extends BaseApi {
   }
 
   /**
-   * Creates a new consultation.
-   * @param consultation - The consultation to create.
-   * @returns Stream with the created Consultation entity.
+   * Retrieves the consultation already started for a given appointment, if any.
+   * Used to recover when a second party (patient or dermatologist) joins a call
+   * after the other side has already started the consultation.
+   * @param appointmentId - The appointment ID to look up.
+   * @returns Stream with the matched Consultation, or null if none exists yet.
    */
-  createConsultation(consultation: Consultation): Observable<Consultation> {
-    return this.consultationsEndpoint.create(consultation);
+  getConsultationByAppointmentId(appointmentId: number): Observable<Consultation | null> {
+    return this.http
+      .get<
+        ConsultationResource[]
+      >(`${environment.backendBasePath}${environment.backendConsultationsEndpointPath}?appointmentId=${appointmentId}`)
+      .pipe(
+        map((resources) =>
+          resources.length > 0 ? new ConsultationAssembler().toEntityFromResource(resources[0]) : null,
+        ),
+        catchError(() => of(null)),
+      );
   }
 
   /**
-   * Updates an existing consultation.
-   * @param consultation - The consultation to update.
+   * Starts a new consultation for a confirmed appointment.
+   * @param appointmentId   - The confirmed appointment the consultation belongs to.
+   * @param dermatologistId - The dermatologist conducting the consultation.
+   * @param patientId       - The patient attending the consultation.
+   * @returns Stream with the created Consultation entity.
+   */
+  startConsultation(
+    appointmentId: number,
+    dermatologistId: number,
+    patientId: number,
+  ): Observable<Consultation> {
+    return this.http
+      .post<ConsultationResource>(
+        `${environment.backendBasePath}${environment.backendConsultationsEndpointPath}`,
+        { appointmentId, dermatologistId, patientId },
+      )
+      .pipe(map((r) => new ConsultationAssembler().toEntityFromResource(r)));
+  }
+
+  /**
+   * Saves clinical notes progressively during an in-progress consultation.
+   * @param consultationId - The consultation to update.
+   * @param notes          - The notes text to persist.
    * @returns Stream with the updated Consultation entity.
    */
-  updateConsultation(consultation: Consultation): Observable<Consultation> {
-    return this.consultationsEndpoint.update(consultation, consultation.id);
+  saveConsultationNotes(consultationId: number, notes: string): Observable<Consultation> {
+    return this.http
+      .put<ConsultationResource>(
+        `${environment.backendBasePath}${environment.backendConsultationsEndpointPath}/${consultationId}/save-notes`,
+        { notes },
+      )
+      .pipe(map((r) => new ConsultationAssembler().toEntityFromResource(r)));
+  }
+
+  /**
+   * Finishes and closes a consultation session. Completes the associated
+   * appointment automatically on the backend.
+   * @param consultationId  - The consultation to finish.
+   * @param dermatologistId - The dermatologist closing the session.
+   * @returns Stream with the finished Consultation entity.
+   */
+  finishConsultation(consultationId: number, dermatologistId: number): Observable<Consultation> {
+    return this.http
+      .put<ConsultationResource>(
+        `${environment.backendBasePath}${environment.backendConsultationsEndpointPath}/${consultationId}/finish`,
+        { dermatologistId },
+      )
+      .pipe(map((r) => new ConsultationAssembler().toEntityFromResource(r)));
   }
 
   getAppointmentsByDermatologistId(dermatologistId: number): Observable<Appointment[]> {
@@ -220,4 +297,5 @@ export class DermatologyCareApi extends BaseApi {
         ),
       );
   }
+
 }

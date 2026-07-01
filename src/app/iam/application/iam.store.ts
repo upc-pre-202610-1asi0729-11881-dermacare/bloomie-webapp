@@ -8,7 +8,9 @@ import { UserAssembler } from '../infrastructure/user.assembler';
 import { UserResource } from '../infrastructure/user.response';
 import { DermatologistResource } from '../infrastructure/dermatologist.response';
 
-// Temporary: stores the authenticated user in localStorage until JWT is implemented.
+// Temporary: stores the authenticated user in sessionStorage until JWT is implemented.
+// sessionStorage is scoped per browser tab, so different accounts can stay signed in
+// side by side in separate tabs without one login overwriting the other.
 const CURRENT_USER_STORAGE_KEY = 'currentUser';
 
 /**
@@ -68,7 +70,7 @@ export class IamStore {
       .subscribe({
         next: (authResponse) => {
           console.log('✅ Auth response:', authResponse);
-          localStorage.setItem('authToken', authResponse.token);
+          sessionStorage.setItem('authToken', authResponse.token);
           console.log('🔑 Token guardado, id:', authResponse.id);
 
           this.iamApi.getUserById(authResponse.id).subscribe({
@@ -118,12 +120,12 @@ export class IamStore {
         photoUrl,
       });
       this.currentUserSignal.set(updated);
-      const stored = localStorage.getItem(CURRENT_USER_STORAGE_KEY);
+      const stored = sessionStorage.getItem(CURRENT_USER_STORAGE_KEY);
       if (stored) {
         try {
           const parsed = JSON.parse(stored) as UserResource;
           parsed.photoUrl = photoUrl;
-          localStorage.setItem(CURRENT_USER_STORAGE_KEY, JSON.stringify(parsed));
+          sessionStorage.setItem(CURRENT_USER_STORAGE_KEY, JSON.stringify(parsed));
         } catch {
           /* ignore */
         }
@@ -149,8 +151,8 @@ export class IamStore {
   logout(): void {
     this.currentUserSignal.set(null);
     this.errorSignal.set(null);
-    localStorage.removeItem('authToken');
-    localStorage.removeItem(CURRENT_USER_STORAGE_KEY);
+    sessionStorage.removeItem('authToken');
+    sessionStorage.removeItem(CURRENT_USER_STORAGE_KEY);
     this.router.navigate(['/iam/sign-in-home']).then();
   }
 
@@ -175,7 +177,7 @@ export class IamStore {
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
               next: (authResponse) => {
-                localStorage.setItem('authToken', authResponse.token);
+                sessionStorage.setItem('authToken', authResponse.token);
                 this.handleAuthenticationSuccess(user);
               },
               error: () => {
@@ -220,7 +222,7 @@ export class IamStore {
     this.loadingSignal.set(false);
     this.errorSignal.set(null);
 
-    localStorage.setItem(CURRENT_USER_STORAGE_KEY, JSON.stringify(resource));
+    sessionStorage.setItem(CURRENT_USER_STORAGE_KEY, JSON.stringify(resource));
 
     this.navigateToRoleEntryPoint(user.role);
   }
@@ -238,7 +240,7 @@ export class IamStore {
   }
 
   private restorePersistedSession(): void {
-    const stored = localStorage.getItem(CURRENT_USER_STORAGE_KEY);
+    const stored = sessionStorage.getItem(CURRENT_USER_STORAGE_KEY);
     if (!stored) return;
 
     try {
@@ -246,7 +248,7 @@ export class IamStore {
       const user = this.userAssembler.toEntityFromResource(resource);
       this.currentUserSignal.set(user);
     } catch {
-      localStorage.removeItem(CURRENT_USER_STORAGE_KEY);
+      sessionStorage.removeItem(CURRENT_USER_STORAGE_KEY);
     }
   }
 
@@ -279,7 +281,7 @@ export class IamStore {
           role:      updatedUser.role,
           photoUrl:  updatedUser.photoUrl,
         } as any;
-        localStorage.setItem(CURRENT_USER_STORAGE_KEY, JSON.stringify(resource));
+        sessionStorage.setItem(CURRENT_USER_STORAGE_KEY, JSON.stringify(resource));
         this.currentUserSignal.set(updatedUser);
       })
     );

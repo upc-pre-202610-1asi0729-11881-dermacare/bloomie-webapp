@@ -6,6 +6,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { ProductDiscoveryStore } from '../../../application/product-discovery.store';
 import { ProductCategory } from '../../../domain/model/product.entity';
 import { FavoriteProduct } from '../../../domain/model/favorite-product.entity';
+import { IamStore } from '../../../../iam/application/iam.store';
 
 /**
  * Displays the full skincare product catalog with search,
@@ -20,6 +21,7 @@ import { FavoriteProduct } from '../../../domain/model/favorite-product.entity';
 export class TrendingItems {
   readonly store = inject(ProductDiscoveryStore);
   protected router = inject(Router);
+  private readonly iamStore = inject(IamStore);
 
   /** Exposes the ProductCategory enum to the template. */
   readonly ProductCategory = ProductCategory;
@@ -150,7 +152,7 @@ export class TrendingItems {
     } else {
       const newFavorite = new FavoriteProduct({
         id: 0,
-        userId: 1,
+        userId: this.iamStore.currentUser()?.id ?? 0,
         productId: productId,
         savedAt: new Date().toISOString(),
       });

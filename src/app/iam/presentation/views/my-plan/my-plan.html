@@ -52,7 +52,6 @@
             <p class="mp-payment-card">{{ 'iam.myPlan.visaCard' | translate: {last4: cardLast4} }}</p>
             <p class="mp-payment-exp">{{ 'iam.myPlan.cardExpires' | translate: {date: cardExpiry} }}</p>
           </div>
-          <button class="mp-update-link" (click)="showUpdatePayment.set(true)">{{ 'iam.myPlan.update' | translate }}</button>
         </div>
       </div>
 
@@ -171,10 +170,6 @@
         <div class="mp-section">
           <div class="mp-section__header">
             <p class="mp-section__title">{{ 'iam.myPlan.paymentOnFile' | translate }}</p>
-            <button class="mp-update-link" (click)="showUpdatePayment.set(true)">
-              {{ 'iam.myPlan.update' | translate }}
-              <mat-icon>chevron_right</mat-icon>
-            </button>
           </div>
           <div class="mp-payment-row">
             <div class="mp-visa-badge">VISA</div>
@@ -241,119 +236,6 @@
       </div>
     </div>
   </div>
-
-  <!-- ── Update Payment Modal ── -->
-  @if (showUpdatePayment()) {
-    <div class="mp-pay-overlay" (click)="showUpdatePayment.set(false)">
-      <div class="mp-pay-modal" (click)="$event.stopPropagation()">
-
-        <!-- Card visual preview -->
-        <div class="mp-pay-card">
-          <div class="mp-pay-card__top">
-            <div class="mp-pay-card__chip"></div>
-            <div class="mp-pay-card__wifi">
-              <mat-icon>wifi</mat-icon>
-            </div>
-          </div>
-          <p class="mp-pay-card__number">{{ cardDisplayNumber() }}</p>
-          <div class="mp-pay-card__bottom">
-            <div class="mp-pay-card__holder">
-              <p class="mp-pay-card__row-label">Cardholder</p>
-              <p class="mp-pay-card__row-value">{{ cardDisplayName() }}</p>
-            </div>
-            <div class="mp-pay-card__expires">
-              <p class="mp-pay-card__row-label">Expires</p>
-              <p class="mp-pay-card__row-value">{{ cardDisplayExpiry() }}</p>
-            </div>
-            <p class="mp-pay-card__brand">VISA</p>
-          </div>
-        </div>
-
-        <!-- Title -->
-        <h3 class="mp-pay-modal__title">Update Payment Method</h3>
-        <p class="mp-pay-modal__sub">Your card info is encrypted and secure</p>
-
-        <!-- Card number -->
-        <div class="mp-pay-field">
-          <label class="mp-pay-field__label">Card Number</label>
-          <div class="mp-pay-input-wrap">
-            <mat-icon>credit_card</mat-icon>
-            <input
-              class="mp-pay-input"
-              type="text"
-              placeholder="1234 5678 9012 3456"
-              maxlength="19"
-              [value]="payCardNumber()"
-              (input)="onCardNumberInput($any($event).target.value)"
-            />
-          </div>
-        </div>
-
-        <!-- Cardholder name -->
-        <div class="mp-pay-field">
-          <label class="mp-pay-field__label">Cardholder Name</label>
-          <div class="mp-pay-input-wrap">
-            <mat-icon>person</mat-icon>
-            <input
-              class="mp-pay-input"
-              type="text"
-              placeholder="Full name on card"
-              [value]="payCardName()"
-              (input)="payCardName.set($any($event).target.value)"
-            />
-          </div>
-        </div>
-
-        <!-- Expiry + CVV -->
-        <div class="mp-pay-row">
-          <div class="mp-pay-field">
-            <label class="mp-pay-field__label">Expiry Date</label>
-            <div class="mp-pay-input-wrap">
-              <mat-icon>calendar_today</mat-icon>
-              <input
-                class="mp-pay-input"
-                type="text"
-                placeholder="MM/YY"
-                maxlength="5"
-                [value]="payExpiry()"
-                (input)="onExpiryInput($any($event).target.value)"
-              />
-            </div>
-          </div>
-          <div class="mp-pay-field">
-            <label class="mp-pay-field__label">CVV</label>
-            <div class="mp-pay-input-wrap">
-              <mat-icon>lock</mat-icon>
-              <input
-                class="mp-pay-input"
-                type="password"
-                placeholder="•••"
-                maxlength="4"
-                [value]="payCvv()"
-                (input)="payCvv.set($any($event).target.value)"
-              />
-            </div>
-          </div>
-        </div>
-
-        <!-- Actions -->
-        <button
-          class="mp-pay-save-btn"
-          [class.mp-pay-save-btn--success]="payUpdateSuccess()"
-          (click)="onSavePayment()"
-        >
-          @if (payUpdateSuccess()) {
-            <mat-icon>check</mat-icon>
-            Card saved!
-          } @else {
-            Save Card
-          }
-        </button>
-        <button class="mp-pay-cancel-btn" (click)="showUpdatePayment.set(false)">Cancel</button>
-
-      </div>
-    </div>
-  }
 
   <!-- ── Cancel Modal ── -->
   @if (showCancelModal()) {

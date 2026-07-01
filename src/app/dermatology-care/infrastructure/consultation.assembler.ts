@@ -43,16 +43,16 @@ export class ConsultationAssembler implements BaseAssembler<Consultation, Consul
    */
   toResourceFromEntity(entity: Consultation): ConsultationResource {
     return {
-      id:                  entity.id,
-      appointment_id:      entity.appointmentId,
-      patient_id:          entity.patientId,
-      dermatologist_id:    entity.dermatologistId,
-      clinical_photo_urls: entity.clinicalPhotoUrls,
-      notes:               entity.notes,
-      recommendations:     entity.recommendations,
-      status:              entity.status,
-      started_at:          entity.startedAt,
-      finished_at:         entity.finishedAt,
+      id:                entity.id,
+      appointmentId:     entity.appointmentId,
+      patientId:         entity.patientId,
+      dermatologistId:   entity.dermatologistId,
+      clinicalPhotoUrls: entity.clinicalPhotoUrls,
+      notes:             entity.notes,
+      recommendations:   entity.recommendations,
+      status:            entity.status,
+      startedAt:         entity.startedAt,
+      finishedAt:        entity.finishedAt,
     } as ConsultationResource;
   }
 }

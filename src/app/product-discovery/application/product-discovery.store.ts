@@ -5,6 +5,7 @@ import { Product, ProductCategory } from '../domain/model/product.entity';
 import { ProductCompatibility } from '../domain/model/product-compatibility.entity';
 import { FavoriteProduct } from '../domain/model/favorite-product.entity';
 import { ProductDiscoveryApi } from '../infrastructure/product-discovery-api';
+import { IamStore } from '../../iam/application/iam.store';
 
 /**
  * Holds product discovery application state and coordinates
@@ -33,9 +34,13 @@ export class ProductDiscoveryStore {
   readonly compatibilities = this.compatibilitiesSignal.asReadonly();
 
   /**
-   * Readonly signal for the list of favorite product records.
+   * Readonly signal for the current user's favorite product records.
+   * Filters out favorite records belonging to other users.
    */
-  readonly favorites = this.favoritesSignal.asReadonly();
+  readonly favorites = computed(() => {
+    const currentUserId = this.iamStore.currentUser()?.id ?? -1;
+    return this.favoritesSignal().filter((favorite) => favorite.belongsToUser(currentUserId));
+  });
 
   /**
    * Readonly signal for the currently selected product.
@@ -100,7 +105,7 @@ export class ProductDiscoveryStore {
   /**
    * Computed signal for the number of saved favorite products.
    */
-  readonly favoriteCount = computed(() => this.favoritesSignal().length);
+  readonly favoriteCount = computed(() => this.favorites().length);
 
   /**
    * Computed signal for the count of AI-recommended products in the catalog.
@@ -110,6 +115,7 @@ export class ProductDiscoveryStore {
   );
 
   private readonly destroyRef = inject(DestroyRef);
+  private readonly iamStore = inject(IamStore);
 
   /**
    * Creates an instance of ProductDiscoveryStore and loads initial data.
@@ -198,7 +204,7 @@ export class ProductDiscoveryStore {
    */
   isProductFavorite(productId: number): Signal<boolean> {
     return computed(() =>
-      this.favoritesSignal().some((favorite) => favorite.matchesProduct(productId)),
+      this.favorites().some((favorite) => favorite.matchesProduct(productId)),
     );
   }
 
