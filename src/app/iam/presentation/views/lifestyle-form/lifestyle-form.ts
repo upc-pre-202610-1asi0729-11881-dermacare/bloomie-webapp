@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -25,8 +25,15 @@ export class LifestyleForm {
   protected readonly guideOpen = signal<boolean>(false);
   protected readonly submitting = signal<boolean>(false);
 
-  protected readonly step = 0;
   protected readonly totalSteps = 4;
+
+  /** Number of the 4 questions answered so far — drives the progress bar. */
+  protected readonly step = computed((): number => {
+    return [this.skinType(), this.waterIntake(), this.sunExposure(), this.sleepHabits()]
+      .filter((value) => value !== '').length;
+  });
+
+  protected readonly progress = computed((): number => (this.step() / this.totalSteps) * 100);
 
   readonly skinTypeOptions = ['Normal', 'Dry', 'Oily', 'Combination Skin'];
 
