@@ -1,8 +1,10 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { IamStore } from '../../../application/iam.store';
+import { SubscriptionStore } from '../../../../subscription/application/subscription.store';
 
 interface Plan {
   id: string;
@@ -24,13 +26,25 @@ interface Plan {
 })
 export class MyPlan {
   private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
   private readonly iamStore = inject(IamStore);
+  private readonly translateService = inject(TranslateService);
+  protected readonly subscriptionStore = inject(SubscriptionStore);
 
   protected showCancelModal = signal<boolean>(false);
   protected showChangePlan = signal<boolean>(false);
   protected selectedNewPlan = signal<string | null>(null);
   protected cancelConfirmed = signal<boolean>(false);
+  protected cancelling = signal<boolean>(false);
+  protected cancelError = signal<string | null>(null);
   protected expandedPlanId = signal<string | null>(null);
+
+  constructor() {
+    const user = this.iamStore.currentUser();
+    if (user) {
+      this.subscriptionStore.loadForPatient(user.id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
+    }
+  }
 
   protected showUpdatePayment = signal<boolean>(false);
   protected payCardNumber = signal<string>('');
@@ -52,7 +66,14 @@ export class MyPlan {
 
   readonly cardLast4 = '4242';
   readonly cardExpiry = '08/2028';
-  readonly billingDate = 'June 1, 2026';
+  private readonly fallbackBillingDate = 'June 1, 2026';
+
+  readonly billingDate = computed((): string => {
+    const endDate = this.subscriptionStore.currentSubscription()?.endDate;
+    if (!endDate) return this.fallbackBillingDate;
+    const locale = this.translateService.currentLang === 'es' ? 'es-ES' : 'en-US';
+    return new Date(endDate).toLocaleDateString(locale, { year: 'numeric', month: 'long', day: 'numeric' });
+  });
 
   readonly currentUserFullName = computed((): string => {
     const user = this.iamStore.currentUser();
@@ -138,15 +159,31 @@ export class MyPlan {
   onOpenCancelModal(): void {
     this.showCancelModal.set(true);
     this.cancelConfirmed.set(false);
+    this.cancelError.set(null);
   }
 
   onCloseCancelModal(): void {
     this.showCancelModal.set(false);
     this.cancelConfirmed.set(false);
+    this.cancelError.set(null);
   }
 
   onConfirmCancel(): void {
-    this.cancelConfirmed.set(true);
+    this.cancelling.set(true);
+    this.cancelError.set(null);
+    this.subscriptionStore
+      .cancel()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          this.cancelling.set(false);
+          this.cancelConfirmed.set(true);
+        },
+        error: () => {
+          this.cancelling.set(false);
+          this.cancelError.set('iam.myPlan.cancelError');
+        },
+      });
   }
 
   onCardNumberInput(raw: string): void {
