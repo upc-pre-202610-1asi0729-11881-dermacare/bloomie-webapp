@@ -176,7 +176,6 @@
       "tip2Desc": "Las fotos de las zonas afectadas ayudan al dermatólogo a evaluar tu condición con mayor precisión.",
       "tip3Title": "Conexión a internet estable",
       "tip3Desc": "Asegúrate de tener una buena conexión para una consulta online sin interrupciones."
-      "continue": "Continuar"
     },
     "payment": {
       "title": "Método de pago",
@@ -487,6 +486,7 @@
       "progressDesc": "Ve cómo ha mejorado tu piel con el tiempo.",
       "progressBtn": "Ver progreso",
       "weeklyScans": "escaneos esta semana",
+      "totalScansCount": "{{count}} escaneos",
       "limitReached": "Límite semanal alcanzado",
       "limitReachedDesc": "Ya usaste los 2 escaneos de esta semana. Tu piel necesita tiempo para reflejar los cambios de tu rutina.",
       "nextScanIn": "Próximo escaneo disponible en {{days}} días",

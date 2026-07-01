@@ -486,6 +486,7 @@
       "progressDesc": "See how your skin has improved over time.",
       "progressBtn": "View progress",
       "weeklyScans": "scans this week",
+      "totalScansCount": "{{count}} scans",
       "limitReached": "Weekly scan limit reached",
       "limitReachedDesc": "You've used both scans for this week. Your skin needs time to reflect your routine changes.",
       "nextScanIn": "Next scan available in {{days}} days",

@@ -1,4 +1,5 @@
 import { Component, computed, inject, OnInit } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -108,6 +109,15 @@ export class DashboardHome implements OnInit {
 
   /** Used to resolve translated strings for dynamic computed values. */
   private readonly translateService = inject(TranslateService);
+
+  /**
+   * Reactive tick for the active language. `computed()` signals don't track
+   * `TranslateService.instant()` calls as a dependency on their own, so any
+   * computed that resolves translations dynamically must read this signal
+   * to recompute when the user switches language — otherwise it stays
+   * frozen in whichever language was active the first time it ran.
+   */
+  private readonly languageChange = toSignal(this.translateService.onLangChange, { initialValue: null });
 
   /** Provides the authenticated user's profile for personalized display. */
   private readonly iamStore = inject(IamStore);
@@ -223,6 +233,7 @@ export class DashboardHome implements OnInit {
    * Returns the i18n "no appointment" key when none is scheduled.
    */
   readonly nextAppointmentDateLabel = computed((): string => {
+    this.languageChange();
     const appointment = this.nextAppointment();
     if (!appointment) return this.translateService.instant('dashboard.stats.noAppointment');
     return new Date(appointment.scheduledAt).toLocaleDateString('en-US', {
@@ -294,6 +305,7 @@ export class DashboardHome implements OnInit {
    * Falls back to an empty string when no profile exists.
    */
   readonly skinTypeLabel = computed((): string => {
+    this.languageChange();
     const skinProfile = this.skinAnalysisStore.skinProfile();
     if (!skinProfile) return '';
     const skinType = skinProfile.skinType;
@@ -316,6 +328,7 @@ export class DashboardHome implements OnInit {
    * Falls back to an empty string when no profile exists.
    */
   readonly skinSensitivityLabel = computed((): string => {
+    this.languageChange();
     const skinProfile = this.skinAnalysisStore.skinProfile();
     if (!skinProfile) return '';
 
@@ -584,6 +597,7 @@ export class DashboardHome implements OnInit {
    *  3. Routine update suggestion (if routine status is UPDATE)
    */
   readonly upcomingActions = computed((): UpcomingAction[] => {
+    this.languageChange();
     const actions: UpcomingAction[] = [];
 
     const appointment = this.nextAppointment();
@@ -664,6 +678,7 @@ export class DashboardHome implements OnInit {
    * message section and only shows the "Ask AI anything" button.
    */
   readonly aiAssistantLastMessage = computed((): string | null => {
+    this.languageChange();
     const analysis = this.skinAnalysisStore.latestScanAnalysis();
     if (!analysis) return null;
 

@@ -79,7 +79,7 @@
         <p class="ssh-card__desc">{{ 'skinAnalysis.scanHome.historyDesc' | translate }}</p>
         <div class="ssh-card__count">
           <mat-icon>photo_camera</mat-icon>
-          <span>{{ store.completedScanCount() }} scans</span>
+          <span>{{ 'skinAnalysis.scanHome.totalScansCount' | translate: { count: store.completedScanCount() } }}</span>
         </div>
         <button class="ssh-card__btn" (click)="navigateToPastAnalyses(); $event.stopPropagation()">
           {{ 'skinAnalysis.scanHome.historyBtn' | translate }}
