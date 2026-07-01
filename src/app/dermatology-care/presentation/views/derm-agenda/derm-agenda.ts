@@ -1,4 +1,4 @@
-import {Component, computed, DestroyRef, inject, OnInit, signal} from '@angular/core';
+import {Component, computed, DestroyRef, effect, inject, signal, untracked} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {Router} from '@angular/router';
 import {MatIconModule} from '@angular/material/icon';
@@ -20,7 +20,7 @@ interface AgendaDay {
   templateUrl: './derm-agenda.html',
   styleUrl:    './derm-agenda.css',
 })
-export class DermAgenda implements OnInit {
+export class DermAgenda {
   readonly store        = inject(DermatologyCareStore);
   readonly iamStore     = inject(IamStore);
   private readonly destroyRef = inject(DestroyRef);
@@ -70,14 +70,20 @@ export class DermAgenda implements OnInit {
     this.appointmentsForSelectedDay().filter(a => a.isConfirmed).length
   );
 
-  ngOnInit(): void {
-    this.loadPatientNames();
+  constructor() {
+    // Reactive rather than a one-shot ngOnInit call: appointments load asynchronously
+    // from the store, so this re-runs and backfills names as new patient ids show up.
+    effect(() => {
+      const uniqueIds = [...new Set(this.store.myAppointments().map(a => a.patientId))];
+      untracked(() => this.loadPatientNames(uniqueIds));
+    });
   }
 
-  /** Fetches patient display names for all loaded appointments via IAM bounded context. */
-  private loadPatientNames(): void {
-    const uniqueIds = [...new Set(this.store.myConsultations().map(a => a.patientId))];
-    uniqueIds.forEach(id => {
+  /** Fetches patient display names for any of the given ids not already resolved. */
+  private loadPatientNames(patientIds: number[]): void {
+    const known = this.patientNames();
+    const missingIds = patientIds.filter(id => !(id in known));
+    missingIds.forEach(id => {
       this.iamStore.getUserById(id)
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
