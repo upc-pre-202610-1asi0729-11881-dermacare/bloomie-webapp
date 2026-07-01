@@ -38,9 +38,13 @@ export class AppointmentAssembler implements BaseAssembler<
 
   toResourceFromEntity(entity: Appointment): AppointmentResource {
     return {
+      id: entity.id,
       patientId: entity.patientId,
       dermatologistId: entity.dermatologistId,
+      paymentId: entity.paymentId,
       scheduledAt: entity.scheduledAt,
+      status: entity.status,
+      cancellationReason: entity.cancellationReason,
     } as AppointmentResource;
   }
 }

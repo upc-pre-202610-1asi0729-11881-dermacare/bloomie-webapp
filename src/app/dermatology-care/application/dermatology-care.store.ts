@@ -9,7 +9,8 @@ import {
   untracked,
 } from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {retry, take} from 'rxjs';
+import {HttpErrorResponse} from '@angular/common/http';
+import {catchError, map, Observable, of, retry, switchMap, take, tap, throwError} from 'rxjs';
 import {DermatologistProfile} from '../domain/model/dermatologist-profile.entity';
 import {DermatologistAvailability} from '../domain/model/dermatologist-availability.entity';
 import {Appointment, AppointmentStatus} from '../domain/model/appointment.entity';
@@ -243,42 +244,67 @@ export class DermatologyCareStore {
   /**
    * Creates a new appointment.
    * @param appointment - The appointment to create.
+   * @returns Stream with the created Appointment, so callers can chain a confirmation step.
    */
-  addAppointment(appointment: Appointment): void {
+  addAppointment(appointment: Appointment): Observable<Appointment> {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
-    this.dermatologyCareApi
-      .createAppointment(appointment)
-      .pipe(retry(2))
-      .subscribe({
-        next: (createdAppointment) => {
-          this.appointmentsSignal.update((appointments) => [...appointments, createdAppointment]);
-          this.loadingSignal.set(false);
-        },
-        error: (err) => {
-          this.errorSignal.set(this.formatError(err, 'Failed to create appointment'));
-          this.loadingSignal.set(false);
-        },
-      });
+    return this.dermatologyCareApi.createAppointment(appointment).pipe(
+      retry(2),
+      tap((createdAppointment) => {
+        this.appointmentsSignal.update((appointments) => [...appointments, createdAppointment]);
+        this.loadingSignal.set(false);
+      }),
+      catchError((err) => {
+        this.errorSignal.set(this.formatError(err, 'Failed to create appointment'));
+        this.loadingSignal.set(false);
+        return throwError(() => err);
+      }),
+    );
   }
 
   /**
-   * Cancels an existing appointment by updating its status and reason.
-   * @param appointment - The appointment to cancel with the updated status and reason.
+   * Confirms a scheduled appointment so its consultation can be started later.
+   * @param appointment - The appointment to confirm.
+   * @returns Stream with the confirmed Appointment.
+   */
+  confirmAppointment(appointment: Appointment): Observable<Appointment> {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    return this.dermatologyCareApi.confirmAppointment(appointment.id, appointment.patientId).pipe(
+      retry(2),
+      tap((confirmedAppointment) => {
+        this.appointmentsSignal.update((appointments) =>
+          appointments.map((existing) =>
+            existing.id === confirmedAppointment.id ? confirmedAppointment : existing,
+          ),
+        );
+        this.loadingSignal.set(false);
+      }),
+      catchError((err) => {
+        this.errorSignal.set(this.formatError(err, 'Failed to confirm appointment'));
+        this.loadingSignal.set(false);
+        return throwError(() => err);
+      }),
+    );
+  }
+
+  /**
+   * Cancels an existing appointment. The backend returns no body on success,
+   * so the cancellation is applied to local state once the request succeeds.
+   * @param appointment - The appointment to cancel; must carry the cancellation reason.
    */
   cancelAppointment(appointment: Appointment): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
-    appointment.status = AppointmentStatus.Cancelled;
     this.dermatologyCareApi
-      .updateAppointment(appointment)
+      .cancelAppointmentRequest(appointment.id, appointment.patientId, appointment.cancellationReason)
       .pipe(retry(2))
       .subscribe({
-        next: (updatedAppointment) => {
+        next: () => {
+          appointment.status = AppointmentStatus.Cancelled;
           this.appointmentsSignal.update((appointments) =>
-            appointments.map((existing) =>
-              existing.id === updatedAppointment.id ? updatedAppointment : existing,
-            ),
+            appointments.map((existing) => (existing.id === appointment.id ? appointment : existing)),
           );
           this.loadingSignal.set(false);
         },
@@ -290,14 +316,15 @@ export class DermatologyCareStore {
   }
 
   /**
-   * Updates the notes and recommendations of an existing consultation.
-   * @param consultation - The consultation with updated notes and recommendations.
+   * Saves clinical notes progressively during an in-progress consultation.
+   * @param consultation - The consultation to update.
+   * @param notes        - The notes text to persist.
    */
-  updateConsultation(consultation: Consultation): void {
+  saveConsultationNotes(consultation: Consultation, notes: string): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.dermatologyCareApi
-      .updateConsultation(consultation)
+      .saveConsultationNotes(consultation.id, notes)
       .pipe(retry(2))
       .subscribe({
         next: (updatedConsultation) => {
@@ -309,10 +336,104 @@ export class DermatologyCareStore {
           this.loadingSignal.set(false);
         },
         error: (err) => {
-          this.errorSignal.set(this.formatError(err, 'Failed to update consultation'));
+          this.errorSignal.set(this.formatError(err, 'Failed to save notes'));
           this.loadingSignal.set(false);
         },
       });
+  }
+
+  /**
+   * Returns the existing consultation for an appointment, or starts one so that
+   * notes and clinical photos have a record to attach to as soon as a call starts.
+   * Falls back to fetching the existing record when the other party (patient or
+   * dermatologist) already started it first, since the backend rejects a second
+   * start attempt for the same appointment with a 409 conflict.
+   * @param appointment - The appointment the virtual call belongs to.
+   */
+  private ensureConsultationForAppointment(appointment: Appointment): Observable<Consultation> {
+    const existing = this.consultationsSignal().find((c) => c.appointmentId === appointment.id);
+    if (existing) return of(existing);
+
+    return this.dermatologyCareApi
+      .startConsultation(appointment.id, appointment.dermatologistId, appointment.patientId)
+      .pipe(
+        tap((created) => this.consultationsSignal.update((consultations) => [...consultations, created])),
+        catchError((err) => {
+          if (!(err instanceof HttpErrorResponse) || err.status !== 409) {
+            return throwError(() => err);
+          }
+          return this.dermatologyCareApi.getConsultationByAppointmentId(appointment.id).pipe(
+            switchMap((found) => (found ? of(found) : throwError(() => err))),
+            tap((found) =>
+              this.consultationsSignal.update((consultations) =>
+                consultations.some((c) => c.id === found.id) ? consultations : [...consultations, found],
+              ),
+            ),
+          );
+        }),
+      );
+  }
+
+  /**
+   * Ensures a consultation record exists for the appointment when a virtual call starts.
+   * @param appointment - The appointment the virtual call belongs to.
+   */
+  startConsultationSession(appointment: Appointment): void {
+    this.ensureConsultationForAppointment(appointment).subscribe({
+      next: (consultation) => this.selectedConsultationSignal.set(consultation),
+      error: (err) => this.errorSignal.set(this.formatError(err, 'Failed to start consultation')),
+    });
+  }
+
+  /**
+   * Finishes the consultation and, through the backend's domain event, completes
+   * its appointment once a virtual call ends. Runs when either the patient or the
+   * dermatologist ends the session. Returns an observable so callers can wait for
+   * the backend update to land before navigating away and re-fetching lists that
+   * depend on the new status.
+   * @param appointment - The appointment the virtual call belongs to.
+   * @param notes       - Optional notes captured during the call to persist before finishing.
+   */
+  endConsultationSession(appointment: Appointment, notes?: string): Observable<void> {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    return this.ensureConsultationForAppointment(appointment).pipe(
+      switchMap((consultation) => {
+        const saveNotes$ = notes !== undefined
+          ? this.dermatologyCareApi.saveConsultationNotes(consultation.id, notes)
+          : of(consultation);
+        return saveNotes$.pipe(
+          tap((updatedConsultation) => {
+            this.consultationsSignal.update((consultations) =>
+              consultations.map((existing) =>
+                existing.id === updatedConsultation.id ? updatedConsultation : existing,
+              ),
+            );
+          }),
+          switchMap(() => this.dermatologyCareApi.finishConsultation(consultation.id, appointment.dermatologistId)),
+        );
+      }),
+      tap((finishedConsultation) => {
+        this.consultationsSignal.update((consultations) =>
+          consultations.map((existing) =>
+            existing.id === finishedConsultation.id ? finishedConsultation : existing,
+          ),
+        );
+        // The backend completes the appointment via a domain event triggered by
+        // finishing the consultation; reflect that locally for immediate UI feedback.
+        appointment.status = AppointmentStatus.Completed;
+        this.appointmentsSignal.update((appointments) =>
+          appointments.map((existing) => (existing.id === appointment.id ? appointment : existing)),
+        );
+        this.loadingSignal.set(false);
+      }),
+      map(() => void 0),
+      catchError((err) => {
+        this.errorSignal.set(this.formatError(err, 'Failed to finish consultation'));
+        this.loadingSignal.set(false);
+        return throwError(() => err);
+      }),
+    );
   }
 
   /**
@@ -513,6 +634,33 @@ export class DermatologyCareStore {
         },
         error: (err) => {
           this.errorSignal.set(this.formatError(err, 'Failed to load appointments'));
+          this.loadingSignal.set(false);
+        },
+      });
+  }
+
+  /**
+   * Loads all consultations belonging to a given patient from the backend.
+   * The consultations endpoint has no patient filter, so all records are
+   * fetched and filtered client-side (mirrors the dermatologist-side filtering).
+   * @param patientId - The patient user ID whose consultations to load.
+   */
+  loadConsultationsByPatientId(patientId: number): void {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    this.dermatologyCareApi
+      .getConsultations()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (consultations) => {
+          this.consultationsSignal.set(
+            consultations.filter((c) => Number(c.patientId) === Number(patientId)),
+          );
+          this.loadingSignal.set(false);
+          this.errorSignal.set(null);
+        },
+        error: (err) => {
+          this.errorSignal.set(this.formatError(err, 'Failed to load consultations'));
           this.loadingSignal.set(false);
         },
       });
