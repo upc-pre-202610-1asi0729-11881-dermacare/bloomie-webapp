@@ -153,6 +153,11 @@
   transition: border-color 0.15s;
 }
 .up-field__input:focus { border-color: #a26769; }
+.up-field__error {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12.5px; color: #c0392b;
+  margin: -6px 0 12px;
+}
 
 /* Save button */
 .up-save-btn {

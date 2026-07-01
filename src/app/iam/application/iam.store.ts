@@ -286,4 +286,18 @@ export class IamStore {
       })
     );
   }
+
+  /**
+   * Changes the password of the currently authenticated user.
+   *
+   * @param currentPassword - Current plain-text password, verified by the backend.
+   * @param newPassword - New plain-text password to set.
+   * @returns Observable that completes when the password has been changed.
+   */
+  changePassword(currentPassword: string, newPassword: string): Observable<void> {
+    const user = this.currentUserSignal();
+    if (!user) return EMPTY;
+
+    return this.iamApi.changePassword(user.id, currentPassword, newPassword);
+  }
 }
