@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -24,6 +24,7 @@ interface Plan {
 })
 export class SelectPlan implements OnInit {
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   private readonly http = inject(HttpClient);
   private readonly iamStore = inject(IamStore);
 
@@ -31,8 +32,16 @@ export class SelectPlan implements OnInit {
   readonly loading = signal<boolean>(false);
   readonly error = signal<string | null>(null);
 
+  /** True when the user was sent here after losing access (expired/cancelled plan), not during fresh sign-up. */
+  readonly isReactivation = signal<boolean>(false);
+
   ngOnInit(): void {
+    this.isReactivation.set(this.route.snapshot.queryParamMap.get('reason') === 'subscription-ended');
     this.loadPlans();
+  }
+
+  onLogout(): void {
+    this.iamStore.logout();
   }
 
   private loadPlans(): void {

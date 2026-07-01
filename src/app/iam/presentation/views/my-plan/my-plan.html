@@ -39,7 +39,7 @@
         </p>
         <div class="mp-current-card__billing">
           <mat-icon [style.color]="currentPlan.textColor">calendar_today</mat-icon>
-          <p [style.color]="currentPlan.textColor">{{ 'iam.myPlan.nextBilling' | translate }}: <strong>{{ billingDate }}</strong></p>
+          <p [style.color]="currentPlan.textColor">{{ 'iam.myPlan.nextBilling' | translate }}: <strong>{{ billingDate() }}</strong></p>
         </div>
       </div>
 
@@ -135,7 +135,7 @@
           </ul>
           <div class="mp-current-card__billing">
             <mat-icon [style.color]="currentPlan.textColor">calendar_today</mat-icon>
-            <p [style.color]="currentPlan.textColor">{{ 'iam.myPlan.nextBilling' | translate }}: <strong>{{ billingDate }}</strong></p>
+            <p [style.color]="currentPlan.textColor">{{ 'iam.myPlan.nextBilling' | translate }}: <strong>{{ billingDate() }}</strong></p>
           </div>
         </div>
       </div>
@@ -162,7 +162,7 @@
                 <mat-icon style="color: #6fa8c8;">calendar_today</mat-icon>
               </div>
             </div>
-            <p class="mp-kpi-card__value">{{ billingDate }}</p>
+            <p class="mp-kpi-card__value">{{ billingDate() }}</p>
             <p class="mp-kpi-card__sub">{{ 'iam.myPlan.autoRenew' | translate }}</p>
           </div>
         </div>
@@ -364,21 +364,30 @@
             <mat-icon>warning</mat-icon>
           </div>
           <h3 class="mp-modal__title">{{ 'iam.myPlan.cancelTitle' | translate }}</h3>
-          <p class="mp-modal__desc">{{ 'iam.myPlan.cancelDesc' | translate }}</p>
+          <p class="mp-modal__desc">{{ 'iam.myPlan.cancelDesc' | translate: { date: billingDate() } }}</p>
           <div class="mp-modal__features">
             <div class="mp-modal__feature"><mat-icon>close</mat-icon><span>{{ 'iam.myPlan.planFeatures.unlimitedSkinAnalyses' | translate }}</span></div>
             <div class="mp-modal__feature"><mat-icon>close</mat-icon><span>{{ 'iam.myPlan.planFeatures.aiPoweredRoutines' | translate }}</span></div>
             <div class="mp-modal__feature"><mat-icon>close</mat-icon><span>{{ 'iam.myPlan.planFeatures.dermatologistDirectory' | translate }}</span></div>
             <div class="mp-modal__feature"><mat-icon>close</mat-icon><span>{{ 'iam.myPlan.planFeatures.smartChatbot' | translate }}</span></div>
           </div>
-          <button class="mp-modal__keep-btn" (click)="onCloseCancelModal()">{{ 'iam.myPlan.keepSubscription' | translate }}</button>
-          <button class="mp-modal__cancel-btn" (click)="onConfirmCancel()">{{ 'iam.myPlan.yesCancelAnyway' | translate }}</button>
+          @if (cancelError()) {
+            <p class="mp-modal__error">{{ cancelError()! | translate }}</p>
+          }
+          <button class="mp-modal__keep-btn" (click)="onCloseCancelModal()" [disabled]="cancelling()">{{ 'iam.myPlan.keepSubscription' | translate }}</button>
+          <button class="mp-modal__cancel-btn" (click)="onConfirmCancel()" [disabled]="cancelling()">
+            @if (cancelling()) {
+              {{ 'iam.myPlan.cancelling' | translate }}
+            } @else {
+              {{ 'iam.myPlan.yesCancelAnyway' | translate }}
+            }
+          </button>
         } @else {
           <div class="mp-modal__icon-wrap mp-modal__icon-wrap--success">
             <mat-icon>check</mat-icon>
           </div>
           <h3 class="mp-modal__title">{{ 'iam.myPlan.cancelledTitle' | translate }}</h3>
-          <p class="mp-modal__desc">{{ 'iam.myPlan.cancelledDesc' | translate }}</p>
+          <p class="mp-modal__desc">{{ 'iam.myPlan.cancelledDesc' | translate: { date: billingDate() } }}</p>
           <button class="mp-modal__keep-btn" (click)="onCloseCancelModal()">{{ 'iam.myPlan.done' | translate }}</button>
         }
       </div>
