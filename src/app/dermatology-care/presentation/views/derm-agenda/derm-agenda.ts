@@ -29,13 +29,6 @@ export class DermAgenda implements OnInit {
   selectedDayIndex = signal<number>(2);
   patientNames     = signal<Record<number, string>>({});
 
-  constructor() {
-    const user = this.iamStore.currentUser();
-    if (user && localStorage.getItem(`bloomie_setup_${user.id}`) !== 'true') {
-      this.router.navigate(['/derm/setup']);
-    }
-  }
-
   private readonly dayNames     = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
   private readonly fullDayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   private readonly monthNames   = ['January','February','March','April','May','June',

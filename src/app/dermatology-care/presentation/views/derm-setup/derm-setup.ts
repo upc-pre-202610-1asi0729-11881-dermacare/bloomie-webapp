@@ -5,6 +5,11 @@ import {FormsModule} from '@angular/forms';
 import {IamStore} from '../../../../iam/application/iam.store';
 import {DermatologyCareStore} from '../../../application/dermatology-care.store';
 import {DermatologistAvailability} from '../../../domain/model/dermatologist-availability.entity';
+import {
+  formatLicenseNumber,
+  LICENSE_NUMBER_MAX_LENGTH,
+  LICENSE_NUMBER_PLACEHOLDER,
+} from '../../../../shared/presentation/utils/license-number.util';
 
 interface DayOption { id: string; short: string; label: string; }
 
@@ -27,6 +32,8 @@ export class DermSetup {
   // Step 1 fields
   protected specialty     = signal<string>('Dermatology');
   protected licenseNumber = signal<string>('');
+  protected readonly licenseNumberPlaceholder = LICENSE_NUMBER_PLACEHOLDER;
+  protected readonly licenseNumberMaxLength   = LICENSE_NUMBER_MAX_LENGTH;
 
   // Step 2 fields
   protected biography    = signal<string>('');
@@ -93,6 +100,10 @@ export class DermSetup {
 
   protected isDayActive(dayId: string): boolean {
     return this.activeDays().has(dayId);
+  }
+
+  protected onLicenseNumberChange(rawValue: string): void {
+    this.licenseNumber.set(formatLicenseNumber(rawValue));
   }
 
   protected skipSetup(): void {

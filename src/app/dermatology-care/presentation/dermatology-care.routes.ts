@@ -1,4 +1,5 @@
 import {Routes} from '@angular/router';
+import {dermSetupGuard} from './guards/derm-setup.guard';
 
 const consultHome           = () => import('./views/consult-home/consult-home').then(m => m.ConsultHome);
 const selectDoctor          = () => import('./views/select-doctor/select-doctor').then(m => m.SelectDoctor);
@@ -37,14 +38,15 @@ export const dermatologyCareRoutes: Routes = [
 export const dermRoutes: Routes = [
   { path: '', redirectTo: 'agenda', pathMatch: 'full' },
   { path: 'setup',  loadComponent: dermSetup  },
-  { path: 'agenda', loadComponent: dermAgenda },
-  { path: 'past-consultations', loadComponent: dermPastConsultations },
-  { path: 'consultation-summary', loadComponent: dermConsultationSummary },
-  { path: 'availability', loadComponent: dermAvailability },
-  { path: 'virtual-call', loadComponent: dermVirtualCall },
+  { path: 'agenda', loadComponent: dermAgenda, canActivate: [dermSetupGuard] },
+  { path: 'past-consultations', loadComponent: dermPastConsultations, canActivate: [dermSetupGuard] },
+  { path: 'consultation-summary', loadComponent: dermConsultationSummary, canActivate: [dermSetupGuard] },
+  { path: 'availability', loadComponent: dermAvailability, canActivate: [dermSetupGuard] },
+  { path: 'virtual-call', loadComponent: dermVirtualCall, canActivate: [dermSetupGuard] },
   {
     path: 'profile',
     loadComponent: () => import('./views/derm-profile/derm-profile').then((m) => m.DermProfile),
+    canActivate: [dermSetupGuard],
   },
   {
     path: 'settings',
@@ -52,5 +54,6 @@ export const dermRoutes: Routes = [
       import('../../iam/presentation/views/profile-settings/profile-settings').then(
         (m) => m.ProfileSettings,
       ),
+    canActivate: [dermSetupGuard],
   },
 ];

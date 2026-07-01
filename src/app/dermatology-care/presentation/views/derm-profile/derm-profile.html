@@ -45,7 +45,17 @@
         </div>
         <div class="derm-profile__field">
           <label class="derm-profile__label">{{ 'iam.dermProfile.licenseLabel' | translate }}</label>
-          <input class="derm-profile__input" type="text" [ngModel]="licenseNumber()" (ngModelChange)="licenseNumber.set($event)" />
+          <input
+            class="derm-profile__input"
+            type="text"
+            [placeholder]="licenseNumberPlaceholder"
+            [maxlength]="licenseNumberMaxLength"
+            autocomplete="off"
+            spellcheck="false"
+            [ngModel]="licenseNumber()"
+            (ngModelChange)="onLicenseNumberChange($event)"
+          />
+          <p class="derm-profile__field-hint">{{ 'iam.dermProfile.licenseHint' | translate: { format: licenseNumberPlaceholder } }}</p>
         </div>
         <div class="derm-profile__field derm-profile__field--last">
           <label class="derm-profile__label">{{ 'iam.dermProfile.phoneLabel' | translate }}</label>
@@ -205,7 +215,17 @@
             </div>
             <div class="derm-profile__field">
               <label class="derm-profile__label">{{ 'iam.dermProfile.licenseLabel' | translate }}</label>
-              <input class="derm-profile__input" type="text" [ngModel]="licenseNumber()" (ngModelChange)="licenseNumber.set($event)" />
+              <input
+                class="derm-profile__input"
+                type="text"
+                [placeholder]="licenseNumberPlaceholder"
+                [maxlength]="licenseNumberMaxLength"
+                autocomplete="off"
+                spellcheck="false"
+                [ngModel]="licenseNumber()"
+                (ngModelChange)="onLicenseNumberChange($event)"
+              />
+              <p class="derm-profile__field-hint">{{ 'iam.dermProfile.licenseHint' | translate: { format: licenseNumberPlaceholder } }}</p>
             </div>
             <div class="derm-profile__field">
               <label class="derm-profile__label">{{ 'iam.dermProfile.phoneLabel' | translate }}</label>

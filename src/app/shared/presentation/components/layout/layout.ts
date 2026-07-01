@@ -33,4 +33,6 @@ export class Layout {
   });
 
   readonly isOnboardingScanRoute = computed(() => this.currentUrl().includes('/onboarding-scan'));
+
+  readonly isDermSetupRoute = computed(() => this.currentUrl().includes('/derm/setup'));
 }

@@ -89,25 +89,6 @@
         }
       </div>
 
-      <div class="derm-sign-up__field">
-        <label class="derm-sign-up__label" for="derm-sign-up-specialty">
-          {{ 'iam.dermSignUp.specialtyLabel' | translate }}
-        </label>
-        <select
-          id="derm-sign-up-specialty"
-          class="derm-sign-up__select"
-          formControlName="specialty"
-        >
-          <option value="" disabled selected>{{ 'iam.dermSignUp.specialtyPlaceholder' | translate }}</option>
-          @for (s of specialties; track s) {
-            <option [value]="s">{{ s }}</option>
-          }
-        </select>
-        @if (submitted() && form.get('specialty')?.hasError('required')) {
-          <p class="derm-sign-up__error">{{ 'iam.dermSignUp.errors.specialtyRequired' | translate }}</p>
-        }
-      </div>
-
       <div class="derm-sign-up__password-row">
         <div class="derm-sign-up__field">
           <label class="derm-sign-up__label" for="derm-sign-up-password">
