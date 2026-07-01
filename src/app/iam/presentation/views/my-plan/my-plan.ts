@@ -124,22 +124,6 @@ export class MyPlan implements OnInit {
       });
   }
 
-  protected showUpdatePayment = signal<boolean>(false);
-  protected payCardNumber = signal<string>('');
-  protected payCardName = signal<string>('');
-  protected payExpiry = signal<string>('');
-  protected payCvv = signal<string>('');
-  protected payUpdateSuccess = signal<boolean>(false);
-
-  protected cardDisplayNumber = computed(() => {
-    const num = this.payCardNumber().replace(/\D/g, '');
-    if (!num) return '•••• •••• •••• ••••';
-    const padded = num.padEnd(16, '•');
-    return `${padded.slice(0, 4)} ${padded.slice(4, 8)} ${padded.slice(8, 12)} ${padded.slice(12, 16)}`;
-  });
-  protected cardDisplayName = computed(() => this.payCardName() || 'CARDHOLDER NAME');
-  protected cardDisplayExpiry = computed(() => this.payExpiry() || 'MM/YY');
-
   private readonly fallbackPlan: Plan = {
     id: 0,
     name: '',
@@ -258,26 +242,6 @@ export class MyPlan implements OnInit {
           this.cancelError.set('iam.myPlan.cancelError');
         },
       });
-  }
-
-  onCardNumberInput(raw: string): void {
-    const digits = raw.replace(/\D/g, '').slice(0, 16);
-    const formatted = digits.replace(/(.{4})(?=.)/g, '$1 ');
-    this.payCardNumber.set(formatted);
-  }
-
-  onExpiryInput(raw: string): void {
-    const digits = raw.replace(/\D/g, '').slice(0, 4);
-    const formatted = digits.length > 2 ? `${digits.slice(0, 2)}/${digits.slice(2)}` : digits;
-    this.payExpiry.set(formatted);
-  }
-
-  onSavePayment(): void {
-    this.payUpdateSuccess.set(true);
-    setTimeout(() => {
-      this.payUpdateSuccess.set(false);
-      this.showUpdatePayment.set(false);
-    }, 1500);
   }
 
   onBack(): void {
