@@ -83,4 +83,27 @@ export class SubscriptionStore {
       }),
     );
   }
+
+  /** Switches the currently loaded subscription to a different plan. */
+  changePlan(newPlanId: number): Observable<Subscription> {
+    const subscription = this.currentSubscriptionSignal();
+    if (!subscription) {
+      return throwError(() => new Error('No active subscription to change plan on'));
+    }
+
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+
+    return this.subscriptionApi.changePlan(subscription.id, newPlanId).pipe(
+      tap((updated) => {
+        this.currentSubscriptionSignal.set(updated);
+        this.loadingSignal.set(false);
+      }),
+      catchError((err) => {
+        this.errorSignal.set(err?.message ?? 'Failed to change subscription plan');
+        this.loadingSignal.set(false);
+        return throwError(() => err);
+      }),
+    );
+  }
 }

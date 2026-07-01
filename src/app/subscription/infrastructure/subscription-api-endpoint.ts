@@ -38,4 +38,18 @@ export class SubscriptionApiEndpoint extends BaseApiEndpoint<
       }),
     );
   }
+
+  /**
+   * Switches a subscription to a different plan (`PATCH .../{id}/change-plan`).
+   * The backend rejects this with 409 when already on that plan, and with 400
+   * when the subscription is CANCELLED/EXPIRED.
+   */
+  changePlan(subscriptionId: number, newPlanId: number): Observable<Subscription> {
+    return this.http
+      .patch<SubscriptionResource>(`${this.endpointUrl}/${subscriptionId}/change-plan`, { newPlanId })
+      .pipe(
+        map((resource) => this.assembler.toEntityFromResource(resource)),
+        catchError(this.handleError('Failed to change subscription plan')),
+      );
+  }
 }
