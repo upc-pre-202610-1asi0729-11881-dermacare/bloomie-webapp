@@ -93,4 +93,15 @@ export class IamApi extends BaseApi {
   ): Observable<User> {
     return this.iamEndpoint.updateUserProfile(userId, firstName, lastName, email);
   }
+
+  /**
+   * Changes the password of a user.
+   * @param userId - Identifier of the user.
+   * @param currentPassword - Current plain-text password.
+   * @param newPassword - New plain-text password.
+   * @returns Completion stream for the update operation.
+   */
+  changePassword(userId: number, currentPassword: string, newPassword: string): Observable<void> {
+    return this.iamEndpoint.changePassword(userId, currentPassword, newPassword);
+  }
 }

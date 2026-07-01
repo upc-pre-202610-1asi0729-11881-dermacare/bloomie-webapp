@@ -121,6 +121,45 @@
         </button>
       </div>
 
+      <!-- ── Security card ── -->
+      <div class="derm-profile__form-card">
+        <div class="derm-profile__card-header">
+          <div class="derm-profile__card-icon-wrap derm-profile__card-icon-wrap--blue">
+            <mat-icon>lock</mat-icon>
+          </div>
+          <p class="derm-profile__card-title">{{ 'iam.dermProfile.security' | translate }}</p>
+        </div>
+
+        <div class="derm-profile__field">
+          <label class="derm-profile__label">{{ 'iam.dermProfile.currentPasswordLabel' | translate }}</label>
+          <input class="derm-profile__input" type="password" [ngModel]="currentPassword()" (ngModelChange)="currentPassword.set($event)" />
+        </div>
+        <div class="derm-profile__field">
+          <label class="derm-profile__label">{{ 'iam.dermProfile.newPasswordLabel' | translate }}</label>
+          <input class="derm-profile__input" type="password" [ngModel]="newPassword()" (ngModelChange)="newPassword.set($event)" />
+        </div>
+        <div class="derm-profile__field derm-profile__field--last">
+          <label class="derm-profile__label">{{ 'iam.dermProfile.confirmPasswordLabel' | translate }}</label>
+          <input class="derm-profile__input" type="password" [ngModel]="confirmPassword()" (ngModelChange)="confirmPassword.set($event)" />
+        </div>
+        @if (passwordError()) {
+          <p class="derm-profile__field-error">{{ passwordError() | translate }}</p>
+        }
+
+        <button
+          class="derm-profile__save-btn-mobile"
+          [class.derm-profile__save-btn--success]="passwordSaveSuccess()"
+          (click)="onChangePassword()"
+        >
+          @if (passwordSaveSuccess()) {
+            <mat-icon>check_circle</mat-icon>
+            {{ 'iam.dermProfile.saved' | translate }}
+          } @else {
+            {{ 'iam.dermProfile.changePassword' | translate }}
+          }
+        </button>
+      </div>
+
       <!-- ── Navigation ── -->
       <div class="derm-profile__form-card derm-profile__form-card--nav">
         <button class="derm-profile__nav-item" (click)="onNavigateToAvailability()">
@@ -287,6 +326,45 @@
               {{ 'iam.dermProfile.saved' | translate }}
             } @else {
               {{ 'iam.dermProfile.saveChanges' | translate }}
+            }
+          </button>
+        </div>
+
+        <!-- Security -->
+        <div class="derm-profile__info-card">
+          <div class="derm-profile__card-header">
+            <div class="derm-profile__card-icon-wrap derm-profile__card-icon-wrap--blue">
+              <mat-icon>lock</mat-icon>
+            </div>
+            <p class="derm-profile__card-title">{{ 'iam.dermProfile.security' | translate }}</p>
+          </div>
+          <div class="derm-profile__info-grid">
+            <div class="derm-profile__field">
+              <label class="derm-profile__label">{{ 'iam.dermProfile.currentPasswordLabel' | translate }}</label>
+              <input class="derm-profile__input" type="password" [ngModel]="currentPassword()" (ngModelChange)="currentPassword.set($event)" />
+            </div>
+            <div class="derm-profile__field">
+              <label class="derm-profile__label">{{ 'iam.dermProfile.newPasswordLabel' | translate }}</label>
+              <input class="derm-profile__input" type="password" [ngModel]="newPassword()" (ngModelChange)="newPassword.set($event)" />
+            </div>
+            <div class="derm-profile__field">
+              <label class="derm-profile__label">{{ 'iam.dermProfile.confirmPasswordLabel' | translate }}</label>
+              <input class="derm-profile__input" type="password" [ngModel]="confirmPassword()" (ngModelChange)="confirmPassword.set($event)" />
+            </div>
+          </div>
+          @if (passwordError()) {
+            <p class="derm-profile__field-error">{{ passwordError() | translate }}</p>
+          }
+          <button
+            class="derm-profile__save-btn"
+            [class.derm-profile__save-btn--success]="passwordSaveSuccess()"
+            (click)="onChangePassword()"
+          >
+            @if (passwordSaveSuccess()) {
+              <mat-icon>check_circle</mat-icon>
+              {{ 'iam.dermProfile.saved' | translate }}
+            } @else {
+              {{ 'iam.dermProfile.changePassword' | translate }}
             }
           </button>
         </div>

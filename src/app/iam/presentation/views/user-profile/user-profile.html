@@ -63,6 +63,33 @@
         </button>
       </div>
 
+      <!-- Security -->
+      <div class="up-card">
+        <p class="up-card__title">{{ 'iam.profile.security' | translate }}</p>
+        <div class="up-field">
+          <label class="up-field__label">{{ 'iam.profile.currentPasswordLabel' | translate }}</label>
+          <input class="up-field__input" type="password" [ngModel]="currentPassword()" (ngModelChange)="currentPassword.set($event)" />
+        </div>
+        <div class="up-field">
+          <label class="up-field__label">{{ 'iam.profile.newPasswordLabel' | translate }}</label>
+          <input class="up-field__input" type="password" [ngModel]="newPassword()" (ngModelChange)="newPassword.set($event)" />
+        </div>
+        <div class="up-field">
+          <label class="up-field__label">{{ 'iam.profile.confirmPasswordLabel' | translate }}</label>
+          <input class="up-field__input" type="password" [ngModel]="confirmPassword()" (ngModelChange)="confirmPassword.set($event)" />
+        </div>
+        @if (passwordError()) {
+          <p class="up-field__error">{{ passwordError() | translate }}</p>
+        }
+        <button
+          class="up-save-btn"
+          [class.up-save-btn--success]="passwordSaveSuccess()"
+          (click)="onChangePassword()"
+        >
+          @if (passwordSaveSuccess()) { {{ 'iam.profile.saved' | translate }} } @else { {{ 'iam.profile.changePassword' | translate }} }
+        </button>
+      </div>
+
       <!-- Account sections -->
       <div class="up-card">
         <p class="up-card__title">{{ 'iam.profile.accountSections' | translate }}</p>
@@ -144,6 +171,35 @@
             (click)="onSaveChanges()"
           >
             @if (saveSuccess()) { {{ 'iam.profile.saved' | translate }} } @else { {{ 'iam.profile.saveChanges' | translate }} }
+          </button>
+        </div>
+
+        <!-- Security card -->
+        <div class="up-card">
+          <p class="up-card__title">{{ 'iam.profile.security' | translate }}</p>
+          <div class="up-grid-2">
+            <div class="up-field">
+              <label class="up-field__label">{{ 'iam.profile.currentPasswordLabel' | translate }}</label>
+              <input class="up-field__input" type="password" [ngModel]="currentPassword()" (ngModelChange)="currentPassword.set($event)" />
+            </div>
+            <div class="up-field">
+              <label class="up-field__label">{{ 'iam.profile.newPasswordLabel' | translate }}</label>
+              <input class="up-field__input" type="password" [ngModel]="newPassword()" (ngModelChange)="newPassword.set($event)" />
+            </div>
+            <div class="up-field">
+              <label class="up-field__label">{{ 'iam.profile.confirmPasswordLabel' | translate }}</label>
+              <input class="up-field__input" type="password" [ngModel]="confirmPassword()" (ngModelChange)="confirmPassword.set($event)" />
+            </div>
+          </div>
+          @if (passwordError()) {
+            <p class="up-field__error">{{ passwordError() | translate }}</p>
+          }
+          <button
+            class="up-save-btn"
+            [class.up-save-btn--success]="passwordSaveSuccess()"
+            (click)="onChangePassword()"
+          >
+            @if (passwordSaveSuccess()) { {{ 'iam.profile.saved' | translate }} } @else { {{ 'iam.profile.changePassword' | translate }} }
           </button>
         </div>
 

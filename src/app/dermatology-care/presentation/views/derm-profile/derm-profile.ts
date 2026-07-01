@@ -45,6 +45,12 @@ export class DermProfile {
   protected savePersonalSuccess = signal<boolean>(false);
   protected saveProfessionalSuccess = signal<boolean>(false);
 
+  protected currentPassword = signal<string>('');
+  protected newPassword = signal<string>('');
+  protected confirmPassword = signal<string>('');
+  protected passwordSaveSuccess = signal<boolean>(false);
+  protected passwordError = signal<string | null>(null);
+
   protected readonly licenseNumberPlaceholder = LICENSE_NUMBER_PLACEHOLDER;
   protected readonly licenseNumberMaxLength   = LICENSE_NUMBER_MAX_LENGTH;
 
@@ -129,6 +135,36 @@ export class DermProfile {
     this.dermatologyCareStore.updateDermatologistProfile(profile);
     this.saveProfessionalSuccess.set(true);
     setTimeout(() => this.saveProfessionalSuccess.set(false), 2000);
+  }
+
+  onChangePassword(): void {
+    this.passwordError.set(null);
+
+    if (!this.currentPassword() || !this.newPassword() || !this.confirmPassword()) {
+      this.passwordError.set('iam.dermProfile.passwordRequired');
+      return;
+    }
+    if (this.newPassword().length < 8) {
+      this.passwordError.set('iam.dermProfile.passwordTooShort');
+      return;
+    }
+    if (this.newPassword() !== this.confirmPassword()) {
+      this.passwordError.set('iam.dermProfile.passwordMismatch');
+      return;
+    }
+
+    this.iamStore.changePassword(this.currentPassword(), this.newPassword()).subscribe({
+      next: () => {
+        this.currentPassword.set('');
+        this.newPassword.set('');
+        this.confirmPassword.set('');
+        this.passwordSaveSuccess.set(true);
+        setTimeout(() => this.passwordSaveSuccess.set(false), 2000);
+      },
+      error: () => {
+        this.passwordError.set('iam.dermProfile.passwordIncorrect');
+      },
+    });
   }
 
   onNavigateToAvailability(): void {

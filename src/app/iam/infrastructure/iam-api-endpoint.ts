@@ -134,4 +134,17 @@ export class IamApiEndpoint extends BaseApiEndpoint<User, UserResource, AuthResp
       catchError(this.handleError('Failed to update user profile'))
     );
   }
+
+  /**
+   * Changes the password of a user, verifying the current password first.
+   * @param userId - Identifier of the user whose password is being changed.
+   * @param currentPassword - Current plain-text password, verified by the backend.
+   * @param newPassword - New plain-text password to set.
+   * @returns Completion stream for the update operation.
+   */
+  changePassword(userId: number, currentPassword: string, newPassword: string): Observable<void> {
+    return this.http.put<void>(`${this.backendUsersUrl}/${userId}/password`, { currentPassword, newPassword }).pipe(
+      catchError(this.handleError('Failed to change password'))
+    );
+  }
 }
