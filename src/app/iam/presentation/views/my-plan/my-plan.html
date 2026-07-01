@@ -87,7 +87,7 @@
                       </li>
                     }
                   </ul>
-                  <button class="mp-plan-card__select" (click)="onSelectPlan(plan.id); onConfirmChangePlan()">
+                  <button class="mp-plan-card__select" (click)="onSelectPlan(plan.id)">
                     {{ 'iam.myPlan.switchTo' | translate }} {{ plan.name }}
                   </button>
                 </div>
@@ -152,7 +152,7 @@
                 <mat-icon style="color: #a26769;">bolt</mat-icon>
               </div>
             </div>
-            <p class="mp-kpi-card__value">Advanced</p>
+            <p class="mp-kpi-card__value">{{ currentPlan.name }}</p>
             <p class="mp-kpi-card__sub">${{ currentPlan.price }} / {{ 'iam.myPlan.month' | translate }}</p>
           </div>
           <div class="mp-kpi-card">
@@ -217,7 +217,7 @@
                         </li>
                       }
                     </ul>
-                    <button class="mp-plan-card__select" (click)="onSelectPlan(plan.id); onConfirmChangePlan()">
+                    <button class="mp-plan-card__select" (click)="onSelectPlan(plan.id)">
                       {{ 'iam.myPlan.switchTo' | translate }} {{ plan.name }}
                     </button>
                   </div>
@@ -389,6 +389,43 @@
           <h3 class="mp-modal__title">{{ 'iam.myPlan.cancelledTitle' | translate }}</h3>
           <p class="mp-modal__desc">{{ 'iam.myPlan.cancelledDesc' | translate: { date: billingDate() } }}</p>
           <button class="mp-modal__keep-btn" (click)="onCloseCancelModal()">{{ 'iam.myPlan.done' | translate }}</button>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- ── Change Plan Modal ── -->
+  @if (showChangePlan() && selectedPlanForModal; as plan) {
+    <div class="mp-modal-overlay">
+      <div class="mp-modal">
+        @if (!planChanged()) {
+          <div class="mp-modal__icon-wrap">
+            <mat-icon [style.color]="plan.textColor === '#ffffff' ? plan.color : plan.textColor">{{ plan.icon }}</mat-icon>
+          </div>
+          <h3 class="mp-modal__title">{{ 'iam.myPlan.confirmSwitchTitle' | translate }} {{ plan.name }}?</h3>
+          <p class="mp-modal__desc">
+            {{ 'iam.myPlan.confirmSwitchDesc' | translate: { plan: plan.name, price: plan.price } }}
+          </p>
+          @if (planChangeError()) {
+            <p class="mp-modal__error">{{ planChangeError()! | translate }}</p>
+          }
+          <button class="mp-modal__keep-btn" (click)="onConfirmChangePlan()" [disabled]="changingPlan()">
+            @if (changingPlan()) {
+              {{ 'iam.myPlan.switchingPlan' | translate }}
+            } @else {
+              {{ 'iam.myPlan.confirmSwitchBtn' | translate }} {{ plan.name }}
+            }
+          </button>
+          <button class="mp-modal__cancel-btn" (click)="onCloseChangePlanModal()" [disabled]="changingPlan()">
+            {{ 'iam.myPlan.keepCurrentPlan' | translate }}
+          </button>
+        } @else {
+          <div class="mp-modal__icon-wrap mp-modal__icon-wrap--success">
+            <mat-icon>check</mat-icon>
+          </div>
+          <h3 class="mp-modal__title">{{ 'iam.myPlan.switchSuccessTitle' | translate }}</h3>
+          <p class="mp-modal__desc">{{ 'iam.myPlan.switchSuccessDesc' | translate: { plan: plan.name } }}</p>
+          <button class="mp-modal__keep-btn" (click)="onCloseChangePlanModal()">{{ 'iam.myPlan.done' | translate }}</button>
         }
       </div>
     </div>

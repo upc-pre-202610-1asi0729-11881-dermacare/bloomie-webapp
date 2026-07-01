@@ -26,4 +26,9 @@ export class SubscriptionApi extends BaseApi {
   cancel(subscriptionId: number): Observable<void> {
     return this.endpoint.delete(subscriptionId);
   }
+
+  /** Switches a subscription to a different plan. */
+  changePlan(subscriptionId: number, newPlanId: number): Observable<Subscription> {
+    return this.endpoint.changePlan(subscriptionId, newPlanId);
+  }
 }
