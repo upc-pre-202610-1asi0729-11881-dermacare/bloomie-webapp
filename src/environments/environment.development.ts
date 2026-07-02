@@ -36,6 +36,7 @@ export const environment = {
   backendAuthenticationRegisterDermatologistEndpointPath: '/authentication/register-dermatologist',
   backendUsersEndpointPath: '/users',
   backendFavoriteProductsEndpointPath: '/favorite-products',
+  backendProductCompatibilitiesEndpointPath: '/product-compatibilities',
   useMockAuthentication: false,
 
   // Skin Analysis
