@@ -32,6 +32,7 @@ export const environment = {
   backendAppointmentsEndpointPath: '/appointments',
   backendConsultationsEndpointPath: '/consultations',
   backendFavoriteProductsEndpointPath: '/favorite-products',
+  backendProductCompatibilitiesEndpointPath: '/product-compatibilities',
   useMockAuthentication: false,
 
   // Skin Analysis

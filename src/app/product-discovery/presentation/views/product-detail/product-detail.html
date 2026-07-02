@@ -33,9 +33,18 @@
 
       <!-- Left: image panel -->
       <div class="pd-image">
-        <div class="pd-image__deco pd-image__deco--1"></div>
-        <div class="pd-image__deco pd-image__deco--2"></div>
-        <mat-icon class="pd-image__icon">inventory_2</mat-icon>
+        @if (store.selectedProduct()!.imageUrl) {
+          <img
+            class="pd-image__photo"
+            [src]="store.selectedProduct()!.imageUrl"
+            [alt]="store.selectedProduct()!.name"
+            (error)="onImageError($event)"
+          />
+        } @else {
+          <div class="pd-image__deco pd-image__deco--1"></div>
+          <div class="pd-image__deco pd-image__deco--2"></div>
+          <mat-icon class="pd-image__icon">inventory_2</mat-icon>
+        }
         @if (store.selectedProduct()!.isAiRecommended) {
           <div class="pd-image__badge">
             <mat-icon>auto_awesome</mat-icon>
@@ -75,7 +84,7 @@
             <p class="pd-compat__label" [style.color]="compatibility()!.compatibilityColor">
               {{ compatibility()!.compatibilityLabel }}
             </p>
-            <p class="pd-compat__explanation">{{ compatibility()!.explanation }}</p>
+            <p class="pd-compat__explanation">{{ compatibility()!.reason }}</p>
           </div>
         }
 

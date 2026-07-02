@@ -5,6 +5,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { ProductDiscoveryStore } from '../../../application/product-discovery.store';
 import { FavoriteProduct } from '../../../domain/model/favorite-product.entity';
 import { IamStore } from '../../../../iam/application/iam.store';
+import { SkinAnalysisStore } from '../../../../skin-analysis/application/skin-analysis.store';
 
 /**
  * Displays the full detail of a selected skincare product,
@@ -20,20 +21,16 @@ export class ProductDetail {
   readonly store = inject(ProductDiscoveryStore);
   protected router = inject(Router);
   private readonly iamStore = inject(IamStore);
+  private readonly skinAnalysisStore = inject(SkinAnalysisStore);
 
   /**
-   * Skin profile ID used to look up the compatibility record.
-   * In a full implementation this would come from the user session.
-   */
-  private readonly currentSkinProfileId = 1;
-
-  /**
-   * Computed compatibility record for the selected product and skin profile.
+   * Computed compatibility record for the selected product and the user's skin type.
    */
   readonly compatibility = computed(() => {
     const product = this.store.selectedProduct();
-    if (!product) return undefined;
-    return this.store.getCompatibilityForProduct(product.id, this.currentSkinProfileId)();
+    const skinType = this.skinAnalysisStore.skinProfile()?.skinType;
+    if (!product || !skinType) return undefined;
+    return this.store.getCompatibilityForProduct(product.id, skinType)();
   });
 
   /**
@@ -72,5 +69,21 @@ export class ProductDetail {
    */
   navigateBack(): void {
     this.router.navigate(['/trending']);
+  }
+
+  /**
+   * Hides a broken product image and falls back to the placeholder icon.
+   * @param event - The image error event.
+   */
+  onImageError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    const parent = img.parentElement;
+    img.remove();
+    if (parent) {
+      parent.innerHTML +=
+        '<div class="pd-image__deco pd-image__deco--1"></div>' +
+        '<div class="pd-image__deco pd-image__deco--2"></div>' +
+        '<mat-icon class="pd-image__icon material-icons">inventory_2</mat-icon>';
+    }
   }
 }
